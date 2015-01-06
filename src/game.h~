@@ -1,0 +1,13 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "map.h"
+#ifndef PLAYER_H
+#define PLAYER_H
+
+//Initialise un jeu solo (param à ajouter plus tard), puis lance sololoop
+void solo();
+//Boucle de jeu pour une partie en solo
+void sololoop();
+
+
+#endif

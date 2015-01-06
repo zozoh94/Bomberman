@@ -1,0 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+#ifndef MAP_H
+#define MAP_H
+
+struct map{
+  
+  
+}Map
+
+
+#endif

@@ -1,3 +1,4 @@
+Email du prof: marc.bouffard@u-psud.fr
 TODO:
 	- Créer la structure carte
 	- Créer les fonctions pour lire et générer les cartes
@@ -15,6 +16,10 @@ TODO:
 	- Créer un menu
 	- Ajouter un mode réseau.
 	- Faire de jolies images (perso qui regarde vers où il va, etc)
+
+
+
+
 
 Objectifs finaux minimum:
 - jouer seul sur la carte
