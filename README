@@ -1,0 +1,41 @@
+TODO:
+
+- jouer seul sur la carte
+- jouer à deux
+- jouer seul contre l’ordinateur
+- proposer plusieurs niveaux
+- gérer si possible des  ́evenements sonores
+- compter les points
+- etc
+
+menu
+	choisir mode de jeu
+	>solo
+	>vs IA
+	>JCJ
+		(et si on est des ouf)
+		>local
+		>réseau (créer/rejoindre)
+
+	Choisir la map
+	Conditions de victoire:
+	 - Faire exploser l'ennemi X fois
+	 - Faire exploser le plus de bloc destructibles
+	 - Ramasser le plus de bonus
+	 - Tuer des "ennemis" (des bloc destructibles mobiles qui tuent au contact)
+	 - Avoir le plus de points à la fin du timer
+
+Carte
+Au début, lit le fichier .map; remplit aléatoirement avec des bloc destructibles
+Initialise les points à 0
+
+Joueur
+Reçoit les input des touches, pose une bombe ou se déplace
+ poser une bombe = créer une bombe à l'endroit où il est
+ se déplacer = dire à la carte où on va, et bouger en conséquence si possible
+IA
+peut poser des bombes et se déplacer
+ pose des bombes qui le feront pas mourir, et ramasse les bonus
+ essaye de faire sauter le joueur
+Bonus
+ Quand un joueur ou une IA est dessus il le ramasse et gagne un bonus.
