@@ -20,6 +20,8 @@ typedef struct s_map map;
 struct s_map{
   char* name; //Le nom de la map (provient du fichier
   int** grid; //La grille de jeu
+  int width; //La largeur de la grille
+  int height; //La hauteur de la grille
   player* players; //Liste des joueurs
   bomb* bombs; //Liste des bombes
 };

@@ -1,4 +1,6 @@
-11111111111
+base //nom de la map
+11 9 //largeur x hauteur
+11111111111 //grille de la map
 12000000021
 10101010101
 10000000001
