@@ -29,6 +29,7 @@ enum e_btype{
   SQUARE // Bombe qui explose en carré
 };
 
+
 /**
    Initialise une bombe
    @param int x: coordonnée X de départ
@@ -45,8 +46,38 @@ bomb* InitBomb(int x, int y, int rayon, int timer, player* myPlayer, btype type)
 /**
    Explose la bombe.
    Crée les flammes de la bombe et interagit avec tout les bloc touchés,
-   décrémente le nombre de bombes posées par le joueur de 1.
+   décrémente le nombre de bombes posées par le joueur de 1,
+   retire la bombe de la liste des bombes de la map.
  */
 void Explode(map* map);
+
+/*
+  Liste chainée de bombes
+ */
+typedef struct s_bombList bombList{
+  bomb* data;
+  bombList* next;
+};
+
+/**
+   Initialise une nouvelle bombList vide
+   @return une nouvelle liste de bombes vide.
+ */
+bombList* NewBombList();
+
+/**
+   Ajoute la bombe b à la liste l
+   @param bombList* l: la liste à laquelle ajouter la bombe
+   bomb* b: la bombe à ajouter
+*/
+void AddBombList(bombList* l, bomb* b);
+
+/**
+   Retire la bombe b de la liste l
+   @param bombList* l: la liste
+   bomb* b: la bombe à retirer
+   @return 0 si tout s'est bien passé, 1 si la bombe n'était pas dans la liste
+ */
+int RemoveBombList(bombList* l, bomb* b);
 
 #endif

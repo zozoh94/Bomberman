@@ -1,6 +1,7 @@
 CC = gcc
 FLAGS = -Wall -std=gnu99 -lSDL
 
+
 # all
 all: main
 	$(CC) bin/bomberman.o -o bin/Bomberman $(FLAGS)

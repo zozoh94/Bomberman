@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "player.h"
+#include "bomb.h"
 #ifndef MAP_H
 #define MAP_H
 
@@ -23,7 +24,7 @@ struct s_map{
   int width; //La largeur de la grille
   int height; //La hauteur de la grille
   player* players; //Liste des joueurs
-  bomb* bombs; //Liste des bombes
+  bombList* bombs; //Liste des bombes
 };
 /*
   Bonus:
@@ -39,7 +40,7 @@ struct s_map{
 
 /**
    Initialise la carte.
-   Initialise les listes à 0, parse la map et le nom de la map, génère aléatoirement les positions des bloc destructibles
+   Initialise les listes, parse la map et le nom de la map, génère aléatoirement les positions des bloc destructibles
    @param char* f: Le nom du fichier .map qui contient la carte
    @return Un pointeur vers la map générée
  */
