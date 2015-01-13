@@ -5,12 +5,14 @@
 #include <stdlib.h>
 #include "map.h"
 
+
+typedef enum e_typeP typeP;
+typedef struct s_player player;
 /*
   Structure player
   Contient les coordonnées des joueurs, leur score, leurs bonus, leur nombre de bombes.
   
  */
-typedef struct s_player player;
 struct s_player{
   int x; //Coordonnée X
   int y; //Coordonnée Y
@@ -21,7 +23,22 @@ struct s_player{
   int bombMax; //Nombre de bombes posables max simultanéments
   int speed; //Le temps de déplacement (plus petit = plus rapide)
   int moveTimer; //Le timer du déplacement
+  typeP type; //Type de player
   int *map; //Pointeur vers la map
+  
+  //Stats des bombes
+  int bombR; //rayon des bombes
+  btype bombT; //type des bombes
+};
+
+/*
+  Enumeration typeP
+  Le type de joueur (J1, J2, IA)
+*/
+enum e_typeP{
+  J1,
+  J2,
+  IA
 };
 
 
@@ -34,13 +51,7 @@ struct s_player{
    int speed: temps de déplacement au départ
    @return Un joueur
  */
-player* InitPlayer(int x, int y, int score, int bombMax, int speed, Map *map);
-
-/**
-   Crée une bombe du type de celles que pose le joueur
-*/
-bomb* CreateBomb(player* p);
-
+player* InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, type bombT, typeP type, Map *map);
 
 /**
    Pose une bombe aux coordonnées du joueur p si c'est possible:

@@ -6,6 +6,8 @@
 #include "player.h"
 #include "map.h"
 
+#define TIMERBOMB 1000
+
 /*
   Type possible des bombes
  */
@@ -43,6 +45,11 @@ struct s_bomb{
    @return La bombe
 */
 bomb* InitBomb(int x, int y, int rayon, int timer, player* myPlayer, btype type);
+
+/**
+   Crée une bombe du type de celles que pose le joueur
+*/
+bomb* CreateBomb(player* p);
 
 /**
    Explose la bombe.

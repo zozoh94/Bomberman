@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL/SDL.h>
 #include "map.h"
 #include "player.h"
 #include "bomb.h"
@@ -25,9 +26,9 @@ enum e_vCond{
    Map, 1 joueur
  */
 void Solo(map *m, player *p);
+
 //Boucle de jeu
 void GameLoop();
-
 
 /**
    Contrôle les timer et explosions des bombes.
@@ -40,8 +41,9 @@ void BombLoop(map* map);
    Contrôle les timer des joueurs.
    Récupère la liste des joueurs de la map, et pour chaque joueur, décrémente son timer si besoin.
    @param map* map: La carte qui contient les joueurs
+   int* input: le tableau des input à gérer éventuellement
  */
-void PlayerLoop(map* map);
+void PlayerLoop(map* map, int* input);
 
 /**
    Test si les conditions de victoire sont remplies

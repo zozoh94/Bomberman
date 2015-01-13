@@ -1,6 +1,6 @@
 #include "player.h"
 
-player *InitPlayer(int x, int y, int score, int bombMax, int speed, Map *map){
+player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, type bombT, typeP type, Map *map){
   player *p = malloc(sizeof(player));
   p->x = x;
   p->y = y;
@@ -11,13 +11,11 @@ player *InitPlayer(int x, int y, int score, int bombMax, int speed, Map *map){
   p->bombMax = bombMax;
   p->speed = speed;
   p->moveTimer = 0;
+  p->bombR = bombR;
+  p->bombT = bombT;
+  p->type = type;
   p->map = map;
   return p;
-}
-
-bomb* CreateBomb(player* p){
-  //Changer rayon, timer et type en fonction du joueur
-  return InitBomb(p->x, p->y, 3, 1000, p, NORMAL);
 }
 
 void PlaceBomb(player *p){
