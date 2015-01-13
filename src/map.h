@@ -10,9 +10,44 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
-//#include <json/json.h>
+#include <unistd.h>
+#include <json/json.h>
+#include <stdbool.h>
 #include "player.h"
 #include "bomb.h"
+
+#define FOREACH_map_JSON_Key(map_JSON_Key) \
+    map_JSON_Key(name)			   \
+    map_JSON_Key(grid)			   \
+    map_JSON_Key(author)			   \
+    map_JSON_Key(auto_remove)			   \
+    
+
+#define GENERATE_ENUM(ENUM) ENUM,
+#define GENERATE_STRING(STRING) #STRING,
+#define GENERATE_ERROR(ENUM) MAP_FORMAT_ ## ENUM,
+
+enum map_JSON_Key {
+    FOREACH_map_JSON_Key(GENERATE_ENUM)
+    JSON_KEY_LEN
+};
+
+static const char *map_JSON_Key_Str[] = {
+    FOREACH_map_JSON_Key(GENERATE_STRING)
+};
+
+/**
+ * @enum map_Error
+ * @brief Enumération de erreurs possibles lors de l'initialisation de la structure map
+ */
+typedef enum
+{
+    MAP_FORMAT,
+    MAP_ALLOC,
+    MAP_FILE,
+    FOREACH_map_JSON_Key(GENERATE_ERROR)
+}
+    map_Error;
 
 /**
  * @struct s_map
@@ -36,6 +71,8 @@ struct s_map{
     player* players; //Liste des joueurs
     bombList* bombs; //Liste des bombes
     char* fileName; //nom du fichier .map (identifiant unique de la map)
+    bool autoRemove;
+    map_Error error;
 };
 /*
   Bonus:
@@ -50,25 +87,28 @@ struct s_map{
 */
 
 /**
- * @fn map** ListMap()
+ * @fn int ListMap(map*** ptrListMap)
  * @brief Initialise toutes les cartes du dossier 'maps', parse la map, le nom de la map et son auteur
- * @return Un tableau de map
+ * @param ptrListMap adresse de la list de Map
+ * @return Retourne 0 si tout s'est bien passé, un map_Error sinon.
  */
-map** ListMap();
+int ListMap(map*** ptrListMap);
 
 /**
- * @fn map* InitMap(char* f).
+ * @fn int InitMap(map* map)
  * @brief Initialise les listes, génère aléatoirement les positions des bloc destructibles
- * @param f Le nom du fichier .map qui contient la carte
- * @return Un pointeur vers la map générée
+ * @param map Pointeur sur la map que l'on souhaite utilisé
+ * @return Un code d'erreur
  */
-map* InitMap(char* f);
+int InitMap(map* map);
 
 /**
  * @fn void AddPlayers(player** playerList)
  * @brief Ajoute les joueurs à la carte et les place à leurs positions initiales
- * @param player** playerList: La liste des joueurs
+ * @param map: la map sur laquel on souhaite ajouté un joueur
+ * @param playerList: La liste des joueurs
+ * @return Un code d'erreur
  */
-void AddPlayers(player** playerList);
+int AddPlayers(map* map, player** playerList);
 
 #endif
