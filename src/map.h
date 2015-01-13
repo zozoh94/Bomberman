@@ -10,9 +10,9 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <json/json.h>
+//#include <json/json.h>
 #include "player.h"
-//#include "bomb.h"
+#include "bomb.h"
 
 /**
  * @struct s_map
@@ -34,7 +34,7 @@ struct s_map{
     int width; //La largeur de la grille
     int height; //La hauteur de la grille
     player* players; //Liste des joueurs
-    //bombList* bombs; //Liste des bombes
+    bombList* bombs; //Liste des bombes
     char* fileName; //nom du fichier .map (identifiant unique de la map)
 };
 /*

@@ -6,7 +6,16 @@
 #include "map.h"
 
 
-typedef enum e_typeP typeP;
+/*
+  Enumeration typeP
+  Le type de joueur (J1, J2, IA)
+*/
+typedef enum{
+  J1,
+  J2,
+  IA
+}typeP;
+
 typedef struct s_player player;
 /*
   Structure player
@@ -31,15 +40,7 @@ struct s_player{
   btype bombT; //type des bombes
 };
 
-/*
-  Enumeration typeP
-  Le type de joueur (J1, J2, IA)
-*/
-enum e_typeP{
-  J1,
-  J2,
-  IA
-};
+
 
 
 /**
@@ -51,7 +52,7 @@ enum e_typeP{
    int speed: temps de déplacement au départ
    @return Un joueur
  */
-player* InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, type bombT, typeP type, Map *map);
+player* InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, btype bombT, typeP type, map *map);
 
 /**
    Pose une bombe aux coordonnées du joueur p si c'est possible:
