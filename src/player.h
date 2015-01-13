@@ -14,11 +14,14 @@ typedef struct s_player player;
 struct s_player{
   int x; //Coordonnée X
   int y; //Coordonnée Y
+  int destX; //Coordonnée X d'arrivée en cas de déplacement
+  int destY; //Coordonnée Y d'arrivée en cas de déplacement
   int score; //Score
   int bombs; //Nombre de bombes posées
   int bombMax; //Nombre de bombes posables max simultanéments
   int speed; //Le temps de déplacement (plus petit = plus rapide)
   int moveTimer; //Le timer du déplacement
+  int *map; //Pointeur vers la map
 };
 
 
@@ -31,31 +34,37 @@ struct s_player{
    int speed: temps de déplacement au départ
    @return Un joueur
  */
-player* InitPlayer(int x, int y, int score, int bombMax, int speed);
+player* InitPlayer(int x, int y, int score, int bombMax, int speed, Map *map);
+
+/**
+   Crée une bombe du type de celles que pose le joueur
+*/
+bomb* CreateBomb(player* p);
 
 
 /**
-   Pose une bombe aux coordonnées du joueur si c'est possible:
+   Pose une bombe aux coordonnées du joueur p si c'est possible:
    - Si il n'y en a pas déjà
    - Si le moveTimer du joueur est prêt (=-1) (on ne pose pas de bombe en se déplaçant)
  */
-void PlaceBomb();
+void PlaceBomb(player* p);
 
 /**
    Test:
    - Si le joueur peut aller en X/Y
    - Si le moveTimer du joueur est prêt (=-1)
    Si oui, alors met moveTimer à speed, bloque les input du joueur et commence l'animation de déplacement du joueur vers X/Y.
-   @param int X: x d'arrivée
+   @param player *p: joueur à déplacer
+   int X: x d'arrivée
    int Y: y d'arrivée
  */
-void TryMove(int X, int Y);
+void TryMove(player *p, int X, int Y);
 
 /**
-   Quand le timer arrive à 0, change les coordonnées du joueur en X/Y
+   Quand le moveTimer arrive à 0, déplace le joueur
    @param int X: x d'arrivée
    int Y: y d'arrivée
  */
-void Move(int X, int Y);
+void Move(player* p);
 
 #endif
