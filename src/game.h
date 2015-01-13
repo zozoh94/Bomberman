@@ -1,10 +1,12 @@
+#ifndef GAME_H
+#define GAME_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "map.h"
 #include "player.h"
 #include "bomb.h"
-#ifndef GAME_H
-#define GAME_H
+
 //Dans ce fichier, les initialisations de parties et les boucles de jeux.
 
 

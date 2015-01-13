@@ -1,9 +1,19 @@
+#ifndef BOMB_H
+#define BOMB_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "player.h"
 #include "map.h"
-#ifndef BOMB_H
-#define BOMB_H
+
+/*
+  Type possible des bombes
+ */
+enum e_btype{
+  NORMAL, //Bombe normale, explose en croix
+  SQUARE // Bombe qui explose en carré
+};
+
 
 /*
   Structure bomb
@@ -20,15 +30,6 @@ struct s_bomb{
   player* myPlayer; //Joueur ayant posé la bombe
   btype type; //Type de la bombe
 };
-
-/*
-  Type possible des bombes
- */
-enum e_btype{
-  NORMAL, //Bombe normale, explose en croix
-  SQUARE // Bombe qui explose en carré
-};
-
 
 /**
    Initialise une bombe
