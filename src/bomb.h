@@ -50,7 +50,16 @@ bomb* InitBomb(int x, int y, int rayon, int timer, player* myPlayer, btype type)
    décrémente le nombre de bombes posées par le joueur de 1,
    retire la bombe de la liste des bombes de la map.
  */
-void Explode(map* map);
+void Explode(map* map, bomb* bomb);
+
+/**
+   Trouve dans la liste des bombes de la map laquelle est aux coordonnées (x,y).
+   @param map* map: La carte qui contient les bombes
+   int x: coordonnée X de la bombe recherchée
+   int y: coordonnée Y de le bombe recherchée
+   @return la bombe recherchée
+ */
+bomb* GetBomb (map* map, int x, int y)
 
 /*
   Liste chainée de bombes
@@ -71,7 +80,7 @@ bombList* NewBombList();
    @param bombList* l: la liste à laquelle ajouter la bombe
    bomb* b: la bombe à ajouter
 */
-void AddBombList(bombList* l, bomb* b);
+bombList AddBombList(bombList* l, bomb* b);
 
 /**
    Retire la bombe b de la liste l
@@ -79,6 +88,6 @@ void AddBombList(bombList* l, bomb* b);
    bomb* b: la bombe à retirer
    @return 0 si tout s'est bien passé, 1 si la bombe n'était pas dans la liste
  */
-int RemoveBombList(bombList* l, bomb* b);
+bombList RemoveBombList(bombList* l, bomb* b);
 
 #endif
