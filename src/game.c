@@ -164,6 +164,9 @@ void PlayerLoop(map* map, int* input){
       if(input[K_DOWN]==1 && p->moveTimer == -1){
 	TryMove(p, p->x, p->y+1);
       }
+      if(input[K_ENTER]==1 && p->moveTimer == -1){
+	PlaceBomb(p);
+      }
     }
 
     if(p->type == J2){
@@ -179,7 +182,9 @@ void PlayerLoop(map* map, int* input){
       if(input[K_S]==1 && p->moveTimer == -1){
 	TryMove(p, p->x, p->y+1);
       }
-      
+      if(input[K_SPACE]==1 && p->moveTimer == -1){
+	PlaceBomb(p);
+      }
     }
   }
 }
