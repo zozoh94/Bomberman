@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "map.h"
+#include "bomb.h"
+struct  map;
+struct bomb;
+enum btype;
 
 
 /*
@@ -16,13 +20,12 @@ typedef enum{
   IA
 }typeP;
 
-typedef struct s_player player;
 /*
   Structure player
   Contient les coordonnées des joueurs, leur score, leurs bonus, leur nombre de bombes.
   
  */
-struct s_player{
+typedef struct s_player{
   int x; //Coordonnée X
   int y; //Coordonnée Y
   int destX; //Coordonnée X d'arrivée en cas de déplacement
@@ -33,14 +36,12 @@ struct s_player{
   int speed; //Le temps de déplacement (plus petit = plus rapide)
   int moveTimer; //Le timer du déplacement
   typeP type; //Type de player
-  int *map; //Pointeur vers la map
+  map *map; //Pointeur vers la map
   
   //Stats des bombes
   int bombR; //rayon des bombes
   btype bombT; //type des bombes
-};
-
-
+}player;
 
 
 /**

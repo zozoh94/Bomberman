@@ -10,6 +10,9 @@ all: main
 main:
 	$(CC) -c src/bomberman.c -o bin/bomberman.o $(FLAGS)
 
+src/*.o: src/*.c
+	*(CC) -c $< $(FLAGS)
+
 #clean
 clean:
 	rm -rf bin/*.bak rm -rf bin/*.o

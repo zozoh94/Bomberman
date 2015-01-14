@@ -15,6 +15,10 @@
 #include <stdbool.h>
 #include "player.h"
 #include "bomb.h"
+typedef struct s_player player;
+typedef struct s_bomb bomb;
+typedef struct s_bombList bombList;
+
 
 #define FOREACH_map_JSON_Key(map_JSON_Key) \
     map_JSON_Key(name)			   \
@@ -61,8 +65,7 @@ typedef enum
  * 4 = Bombe
  * 2x = Bonus
  */
-typedef struct s_map map;
-struct s_map{
+typedef struct s_map{
     char* name; //Le nom de la map (provient du fichier)
     char* author; //Le nom de l'auteur de la map
     int** grid; //La grille de jeu
@@ -73,7 +76,7 @@ struct s_map{
     char* fileName; //nom du fichier .map (identifiant unique de la map)
     bool autoRemove;
     map_Error error;
-};
+}map;
 /*
   Bonus:
   20 = augmentation du rayon
@@ -110,5 +113,6 @@ int InitMap(map* map);
  * @return Un code d'erreur
  */
 int AddPlayers(map* map, player** playerList);
+
 
 #endif

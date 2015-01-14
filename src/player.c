@@ -21,7 +21,7 @@ player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, b
 void PlaceBomb(player *p){
   //On suppose que le joueur est à un endroit où il peut marcher (espace vide)
   if(p->bombs < p->bombMax && p->moveTimer == -1){
-    if(IsBomb(p->map, p->x, p->y) == 0){
+    if(p->map->grid[p->x][p->y] != 4){ //si il n'y a pas déjà une bombe
       p->bombs++;
       AddBombList(p->map->bombs, CreateBomb(p));
       p->map->grid[p->x][p->y] = 4;
