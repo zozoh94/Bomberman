@@ -23,17 +23,13 @@
     map_JSON_Key(auto_remove)			   \
     
 
-#define GENERATE_ENUM(ENUM) ENUM,
+#define GENERATE_ENUM(ENUM) KEY_ ## ENUM,
 #define GENERATE_STRING(STRING) #STRING,
 #define GENERATE_ERROR(ENUM) MAP_FORMAT_ ## ENUM,
 
 enum map_JSON_Key {
     FOREACH_map_JSON_Key(GENERATE_ENUM)
     JSON_KEY_LEN
-};
-
-static const char *map_JSON_Key_Str[] = {
-    FOREACH_map_JSON_Key(GENERATE_STRING)
 };
 
 /**
