@@ -14,7 +14,7 @@
 #include <json/json.h>
 #include <stdbool.h>
 #include "player.h"
-//#include "bomb.h"
+#include "bomb.h"
 
 #define FOREACH_map_JSON_Key(map_JSON_Key) \
     map_JSON_Key(name)			   \
@@ -65,7 +65,7 @@ struct s_map{
     int width; //La largeur de la grille
     int height; //La hauteur de la grille
     player* players; //Liste des joueurs
-    //bombList* bombs; //Liste des bombes
+    bombList* bombs; //Liste des bombes
     char* fileName; //nom du fichier .map (identifiant unique de la map)
     bool autoRemove;
     map_Error error;

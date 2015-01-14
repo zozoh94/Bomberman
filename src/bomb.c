@@ -14,6 +14,11 @@ bomb* InitBomb(int x, int y, int rayon, int timer, player* myPlayer, btype type)
 	return bomb;
 }
 
+bomb* CreateBomb(player* p){
+  //Changer rayon, timer et type en fonction du joueur
+  return InitBomb(p->x, p->y, p->bombR, TIMERBOMB, p, p->bombT);
+}
+
 void Explode(map* map, bomb* bomb)
 {
 	int i,j;
@@ -157,7 +162,3 @@ bombList RemoveBombList(bombList* l, bomb* b)
 	}
 	return l;
 }
-
-
-
-

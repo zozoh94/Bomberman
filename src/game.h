@@ -3,18 +3,32 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL/SDL.h>
 #include "map.h"
 #include "player.h"
 #include "bomb.h"
 
 //Dans ce fichier, les initialisations de parties et les boucles de jeux.
 
+/**
+   @enum e_vCond
+   @brief Conditions de victoires
+*/
+typedef enum e_vCond vCond;
+enum e_vCond{
+  SOLO,
+  VSIA,
+  MULTI
+};
 
-//Initialise un jeu solo (param à ajouter plus tard), puis lance le loop
-void Solo();
+/**
+   Initialise un jeu en solo
+   Map, 1 joueur
+ */
+void Solo(map *m, player *p);
+
 //Boucle de jeu
 void GameLoop();
-
 
 /**
    Contrôle les timer et explosions des bombes.
@@ -27,7 +41,18 @@ void BombLoop(map* map);
    Contrôle les timer des joueurs.
    Récupère la liste des joueurs de la map, et pour chaque joueur, décrémente son timer si besoin.
    @param map* map: La carte qui contient les joueurs
+   int* input: le tableau des input à gérer éventuellement
  */
-void PlayerLoop(map* map);
+void PlayerLoop(map* map, int* input);
+
+/**
+   Test si les conditions de victoire sont remplies
+   Met le gagnant (s'il y en a un) dans "winner"
+   @param map* map: La carte de jeu
+   vCond cond: Les conditions de victoire
+   player** winner: Un pointeur qui pointera vers le gagnant s'il y en a un.
+   @return 1 si conditions de victoire remplies, sinon 0
+ */
+int TestWin(map* map, vCond cond, player** winner);
 
 #endif
