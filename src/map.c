@@ -2,6 +2,9 @@
 
 int ListMap(map*** ptrListMap)
 {
+    static const char *map_JSON_Key_Str[] = {
+	FOREACH_map_JSON_Key(GENERATE_STRING)
+    };
     map** listMaps;
     map** listMapsRealloc;
     struct dirent *mapFile;
@@ -40,18 +43,19 @@ int ListMap(map*** ptrListMap)
 			else
 			{
 			    free(listMaps);
-			    ptrListMap =NULL;
+			    *ptrListMap =NULL;
 			    return MAP_ALLOC;
 			}
 		    }
-		    ptrListMap = &listMaps;
+		    *ptrListMap = listMaps;
 		    listMaps[nbrMap-1] = malloc(sizeof(map));
 		    if(listMaps[nbrMap-1] == NULL)
 		    {
 			free(listMaps);
-			ptrListMap =NULL;
+			*ptrListMap =NULL;
 			return MAP_ALLOC;
 		    }
+			
 		    //On peut maintenant parser le fichier .map formaté en JSON
 		    file = fopen(mapFile->d_name, "r");
 		    if (file!=NULL)
@@ -66,9 +70,70 @@ int ListMap(map*** ptrListMap)
 			    //On parse
 			    json_object_object_foreach(jobj, key, val)
 			    {
-				for(int k=0; k<JSON_KEY_LEN; k++)
+				if(strcmp(key, map_JSON_Key_Str[KEY_name]) == 0)
 				{
-				    
+				    if (json_object_is_type(val, json_type_string))
+				    {
+					listMaps[nbrMap-1]->name = malloc(sizeof(json_object_get_string(val)));
+					strcpy(listMaps[nbrMap-1]->name, json_object_get_string(val));
+				    }
+				    else
+				    {
+					listMaps[nbrMap-1]->error = MAP_FORMAT_name;
+				    }
+				}
+				if(strcmp(key, map_JSON_Key_Str[KEY_author]) == 0)
+				{
+				    if (json_object_is_type(val, json_type_string))
+				    {
+					listMaps[nbrMap-1]->author = malloc(sizeof(json_object_get_string(val)));
+					strcpy(listMaps[nbrMap-1]->author, json_object_get_string(val));
+				    }
+				    else
+				    {
+					listMaps[nbrMap-1]->error = MAP_FORMAT_author;
+				    }
+				}
+				if(strcmp(key,  map_JSON_Key_Str[KEY_author]) == 0)
+				{
+				    if (json_object_is_type(val, json_type_array))
+				    {
+					array_list *grid = json_object_get_array(val);
+					if(grid->length<=0)
+					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid;
+					listMaps[nbrMap-1]->height = grid->length;
+					if(!json_object_is_type(grid->array[0], json_type_string))
+					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid;
+					listMaps[nbrMap-1]->width = strlen(json_object_get_string(grid->array[0]));
+					//On initialise la matrice de la grille
+					listMaps[nbrMap-1]->grid = malloc(grid->length*sizeof(int*));
+					for(int i=0; i<grid->length; i++)
+					{
+					    listMaps[nbrMap-1]->grid[i] = malloc(listMaps[nbrMap-1]->width*sizeof(int));
+					}
+					const char *c = json_object_get_string(grid->array[0]);
+					for(int i=0; i<listMaps[nbrMap-1]->width; i++)
+					{
+					    listMaps[nbrMap-1]->grid[0][i] = c[i] - '0';
+					}
+					for(int i=1; i<grid->length; i++)
+					{
+					    if(json_object_is_type(grid->array[i], json_type_string))
+					    {
+						const char *c = json_object_get_string(grid->array[i]);
+						for(int j=0; j<listMaps[nbrMap-1]->width; j++)
+						{
+						    listMaps[nbrMap-1]->grid[i][j] = c[j] - '0';
+						}
+					    }
+					    else
+						listMaps[nbrMap-1]->error = MAP_FORMAT_grid;
+					}
+				    }
+				    else
+				    {
+					listMaps[nbrMap-1]->error = MAP_FORMAT_grid;
+				    }
 				}
 			    }
 			}
@@ -81,8 +146,6 @@ int ListMap(map*** ptrListMap)
 		    {
 			listMaps[nbrMap-1]->error = MAP_FILE;
 		    }
-
-
 		    fclose(file);
 		}
 	    }

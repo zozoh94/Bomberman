@@ -1,14 +1,22 @@
 CC = gcc
-FLAGS = -Wall -std=gnu99 -lSDL
+CFLAGS = -Wall -std=gnu99 -O4
+LDFLAGS = -lSDL -ljson-c
 
+ifeq (${DEBUG}, 1)
+    CFLAGS += -g
+endif
 
 # all
-all: main
-	$(CC) bin/bomberman.o -o bin/Bomberman $(FLAGS)
+all: map main
+	$(CC) bin/map.o bin/bomberman.o -o bin/Bomberman $(CFLAGS) $(LDFLAGS)
 
 #main
-main:
-	$(CC) -c src/bomberman.c -o bin/bomberman.o $(FLAGS)
+main: 
+	$(CC) -c src/bomberman.c -o bin/bomberman.o $(CFLAGS)
+
+#map
+map:
+	$(CC) -c src/map.c -o bin/map.o $(CFLAGS)
 
 #clean
 clean:
