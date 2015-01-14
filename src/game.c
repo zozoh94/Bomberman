@@ -18,6 +18,7 @@ void Solo(map *m, player *p){
 }
 
 void GameLoop(map *m, vCond cond){
+  SDL_Event event;
   int win;
   player* winner;
   //Tableau des appuis à tester, 0 = relevé, 1 = appuyé
@@ -43,16 +44,16 @@ void GameLoop(map *m, vCond cond){
 	case SDLK_DOWN:
 	  inputTab[K_DOWN] = 1;
 	  break;
-	case SDLK_Q:
+	case SDLK_q:
 	  inputTab[K_Q] = 1;
 	  break;
-	case SDLK_Z:
+	case SDLK_z:
 	  inputTab[K_Z] = 1;
 	  break;
-	case SDLK_D:
+	case SDLK_d:
 	  inputTab[K_D] = 1;
 	  break;
-	case SDLK_S:
+	case SDLK_s:
 	  inputTab[K_S] = 1;
 	  break;
 	case SDLK_RETURN:
@@ -82,16 +83,16 @@ void GameLoop(map *m, vCond cond){
 	case SDLK_DOWN:
 	  inputTab[K_DOWN] = 0;
 	  break;
-	case SDLK_Q:
+	case SDLK_q:
 	  inputTab[K_Q] = 0;
 	  break;
-	case SDLK_Z:
+	case SDLK_z:
 	  inputTab[K_Z] = 0;
 	  break;
-	case SDLK_D:
+	case SDLK_d:
 	  inputTab[K_D] = 0;
 	  break;
-	case SDLK_S:
+	case SDLK_s:
 	  inputTab[K_S] = 0;
 	  break;
 	case SDLK_RETURN:
@@ -111,7 +112,7 @@ void GameLoop(map *m, vCond cond){
     }
     
     BombLoop(m);
-    PlayerLoop(m);
+    PlayerLoop(m, inputTab);
     TestWin(m, cond, &winner);
   }
 }
@@ -152,32 +153,33 @@ void PlayerLoop(map* map, int* input){
     //INPUT DES JOUEURS
     if(p->type == J1){
       if(input[K_LEFT]==1 && p->moveTimer == -1){
-	tryMove(p, p->x-1, p->y);
+	TryMove(p, p->x-1, p->y);
       }
       if(input[K_UP]==1 && p->moveTimer == -1){
-	tryMove(p, p->x, p->y-1);
+	TryMove(p, p->x, p->y-1);
       }
       if(input[K_RIGHT]==1 && p->moveTimer == -1){
-	tryMove(p, p->x+1, p->y);
+	TryMove(p, p->x+1, p->y);
       }
       if(input[K_DOWN]==1 && p->moveTimer == -1){
-	tryMove(p, p->x, p->y+1);
+	TryMove(p, p->x, p->y+1);
       }
     }
 
     if(p->type == J2){
       if(input[K_Q]==1 && p->moveTimer == -1){
-	tryMove(p, p->x-1, p->y);
+	TryMove(p, p->x-1, p->y);
       }
       if(input[K_Z]==1 && p->moveTimer == -1){
-	tryMove(p, p->x, p->y-1);
+	TryMove(p, p->x, p->y-1);
       }
       if(input[K_D]==1 && p->moveTimer == -1){
-	tryMove(p, p->x+1, p->y);
+	TryMove(p, p->x+1, p->y);
       }
       if(input[K_S]==1 && p->moveTimer == -1){
-	tryMove(p, p->x, p->y+1);
+	TryMove(p, p->x, p->y+1);
       }
-    
+      
+    }
   }
 }

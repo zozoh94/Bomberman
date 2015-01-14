@@ -20,7 +20,7 @@ bomb* CreateBomb(player* p){
 
 void Explode(map* map, bomb* bomb)
 {
-  int i,j;
+  int i;
   RemoveBombList(map->bombs, bomb); //retire la bombe de la liste des bombes de la map
   bomb->myPlayer->bombs --; //décrémente le nombre de bombes posées par le joueur qui a posé la bombe
   for (i=0;i<bomb->explosion;i++)

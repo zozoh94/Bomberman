@@ -13,12 +13,9 @@
 #include <unistd.h>
 #include <json/json.h>
 #include <stdbool.h>
+#include "struct.h"
 #include "player.h"
 #include "bomb.h"
-typedef struct s_player player;
-typedef struct s_bomb bomb;
-typedef struct s_bombList bombList;
-
 
 #define FOREACH_map_JSON_Key(map_JSON_Key) \
     map_JSON_Key(name)			   \
@@ -39,55 +36,6 @@ enum map_JSON_Key {
 static const char *map_JSON_Key_Str[] = {
     FOREACH_map_JSON_Key(GENERATE_STRING)
 };
-
-/**
- * @enum map_Error
- * @brief Enumération de erreurs possibles lors de l'initialisation de la structure map
- */
-typedef enum
-{
-    MAP_FORMAT,
-    MAP_ALLOC,
-    MAP_FILE,
-    FOREACH_map_JSON_Key(GENERATE_ERROR)
-}
-    map_Error;
-
-/**
- * @struct s_map
- * @brief Contient la grille qui compose la map, et la liste des joueurs.
- * 
- * Enregistre la carte sous forme de grille composé de:
- * 0 = Espace vide
- * 1 = Bloc indestructible
- * 2 = Emplacement de départ des joueurs
- * 3 = Bloc destructible
- * 4 = Bombe
- * 2x = Bonus
- */
-typedef struct s_map{
-    char* name; //Le nom de la map (provient du fichier)
-    char* author; //Le nom de l'auteur de la map
-    int** grid; //La grille de jeu
-    int width; //La largeur de la grille
-    int height; //La hauteur de la grille
-    player* players; //Liste des joueurs
-    bombList* bombs; //Liste des bombes
-    char* fileName; //nom du fichier .map (identifiant unique de la map)
-    bool autoRemove;
-    map_Error error;
-}map;
-/*
-  Bonus:
-  20 = augmentation du rayon
-  21 = augmentation de la limite de bombes
-  22 = augmentation de la vitesse
-  23 = invincibilité
-  
-  types de bombes
-  24 = bombe SQUARE
-  (idées: passe muraille)
-*/
 
 /**
  * @fn int ListMap(map*** ptrListMap)

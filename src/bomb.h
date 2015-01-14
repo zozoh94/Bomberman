@@ -3,45 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "struct.h"
 #include "player.h"
 #include "map.h"
 
 #define TIMERBOMB 1000
-
-struct map;
-struct player;
-
-/*
-  Type possible des bombes
- */
-typedef enum {
-  NORMAL,
-  SQUARE
-}btype;
-
-/*
-  Structure bomb
-  Contient les coordonnées de la bombe, son type, son rayon d'explosion.
-  
- */
-typedef struct s_bomb{
-  int x; //Coordonnée X
-  int y; //Coordonnée Y
-  int explosion; //Rayon d'explosion
-  int timer; //Temps avant explosion
-  player* myPlayer; //Joueur ayant posé la bombe
-  btype type; //Type de la bombe
-}bomb;
-
-
-/*
-  Liste chainée de bombes
- */
-typedef struct s_bombList{
-  bomb* data;
-  struct s_bombList* next;
-}bombList;
-
 
 /**
    Initialise une bombe

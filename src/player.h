@@ -3,46 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "struct.h"
 #include "map.h"
 #include "bomb.h"
-struct  map;
-struct bomb;
-enum btype;
-
-
-/*
-  Enumeration typeP
-  Le type de joueur (J1, J2, IA)
-*/
-typedef enum{
-  J1,
-  J2,
-  IA
-}typeP;
-
-/*
-  Structure player
-  Contient les coordonnées des joueurs, leur score, leurs bonus, leur nombre de bombes.
-  
- */
-typedef struct s_player{
-  int x; //Coordonnée X
-  int y; //Coordonnée Y
-  int destX; //Coordonnée X d'arrivée en cas de déplacement
-  int destY; //Coordonnée Y d'arrivée en cas de déplacement
-  int score; //Score
-  int bombs; //Nombre de bombes posées
-  int bombMax; //Nombre de bombes posables max simultanéments
-  int speed; //Le temps de déplacement (plus petit = plus rapide)
-  int moveTimer; //Le timer du déplacement
-  typeP type; //Type de player
-  map *map; //Pointeur vers la map
-  
-  //Stats des bombes
-  int bombR; //rayon des bombes
-  btype bombT; //type des bombes
-}player;
-
 
 /**
    Initialise un joueur.
