@@ -55,6 +55,9 @@ int ListMap(map*** ptrListMap)
 			*ptrListMap =NULL;
 			return MAP_ALLOC;
 		    }
+		    listMaps[nbrMap-1]->error = NO_ERROR;
+		    listMaps[nbrMap-1]->filename = malloc(sizeof(mapFile->d_name));
+		    strcpy(listMaps[nbrMap-1]->filename, mapFile->d_name);
 			
 		    //On peut maintenant parser le fichier .map formaté en JSON
 		    file = fopen(mapFile->d_name, "r");
@@ -88,6 +91,17 @@ int ListMap(map*** ptrListMap)
 				    {
 					listMaps[nbrMap-1]->author = malloc(sizeof(json_object_get_string(val)));
 					strcpy(listMaps[nbrMap-1]->author, json_object_get_string(val));
+				    }
+				    else
+				    {
+					listMaps[nbrMap-1]->error = MAP_FORMAT_author;
+				    }
+				}
+				if(strcmp(key, map_JSON_Key_Str[KEY_auto_remove]) == 0)
+				{
+				    if (json_object_is_type(val, json_type_boolean))
+				    {
+					listMaps[nbrMap-1]->autoRemove = json_object_get_string(val);
 				    }
 				    else
 				    {
@@ -152,5 +166,28 @@ int ListMap(map*** ptrListMap)
 	}	
     }
     closedir(mapsDir);
-    return EXIT_SUCCESS;
+    return nbrMap;
+}
+
+void FreeMap(map** listMap, int nbrMaps)
+{
+    for(int i=0; i<nbrMaps; i++)
+    {
+	//On libère la grille
+	for(int j=0; j<listMap[i]->height; j++)
+	{
+	    free(listMap[i]->grid[j]);
+	}
+	free(listMap[i]->grid);
+	//On libère le nom
+	free(listMap[i]->name);
+	//On libère l'auteur
+	free(listMap[i]->author);
+	//On libère la mémoire du nom de fichier
+	free(listMap[i]->filename);
+	//On peux liberer la mémoir de la structure
+	free(listMap[i]);
+    }
+    //Et enfin on libère le tableau de map
+    free(listMap);
 }

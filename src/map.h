@@ -29,7 +29,6 @@
 
 enum map_JSON_Key {
     FOREACH_map_JSON_Key(GENERATE_ENUM)
-    JSON_KEY_LEN
 };
 
 /**
@@ -38,7 +37,8 @@ enum map_JSON_Key {
  */
 typedef enum
 {
-    MAP_FORMAT,
+    NO_ERROR,
+    MAP_FORMAT = 1,
     MAP_ALLOC,
     MAP_FILE,
     FOREACH_map_JSON_Key(GENERATE_ERROR)
@@ -66,9 +66,9 @@ struct s_map{
     int height; //La hauteur de la grille
     player* players; //Liste des joueurs
     bombList* bombs; //Liste des bombes
-    char* fileName; //nom du fichier .map (identifiant unique de la map)
-    bool autoRemove;
-    map_Error error;
+    bool autoRemove; //Indique si les blocs destructible de la map doivent etre automatiquement supprimés aléatoirement
+    map_Error error; //Indique un code d'erreur si l'initialisation de la structure a échoué
+    char* filename; //Nom du fichier map
 };
 /*
   Bonus:
@@ -86,7 +86,7 @@ struct s_map{
  * @fn int ListMap(map*** ptrListMap)
  * @brief Initialise toutes les cartes du dossier 'maps', parse la map, le nom de la map et son auteur
  * @param ptrListMap adresse de la list de Map
- * @return Retourne 0 si tout s'est bien passé, un map_Error sinon.
+ * @return Retourne le nombre de maps si tout s'est bien passé, un map_Error sinon.
  */
 int ListMap(map*** ptrListMap);
 
@@ -106,5 +106,13 @@ int InitMap(map* map);
  * @return Un code d'erreur
  */
 int AddPlayers(map* map, player** playerList);
+
+/**
+ * @fn FreeMaps(map** ListMap)
+ * @brief Detruit la mémoire allouée à la structure map
+ * @param listMap Un tableau de map
+ * @param nbrMaps le nombre de maps
+ */
+void FreeMaps(map** listMap, int nbrMaps);
 
 #endif
