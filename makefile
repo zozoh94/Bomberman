@@ -1,6 +1,7 @@
+JSON_C_DIR=usr/local
 CC = gcc
-CFLAGS = -Wall -std=gnu99 -O4
-LDFLAGS = -lSDL -ljson-c
+CFLAGS = -Wall -std=gnu99 -O4 -I$(JSON_C_DIR)/include/json-c
+LDFLAGS = -lSDL -L$(JSON_C_DIR)/lib -ljson-c
 
 ifeq (${DEBUG}, 1)
     CFLAGS += -g
