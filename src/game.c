@@ -112,6 +112,7 @@ void GameLoop(map *m, vCond cond){
     
     BombLoop(m);
     PlayerLoop(m);
+    Affichage();
     TestWin(m, cond, &winner);
   }
 }
@@ -178,6 +179,5 @@ void PlayerLoop(map* map, int* input){
       if(input[K_S]==1 && p->moveTimer == -1){
 	tryMove(p, p->x, p->y+1);
       }
-    
   }
 }

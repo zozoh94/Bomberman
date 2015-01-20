@@ -18,6 +18,9 @@ main:
 map:
 	$(CC) -c src/map.c -o bin/map.o $(CFLAGS)
 
+src/*.o: src/*.c
+	*(CC) -c $< $(FLAGS)
+
 #clean
 clean:
 	rm -rf bin/*.bak rm -rf bin/*.o
