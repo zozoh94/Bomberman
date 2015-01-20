@@ -38,7 +38,8 @@ enum e_map_Error
     MAP_ALLOC_ERROR,
     MAP_FILE_ERROR,
     MAP_TOO_MUCH_ERROR,
-    MAP_TOO_MUCH_PLAYER,
+    MAP_TOO_MUCH_PLAYER_ERROR,
+    MAP_1VS1_ERROR,
     FOREACH_map_JSON_Key(GENERATE_ERROR)
 };
 
@@ -82,7 +83,7 @@ struct s_map{
     int** grid; //La grille de jeu
     int width; //La largeur de la grille
     int height; //La hauteur de la grille
-    player* players; //Liste des joueurs
+    player** players; //Liste des joueurs
     int nbrPlayers;
     bombList* bombs; //Liste des bombes
     bool autoRemove; //Indique si les blocs destructible de la map doivent etre automatiquement supprimés aléatoirement
