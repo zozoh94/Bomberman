@@ -11,7 +11,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <json/json.h>
+#include "../usr/local/include/json-c/json.h"
 #include <stdbool.h>
 #include "struct.h"
 #include "player.h"
