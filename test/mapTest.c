@@ -10,5 +10,6 @@ int main()
 	printf("Fichier map %d nom : %s\n", i, listMap[i]->name);
 	++i;
     }
+    FreeMap(listMap, e);
     return 0;
 }

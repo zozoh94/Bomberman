@@ -1,6 +1,6 @@
 #include "map.h"
 
-int ListMap(map*** ptrListMap)
+int ListMaps(map*** ptrListMap)
 {
     static const char *map_JSON_Key_Str[] = {
 	FOREACH_map_JSON_Key(GENERATE_STRING)
@@ -29,11 +29,13 @@ int ListMap(map*** ptrListMap)
 		if(dot && dot != mapFile->d_name && strcmp("map", dot+1) == 0)
 	        {
 		    ++nbrMap;
+		    if(nbrMap>99)
+			return MAP_TOO_MUCH_ERROR;
 		    if(nbrMap==1)
 		    {
 			listMaps = malloc(nbrMap*sizeof(map*));
 			if(listMaps == NULL)
-			    return MAP_ALLOC;
+			    return MAP_ALLOC_ERROR;
 		    }
 		    else
 		    {
@@ -44,7 +46,7 @@ int ListMap(map*** ptrListMap)
 			{
 			    free(listMaps);
 			    *ptrListMap =NULL;
-			    return MAP_ALLOC;
+			    return MAP_ALLOC_ERROR;
 			}
 		    }
 		    *ptrListMap = listMaps;
@@ -53,11 +55,14 @@ int ListMap(map*** ptrListMap)
 		    {
 			free(listMaps);
 			*ptrListMap =NULL;
-			return MAP_ALLOC;
+			return MAP_ALLOC_ERROR;
 		    }
 		    listMaps[nbrMap-1]->error = NO_ERROR;
 		    listMaps[nbrMap-1]->filename = malloc(sizeof(mapFile->d_name));
 		    strcpy(listMaps[nbrMap-1]->filename, mapFile->d_name);
+		    listMaps[nbrMap-1]->nbrPlayers = 0;
+		    listMaps[nbrMap-1]->players = NULL;
+		    listMaps[nbrMap-1]->bombs = NULL;
 			
 		    //On peut maintenant parser le fichier .map formaté en JSON
 		    file = fopen(mapFile->d_name, "r");
@@ -82,7 +87,7 @@ int ListMap(map*** ptrListMap)
 				    }
 				    else
 				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_name;
+					listMaps[nbrMap-1]->error = MAP_FORMAT_name_ERROR;
 				    }
 				}
 				if(strcmp(key, map_JSON_Key_Str[KEY_author]) == 0)
@@ -94,7 +99,7 @@ int ListMap(map*** ptrListMap)
 				    }
 				    else
 				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_author;
+					listMaps[nbrMap-1]->error = MAP_FORMAT_author_ERROR;
 				    }
 				}
 				if(strcmp(key, map_JSON_Key_Str[KEY_auto_remove]) == 0)
@@ -105,7 +110,7 @@ int ListMap(map*** ptrListMap)
 				    }
 				    else
 				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_author;
+					listMaps[nbrMap-1]->error = MAP_FORMAT_author_ERROR;
 				    }
 				}
 				if(strcmp(key,  map_JSON_Key_Str[KEY_author]) == 0)
@@ -114,10 +119,10 @@ int ListMap(map*** ptrListMap)
 				    {
 					array_list *grid = json_object_get_array(val);
 					if(grid->length<=0)
-					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid;
+					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
 					listMaps[nbrMap-1]->height = grid->length;
 					if(!json_object_is_type(grid->array[0], json_type_string))
-					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid;
+					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
 					listMaps[nbrMap-1]->width = strlen(json_object_get_string(grid->array[0]));
 					//On initialise la matrice de la grille
 					listMaps[nbrMap-1]->grid = malloc(grid->length*sizeof(int*));
@@ -141,24 +146,24 @@ int ListMap(map*** ptrListMap)
 						}
 					    }
 					    else
-						listMaps[nbrMap-1]->error = MAP_FORMAT_grid;
+						listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
 					}
 				    }
 				    else
 				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_grid;
+					listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
 				    }
 				}
 			    }
 			}
 			else
 			{
-			    return MAP_FORMAT;
+			    return MAP_FORMAT_ERROR;
 			}
 		    }
 		    else
 		    {
-			listMaps[nbrMap-1]->error = MAP_FILE;
+			listMaps[nbrMap-1]->error = MAP_FILE_ERROR;
 		    }
 		    fclose(file);
 		}
@@ -169,7 +174,135 @@ int ListMap(map*** ptrListMap)
     return nbrMap;
 }
 
-void FreeMap(map** listMap, int nbrMaps)
+void InitMap(map* map, int nbrPlayers, player* listPlayer)
+{
+    /* int proba = 20; */
+    /* map->nbrPlayers = nbrPlayers; */
+    /* //On parcourt la grille */
+    /* for(int i=0; i<map->height; i++) */
+    /* { */
+    /* 	for(int j=0; j<map->width; j++) */
+    /* 	{ */
+    /* 	    //On supprime aléatoirement des blocs déstructibles */
+    /* 	    if(map->grid[i][j]==DESTRUCTIBLE_BLOCK && map->autoRemove==true) */
+    /* 	    { */
+    /* 		if(proba > rand() % 100) */
+    /* 		    map->grid[i][j] = UNDESTRUCTIBLE_BLOCK; */
+    /* 	    } */
+    /* 	} */
+    /* } */
+    /* int nbrStartingBlock = 0; */
+    /* //En fonction du nombre de joueur on ajoute ou supprime des cases de départ */
+    /* if(map->nbrPlayers==2) //Cas du 1vs1 */
+    /* { */
+    /* 	//On supprime les starting block de la partie superieur droite et de la partien inférieur gauche */
+	
+    /* 	//On met un starting block dans la partie superieur gauche si il n'y en a pas déja un */
+    /* 	//On compte le nombre de cases de départ joueurs déjà disponible dans cette zone	 */
+    /* 	for(int i=0; i<(int)(map->height/2); i++) */
+    /* 	{ */
+    /* 	    for(int j=0; j<(int)(<map->width/2); j++) */
+    /* 	    { */
+    /* 		if(map->grid[i][j]==STARTING_BLOCK) */
+    /* 		    ++nbrStartingBlock; */
+    /* 	    } */
+    /* 	} */
+    /* 	while(nbrStartingBlock!=1) //On ajoute ou supprime des blocks */
+    /* 	{ */
+    /* 	    	for(int i=0; i<(int)(map->height/2); i++) */
+    /* 		{ */
+    /* 		    for(int j=0; j<(int)(<map->width/2); j++) */
+    /* 		    { */
+    /* 		    } */
+    /* 		} */
+    /* 	} */
+    /* 	//On met un starting block dans la partie inférieur droite si il n'y en a pas déja un */
+    /* 	//On compte le nombre de cases de départ joueurs déjà disponible dans cette zone */
+    /* 	nbrStartingBlock=0; */
+    /* 	for(int i=(int)(map->height/2); i<map->height; i++) */
+    /* 	{ */
+    /* 	    for(int j=(int)(<map->width/2); j<map->width; j++) */
+    /* 	    { */
+    /* 		if(map->grid[i][j]==STARTING_BLOCK) */
+    /* 		    ++nbrStartingBlock; */
+    /* 	    } */
+    /* 	} */
+    /* 	while(nbrStartingBlock!=1) //On ajoute ou supprime des blocks */
+    /* 	{ */
+    /* 	    for(int i=(int)(map->height/2); i<map->height; i++) */
+    /* 	    { */
+    /* 		for(int j=(int)(<map->width/2); j<map->width; j++) */
+    /* 		{ */
+    /* 		} */
+    /* 	    } */
+    /* 	} */
+    /* } */
+    /* else */
+    /* { */
+    /* 	//On compte le nombre de cases de départ joueurs déjà disponible */
+    /* 	for(int i=0; i<map->height; i++) */
+    /* 	{ */
+    /* 	    for(int j=0; j<map->width; j++) */
+    /* 	    { */
+    /* 		if(map->grid[i][j]==STARTING_BLOCK) */
+    /* 		    ++nbrStartingBlock; */
+    /* 	    } */
+    /* 	} */
+    /* 	//On dispose des starting blocks supplémentaires si besoin */
+    /* 	while(map->nbrPlayers != nbrStartingBlock) */
+    /* 	{ */
+    /* 	    for(int i=0; i<map->height; i++) */
+    /* 	    { */
+    /* 		for(int j=0; j<map->width; j++) */
+    /* 		{ */
+    /* 		    if(proba > rand() % 100) */
+    /* 		    { */
+    /* 			if(map->nbrPlayers > nbrStartingBlock && map->grid[i][j] == EMPTY_BLOCK) */
+    /* 			{ */
+    /* 			    map->grid[i][j]=STARTING_BLOCK; */
+    /* 			    ++nbrStartingBlock; */
+    /* 			} */
+    /* 			if(map->nbrPlayers < nbrStartingBlock && map->grid[i][j] == STARTING_BLOCK) */
+    /* 			{ */
+    /* 			    map->grid[i][j]=EMPTY_BLOCK; */
+    /* 			    --nbrStartingBlock; */
+    /* 			} */
+    /* 		    } */
+    /* 		} */
+    /* 	    } */
+    /* 	} */
+    /* } */
+    /* //On enregistre les points de départs */
+    /* map->startingBlocks = malloc(nbrPlayers*sizeof(int*)); */
+    /* for(int i=0; i<nbrPlayers; i++) */
+    /* { */
+    /* 	map->startingBlocks[i] = malloc(2*sizeof(int)); */
+    /* } */
+    /* int k=0; */
+    /* for(int i=0; i<map->height; i++) */
+    /* { */
+    /* 	for(int j=0; j<map->width; j++) */
+    /* 	{ */
+    /* 	    if(map->grid[i][j] == STARTING_BLOCK) */
+    /* 	    { */
+    /* 		map->startingBlocks[k][0]=i; */
+    /* 		map->startingBlocks[k][1]=j; */
+    /* 		++k; */
+    /* 		map->grid[i][j] = EMPTY_BLOCK; */
+    /* 	    } */
+    /* 	} */
+    /* } */
+    /* map->players = malloc(map->nbrPlayers*sizeof(player*)); */
+    /* for(int i=0; i<map->nbrPlayers; i++) */
+    /* { */
+    /* 	map->players[i] = &player[i]; */
+    /* 	//On affectes aux joueurs des coordonnées de départ */
+    /* 	map->players[i]->x=map->startingBlocks[i][0]; */
+    /* 	map->players[i]->y=map->startingBlocks[i][1]; */
+    /* } */
+}
+
+void FreeMaps(map** listMap, int nbrMaps)
 {
     for(int i=0; i<nbrMaps; i++)
     {
@@ -185,7 +318,13 @@ void FreeMap(map** listMap, int nbrMaps)
 	free(listMap[i]->author);
 	//On libère la mémoire du nom de fichier
 	free(listMap[i]->filename);
-	//On peux liberer la mémoir de la structure
+	//On libère la mémoire de la liste de joueurs
+	free(listMap[i]->players);
+	//On libère la mémoire des enregistrements de startingBlock
+	for(int i=0; i<listMap[i]->nbrPlayers; i++)
+	    free(listMap[i]->startingBlocks[i]);
+	free(listMap[i]->startingBlocks);
+	//On peux liberer la mémoire de la structure
 	free(listMap[i]);
     }
     //Et enfin on libère le tableau de map
