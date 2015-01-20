@@ -31,7 +31,7 @@ enum map_JSON_Key {
  * @enum map_Error
  * @brief Enumération de erreurs possibles lors de l'initialisation de la structure map
  */
-enum e_map_Error;
+enum e_map_Error
 {
     NO_ERROR,
     MAP_FORMAT_ERROR = 100,
