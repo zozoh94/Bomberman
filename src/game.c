@@ -13,12 +13,13 @@
 #define K_SPACE 9
 #define K_ESCAPE 10
 void Solo(map *m, SDL_Surface *dest){
-  Sprite spr;
+  Sprite *spr=malloc(sizeof(Sprite));
   player **tab = malloc(sizeof(player*));
-  player *p = InitPlayer(1, 1, 0, 1, 15, 5, 0, J1, m, &spr, "bm.bmp");
+  player *p = InitPlayer(1, 1, 0, 1, 15, 5, 0, J1, m, spr, "bm.bmp");
   tab[0] = p;
-  InitMap(m, 1, tab);
-  GameLoop(m, SOLO, dest);
+  fprintf(stderr,"%d",InitMap(m, 1, tab));
+  // DERNIER FLAG ATTEINT
+  GameLoop(m, SOLO, dest);  
 }
 
 void GameLoop(map *m, vCond cond, SDL_Surface *dest){
@@ -68,6 +69,7 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
 	  break;
 	case SDLK_ESCAPE:
 	  inputTab[K_ESCAPE] = 1;
+	  win = 1;
 	  break;
 	default:
 	  break;
@@ -125,7 +127,7 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
 
 void BombLoop(map* map, SDL_Surface *dest){
   bombList* l = map->bombs;
-  while(l->next != NULL){
+  while(l!=NULL && l->next != NULL){
     l->data->timer--;
     if(l->data->timer==-EXPLOSIONTIME){ // Destruction de la bombe
       map->bombs = RemoveBombList(map->bombs, l->data);
@@ -141,8 +143,8 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
   int i;
   player *p=NULL;
   for(i = 0; i < map->nbrPlayers; i++){
-    p = &(map->players[i]);
-    
+    p = map->players[i];
+    fprintf(stderr,"%d/%d\n", p->x, p->y);
     if(p->moveTimer > 0){ // On arrête le décompte à -1
       p->moveTimer --;
       switch(p->sprite->orientation){
@@ -160,7 +162,6 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	break;
       }
     }
-    
     if(p->moveTimer == 0){
       Move(p);
     }
@@ -200,9 +201,10 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	TryMove(p, p->x, p->y+1);
       }
     }
+    dessinerSprite(p->sprite, dest);
   }
+  //CA MARCHE JUSQU'ICI
   //Affichage des joueurs
-  dessinerSprite(p->sprite, dest);
 }
 
 void MapLoop(map* map, SDL_Surface *dest){

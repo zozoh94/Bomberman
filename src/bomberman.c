@@ -11,14 +11,16 @@ int main(int argc, char **argv)
   SDL_Event event;
   SDL_Surface* ecran;
 
+
   int continuer = 0;
-  
+
+
   ecran = InitSDL();
   map** listMaps;
   int nbrMap = ListMaps(&listMaps);
   while (continuer!=1)
     {
-      while (SDL_WaitEvent(&event))
+      while (SDL_WaitEvent(&event) && continuer!=1)
 	{
 	  switch (event.type)
 	    {
@@ -29,11 +31,11 @@ int main(int argc, char **argv)
 		  continuer = 1;
 		  break;
 		case SDLK_RETURN:
-		  
+		  Solo(listMaps[0], ecran);
 		  break;
 		default:
 		  ;
-		case SDL_QUIT:
+		case SDL_QUIT: // LA CROIX MARCHE PAS, HAAA
 		  continuer = 1;
 		  break;
 		}

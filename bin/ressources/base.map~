@@ -4,5 +4,6 @@
 	       "0111101011",
 	       "0110011011" ],
     "author" : "Enzo Hamelin",
-    "auto_remove" : true
+    "auto_remove" : true,
+    "theme" : "neige"
 }

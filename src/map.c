@@ -13,7 +13,7 @@ int ListMaps(map*** ptrListMap)
     char string[MAX_LEN_LINE] = "";
     char stringFile[MAX_LEN] = "";
     json_object *jobj = NULL;
-    chdir("../maps");
+    chdir("ressources"); //faire chemin relatif au fichier et pas relatif à là d'où on l'execute
     mapsDir = opendir("." );
     struct stat statFile;
     //On parcourt tous les fichiers du dossier
@@ -111,10 +111,28 @@ int ListMaps(map*** ptrListMap)
 				    }
 				    else
 				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_author_ERROR;
+					listMaps[nbrMap-1]->error = MAP_FORMAT_auto_remove_ERROR;
 				    }
 				}
-				if(strcmp(key,  map_JSON_Key_Str[KEY_author]) == 0)
+				if(strcmp(key, map_JSON_Key_Str[KEY_theme]) == 0)
+				{
+				    if (json_object_is_type(val, json_type_string))
+				    {
+				      char chaine[252];
+				      strcpy(chaine, json_object_get_string(val));
+				      listMaps[nbrMap-1]->undestructibleBlock = IMG_Load(strcat(chaine, "_undestr.bmp"));
+				      strcpy(chaine, json_object_get_string(val));
+				      listMaps[nbrMap-1]->destructibleBlock = IMG_Load(strcat(chaine, "_destr.bmp"));
+				      strcpy(chaine, json_object_get_string(val));
+				      listMaps[nbrMap-1]->floor = IMG_Load(strcat(chaine, "_floor.bmp"));
+				    }
+				    else
+				    {
+					listMaps[nbrMap-1]->error = MAP_FORMAT_theme_ERROR;
+				    }
+				}
+
+				if(strcmp(key,  map_JSON_Key_Str[KEY_grid]) == 0)
 				{
 				    if (json_object_is_type(val, json_type_array))
 				    {
@@ -187,8 +205,10 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
 		++nbrStartingBlock;
 	}
     }
-    if(nbrStartingBlock<nbrPlayers)
-	return MAP_TOO_MUCH_PLAYER_ERROR;
+    if(nbrStartingBlock<nbrPlayers){
+      fprintf(stderr, "%d joueurs %d emplacements\n",nbrPlayers, nbrStartingBlock);
+      return MAP_TOO_MUCH_PLAYER_ERROR;
+    }
     int proba = 20;
     map->nbrPlayers = nbrPlayers;
     //On parcourt la grille

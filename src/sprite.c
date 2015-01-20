@@ -3,11 +3,13 @@
 
 int chargerBombermanSprite( Sprite *sprite, const char *image )
 {
-	sprite->image = IMG_Load( image );
+	sprite->image = IMG_Load(image);
 	if ( sprite->image==NULL )
 	{
 		fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", image, SDL_GetError());
 		return 0;
+	}else{
+	  fprintf(stderr, "Chargement du fichier %s\n", image);
 	}
 		
 	// on fixe la cle de transparance ici blanc

@@ -20,7 +20,7 @@ typedef struct s_bombList bombList;
     map_JSON_Key(grid)			   \
     map_JSON_Key(author)			   \
     map_JSON_Key(auto_remove)			   \
-    
+    map_JSON_Key(theme)				   \
 
 #define GENERATE_ENUM(ENUM) KEY_ ## ENUM,
 #define GENERATE_STRING(STRING) #STRING,
@@ -94,9 +94,9 @@ struct s_map{
     char* filename; //Nom du fichier map
     int** startingBlocks; //Enregistrement des points de départ de la map
   //Images de la map, à charger avec destructibleWall=IMG_Load("nomdufichier.jpg");
-  SDL_Surface *destructibleBlock; //Image des murs destructibles
-  SDL_Surface *undestructibleBlock; //Image des murs indestructibles
-  SDL_Surface *floor; //Image du sol
+  SDL_Surface *destructibleBlock; //Image des murs destructibles "destr"
+  SDL_Surface *undestructibleBlock; //Image des murs indestructibles "indestr"
+  SDL_Surface *floor; //Image du sol "floor"
 
 };
 
