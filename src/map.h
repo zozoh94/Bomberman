@@ -32,9 +32,9 @@ int ListMaps(map*** ptrListMap);
  * @param map Pointeur sur la map que l'on souhaite utilisé
  * @param nbrPlayers: le nombre de joueurs
  * @param playerList: La liste des joueurs
- * @return Un code d'erreur, 0 si cela c'est bien passé
+ * @return Un code d'erreur map_Error, 0 si cela c'est bien passé
  */
-void InitMap(map* map,  int nbrPlayers, player* listPlayer);
+int InitMap(map* map,  int nbrPlayers, player** listPlayer);
 
 /**
  * @fn FreeMaps(map** ListMap)

@@ -5,7 +5,7 @@ int ListMaps(map*** ptrListMap)
     static const char *map_JSON_Key_Str[] = {
 	FOREACH_map_JSON_Key(GENERATE_STRING)
     };
-    map** listMaps;
+    map** listMaps = NULL;
     map** listMapsRealloc;
     struct dirent *mapFile;
     DIR *mapsDir;
@@ -63,6 +63,7 @@ int ListMaps(map*** ptrListMap)
 		    listMaps[nbrMap-1]->nbrPlayers = 0;
 		    listMaps[nbrMap-1]->players = NULL;
 		    listMaps[nbrMap-1]->bombs = NULL;
+		    listMaps[nbrMap-1]->startingBlocks = NULL;
 			
 		    //On peut maintenant parser le fichier .map formaté en JSON
 		    file = fopen(mapFile->d_name, "r");
@@ -174,132 +175,131 @@ int ListMaps(map*** ptrListMap)
     return nbrMap;
 }
 
-void InitMap(map* map, int nbrPlayers, player* listPlayer)
+int InitMap(map* map, int nbrPlayers, player** listPlayer)
 {
-    /* int proba = 20; */
-    /* map->nbrPlayers = nbrPlayers; */
-    /* //On parcourt la grille */
-    /* for(int i=0; i<map->height; i++) */
-    /* { */
-    /* 	for(int j=0; j<map->width; j++) */
-    /* 	{ */
-    /* 	    //On supprime aléatoirement des blocs déstructibles */
-    /* 	    if(map->grid[i][j]==DESTRUCTIBLE_BLOCK && map->autoRemove==true) */
-    /* 	    { */
-    /* 		if(proba > rand() % 100) */
-    /* 		    map->grid[i][j] = UNDESTRUCTIBLE_BLOCK; */
-    /* 	    } */
-    /* 	} */
-    /* } */
-    /* int nbrStartingBlock = 0; */
-    /* //En fonction du nombre de joueur on ajoute ou supprime des cases de départ */
-    /* if(map->nbrPlayers==2) //Cas du 1vs1 */
-    /* { */
-    /* 	//On supprime les starting block de la partie superieur droite et de la partien inférieur gauche */
-	
-    /* 	//On met un starting block dans la partie superieur gauche si il n'y en a pas déja un */
-    /* 	//On compte le nombre de cases de départ joueurs déjà disponible dans cette zone	 */
-    /* 	for(int i=0; i<(int)(map->height/2); i++) */
-    /* 	{ */
-    /* 	    for(int j=0; j<(int)(<map->width/2); j++) */
-    /* 	    { */
-    /* 		if(map->grid[i][j]==STARTING_BLOCK) */
-    /* 		    ++nbrStartingBlock; */
-    /* 	    } */
-    /* 	} */
-    /* 	while(nbrStartingBlock!=1) //On ajoute ou supprime des blocks */
-    /* 	{ */
-    /* 	    	for(int i=0; i<(int)(map->height/2); i++) */
-    /* 		{ */
-    /* 		    for(int j=0; j<(int)(<map->width/2); j++) */
-    /* 		    { */
-    /* 		    } */
-    /* 		} */
-    /* 	} */
-    /* 	//On met un starting block dans la partie inférieur droite si il n'y en a pas déja un */
-    /* 	//On compte le nombre de cases de départ joueurs déjà disponible dans cette zone */
-    /* 	nbrStartingBlock=0; */
-    /* 	for(int i=(int)(map->height/2); i<map->height; i++) */
-    /* 	{ */
-    /* 	    for(int j=(int)(<map->width/2); j<map->width; j++) */
-    /* 	    { */
-    /* 		if(map->grid[i][j]==STARTING_BLOCK) */
-    /* 		    ++nbrStartingBlock; */
-    /* 	    } */
-    /* 	} */
-    /* 	while(nbrStartingBlock!=1) //On ajoute ou supprime des blocks */
-    /* 	{ */
-    /* 	    for(int i=(int)(map->height/2); i<map->height; i++) */
-    /* 	    { */
-    /* 		for(int j=(int)(<map->width/2); j<map->width; j++) */
-    /* 		{ */
-    /* 		} */
-    /* 	    } */
-    /* 	} */
-    /* } */
-    /* else */
-    /* { */
-    /* 	//On compte le nombre de cases de départ joueurs déjà disponible */
-    /* 	for(int i=0; i<map->height; i++) */
-    /* 	{ */
-    /* 	    for(int j=0; j<map->width; j++) */
-    /* 	    { */
-    /* 		if(map->grid[i][j]==STARTING_BLOCK) */
-    /* 		    ++nbrStartingBlock; */
-    /* 	    } */
-    /* 	} */
-    /* 	//On dispose des starting blocks supplémentaires si besoin */
-    /* 	while(map->nbrPlayers != nbrStartingBlock) */
-    /* 	{ */
-    /* 	    for(int i=0; i<map->height; i++) */
-    /* 	    { */
-    /* 		for(int j=0; j<map->width; j++) */
-    /* 		{ */
-    /* 		    if(proba > rand() % 100) */
-    /* 		    { */
-    /* 			if(map->nbrPlayers > nbrStartingBlock && map->grid[i][j] == EMPTY_BLOCK) */
-    /* 			{ */
-    /* 			    map->grid[i][j]=STARTING_BLOCK; */
-    /* 			    ++nbrStartingBlock; */
-    /* 			} */
-    /* 			if(map->nbrPlayers < nbrStartingBlock && map->grid[i][j] == STARTING_BLOCK) */
-    /* 			{ */
-    /* 			    map->grid[i][j]=EMPTY_BLOCK; */
-    /* 			    --nbrStartingBlock; */
-    /* 			} */
-    /* 		    } */
-    /* 		} */
-    /* 	    } */
-    /* 	} */
-    /* } */
-    /* //On enregistre les points de départs */
-    /* map->startingBlocks = malloc(nbrPlayers*sizeof(int*)); */
-    /* for(int i=0; i<nbrPlayers; i++) */
-    /* { */
-    /* 	map->startingBlocks[i] = malloc(2*sizeof(int)); */
-    /* } */
-    /* int k=0; */
-    /* for(int i=0; i<map->height; i++) */
-    /* { */
-    /* 	for(int j=0; j<map->width; j++) */
-    /* 	{ */
-    /* 	    if(map->grid[i][j] == STARTING_BLOCK) */
-    /* 	    { */
-    /* 		map->startingBlocks[k][0]=i; */
-    /* 		map->startingBlocks[k][1]=j; */
-    /* 		++k; */
-    /* 		map->grid[i][j] = EMPTY_BLOCK; */
-    /* 	    } */
-    /* 	} */
-    /* } */
-    /* map->players = malloc(map->nbrPlayers*sizeof(player*)); */
-    /* for(int i=0; i<map->nbrPlayers; i++) */
-    /* { */
-    /* 	map->players[i] = &player[i]; */
-    /* 	//On affectes aux joueurs des coordonnées de départ */
-    /* 	map->players[i]->x=map->startingBlocks[i][0]; */
-    /* 	map->players[i]->y=map->startingBlocks[i][1]; */
-    /* } */
+    //On compte le nombre de cases de départ joueurs déjà disponible
+    int nbrStartingBlock = 0;
+    for(int i=0; i<map->height; i++)
+    {
+	for(int j=0; j<map->width; j++)
+	{
+	    if(map->grid[i][j]==STARTING_BLOCK)
+		++nbrStartingBlock;
+	}
+    }
+    if(nbrStartingBlock<nbrPlayers)
+	return MAP_TOO_MUCH_PLAYER_ERROR;
+    int proba = 20;
+    map->nbrPlayers = nbrPlayers;
+    //On parcourt la grille
+    for(int i=0; i<map->height; i++)
+    {
+    	for(int j=0; j<map->width; j++)
+    	{
+    	    //On supprime aléatoirement des blocs déstructibles
+    	    if(map->grid[i][j]==DESTRUCTIBLE_BLOCK && map->autoRemove==true)
+    	    {
+    		if(proba > rand() % 100)
+    		    map->grid[i][j] = UNDESTRUCTIBLE_BLOCK;
+    	    }
+    	}
+    }
+    //En fonction du nombre de joueur on supprime des cases de départ
+    if(map->nbrPlayers==2) //Cas du 1vs1
+    {
+    	//On supprime les starting block de la partie superieur droite et de la partien inférieur gauche
+	for(int i=0; i<(int)(map->height/2); i++)
+    	{
+	    for(int j=(int)(map->width/2); j<map->width; j++)
+    	    {
+		if(map->grid[i][j]==STARTING_BLOCK)
+		    map->grid[i][j]=EMPTY_BLOCK;
+	    }
+	}
+	for(int i=(int)(map->height/2); i<map->height; i++)
+    	{
+	    for(int j=0; j<(int)(map->width/2); j++)
+    	    {
+		if(map->grid[i][j]==STARTING_BLOCK)
+		    map->grid[i][j]=EMPTY_BLOCK;
+	    }
+	}
+    	//On laisse un seul starting block dans la partie superieur gauche
+	bool startingBlockFound = false;
+    	for(int i=0; i<(int)(map->height/2); i++)
+    	{
+    	    for(int j=0; j<(int)(map->width/2); j++)
+    	    {
+		if(map->grid[i][j]==STARTING_BLOCK && !startingBlockFound)
+		    startingBlockFound = true;
+		else if(map->grid[i][j]==STARTING_BLOCK && startingBlockFound)
+		    map->grid[i][j]=EMPTY_BLOCK;
+    	    }
+    	}
+	if(startingBlockFound)
+	    return MAP_1VS1_ERROR;
+	startingBlockFound = false;
+    	//On laisse un seul starting block dans la partie inférieur droite
+    	for(int i=map->height-1; i<=(int)(map->height/2); i--)
+    	{
+    	    for(int j=map->width-1; j<=(int)(map->width/2); j--)
+    	    {
+		if(map->grid[i][j]==STARTING_BLOCK && !startingBlockFound)
+		    startingBlockFound = true;
+		else if(map->grid[i][j]==STARTING_BLOCK && startingBlockFound)
+		    map->grid[i][j]=EMPTY_BLOCK;
+    	    }
+    	}
+    }
+    else
+    {
+	if(nbrPlayers<nbrStartingBlock)
+	{
+	    //On supprime les cases en trop
+	    while(nbrStartingBlock != nbrPlayers)
+	    {
+		for(int i=0; i<map->height; i++)
+		{
+		    for(int j=0; j<map->width; j++)
+		    {
+			if(map->grid[i][j]==STARTING_BLOCK && proba > rand() % 100 && nbrStartingBlock != nbrPlayers)
+			{
+			    map->grid[i][j]=EMPTY_BLOCK;
+			    --nbrStartingBlock;
+			}
+		    }
+		}
+	    }
+	}
+    }
+    //On enregistre les points de départs
+    map->startingBlocks = malloc(nbrPlayers*sizeof(int*));
+    for(int i=0; i<nbrPlayers; i++)
+    {
+    	map->startingBlocks[i] = malloc(2*sizeof(int));
+    }
+    int k=0;
+    for(int i=0; i<map->height; i++)
+    {
+    	for(int j=0; j<map->width; j++)
+    	{
+    	    if(map->grid[i][j] == STARTING_BLOCK)
+    	    {
+    		map->startingBlocks[k][0]=i;
+    		map->startingBlocks[k][1]=j;
+    		++k;
+    		map->grid[i][j] = EMPTY_BLOCK;
+    	    }
+    	}
+    }
+    map->players = listPlayer;
+    for(int i=0; i<map->nbrPlayers; i++)
+    {
+    	//On affectes aux joueurs des coordonnées de départ
+    	map->players[i]->x=map->startingBlocks[i][0];
+    	map->players[i]->y=map->startingBlocks[i][1];
+    }
+    return 0;
 }
 
 void FreeMaps(map** listMap, int nbrMaps)
