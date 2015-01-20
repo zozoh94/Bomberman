@@ -25,7 +25,7 @@ enum e_vCond{
    Initialise un jeu en solo
    Map, 1 joueur
  */
-void Solo(map *m, player *p, SDL_Surface *dest);
+void Solo(map *m, SDL_Surface *dest);
 
 //Boucle de jeu
 void GameLoop(map *m, vCond cond, SDL_Surface *dest);

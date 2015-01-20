@@ -1,31 +1,26 @@
 JSON_C_DIR=usr/local
 CC = gcc
 CFLAGS = -Wall -std=gnu99 -O4 -I$(JSON_C_DIR)/include/json-c
-LDFLAGS = -lSDL -L$(JSON_C_DIR)/lib -ljson-c
+LDFLAGS = -lSDL -lSDL_image -L$(JSON_C_DIR)/lib -ljson-c
+SRC = bomb.c player.c game.c map.c sprite.c
+DEP = bomb.o player.o game.o map.o sprite.o
+
 
 ifeq (${DEBUG}, 1)
     CFLAGS += -g
 endif
 
 # all
-all: map main
-	$(CC) bin/map.o bin/bomberman.o -o bin/Bomberman $(CFLAGS) $(LDFLAGS)
+all: $(DEP)
+	$(CC) $(addprefix bin/, $(DEP)) src/bomberman.c -o bin/Bomberman $(CFLAGS) $(LDFLAGS)
 
-#main
-main: 
-	$(CC) -c src/bomberman.c -o bin/bomberman.o $(CFLAGS)
-
-#map
-map:
-	$(CC) -c src/map.c -o bin/map.o $(CFLAGS)
-
-src/*.o: src/*.c
-	*(CC) -c $< $(FLAGS)
+%.o: src/%.c
+	$(CC) -c $< -o bin/$@ $(CFLAGS)
 
 #clean
 clean:
-	rm -rf bin/*.bak rm -rf bin/*.o
+	rm -rf bin/*.bak; rm -rf bin/*.o
 
-#mrproper
-mrproper: clean
+#mrpropre
+mrpropre: clean
 	rm -rf bin/

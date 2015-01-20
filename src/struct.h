@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include "sprite.c"
+#include "sprite.h"
 
 typedef enum e_map_Error map_Error;
 typedef enum e_case_Type case_Type;

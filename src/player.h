@@ -6,7 +6,7 @@
 #include "struct.h"
 #include "map.h"
 #include "bomb.h"
-#include "sprite.c"
+#include "sprite.h"
 
 /**
    Initialise un joueur.

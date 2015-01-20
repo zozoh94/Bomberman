@@ -9,10 +9,11 @@ void pauseSDL();
 int main(int argc, char **argv)
 {
   SDL_Event event;
-  
+  SDL_Surface* ecran;
+
   int continuer = 0;
   
-  int InitSDL();
+  ecran = InitSDL();
   map** listMaps;
   int nbrMap = ListMaps(&listMaps);
   while (continuer!=1)

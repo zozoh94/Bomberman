@@ -14,7 +14,7 @@
 #define K_ESCAPE 10
 void Solo(map *m, SDL_Surface *dest){
   Sprite spr;
-  player *tab = malloc(sizeof(player*));
+  player **tab = malloc(sizeof(player*));
   player *p = InitPlayer(1, 1, 0, 1, 15, 5, 0, J1, m, &spr, "bm.bmp");
   tab[0] = p;
   InitMap(m, 1, tab);
@@ -114,12 +114,12 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
 	break;
       }
     }
-    SDL_FillRect(ecran, NULL, 0);
+    SDL_FillRect(dest, NULL, 0);
     BombLoop(m, dest);
     PlayerLoop(m, inputTab ,dest);
     MapLoop(m, dest);
     TestWin(m, cond, &winner);
-    SDL_Flip( ecran ); 
+    SDL_Flip(dest);
   }
 }
 
@@ -139,7 +139,7 @@ void BombLoop(map* map, SDL_Surface *dest){
 
 void PlayerLoop(map* map, int* input, SDL_Surface *dest){
   int i;
-  player *p;
+  player *p=NULL;
   for(i = 0; i < map->nbrPlayers; i++){
     p = &(map->players[i]);
     
@@ -202,11 +202,10 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
     }
   }
   //Affichage des joueurs
-  dessinerSprite(&(p->sprite), dest);
+  dessinerSprite(p->sprite, dest);
 }
 
 void MapLoop(map* map, SDL_Surface *dest){
-  SDL_Surface *mur, *caisse;
   SDL_Rect position;
 
   int i,j;
@@ -234,4 +233,8 @@ void MapLoop(map* map, SDL_Surface *dest){
       
     }
   
+}
+
+int TestWin(map* map, vCond cond, player** winner){
+  return 0;
 }
