@@ -1,3 +1,6 @@
+#ifndef SPRITE_C
+#define SPRITE_C
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -62,7 +65,7 @@ typedef struct
 
 
 
-int chargerSprite( Sprite *sprite, const char *image )
+int chargerBombermanSprite( Sprite *sprite, const char *image )
 {
 	sprite->image = IMG_Load( image );
 	if ( sprite->image==NULL )
@@ -117,7 +120,10 @@ void deleteSprite( Sprite *sprite )
 {
 	SDL_FreeSurface( sprite->image );
 }
-/** pour la dir de bomberman
+/**
+   Direction de bomberman
+
+ */
 void fixDirectionSprite( Sprite *sprite, int direction )
 {
 	// On affecte la direction au sprite
@@ -163,42 +169,11 @@ void fixDirectionSprite( Sprite *sprite, int direction )
 	sprite->source.y = sprite->orientation * sprite->height;
 	sprite->source.x = sprite->current_anim * sprite->width;
 	
-}*/
-
-/** Change la position, pas besoin
-void miseAJourSprite( Sprite *sprite )
-{
-	// le sprite vas vers le haut
-	if (sprite->direction==UP)
-	{
-		// on monte et on verifie si on sort de l'ecran
-		sprite->pos.y = sprite->pos.y-sprite->speed;
-		if (sprite->pos.y < 0)	sprite->pos.y = 0;
-			
-	}
-	else if (sprite->direction==RIGHT)
-	{
-		// on va à droite et on verifie si on sort de l'ecran
-		sprite->pos.x = sprite->pos.x + sprite->speed;	
-		if (sprite->pos.x + sprite->width > width_ECRAN)	sprite->pos.x = width_ECRAN - sprite->width;
-	}
-	else if (sprite->direction==DOWN)
-	{
-		// on descend et on verifie si on sort de l'ecran
-		sprite->pos.y = sprite->pos.y + sprite->speed;	
-		if (sprite->pos.y + sprite->height > height_ECRAN)	sprite->pos.y = height_ECRAN - sprite->height;
-	}
-			
-	else if (sprite->direction==LEFT)
-	{
-		// on va à gauche et on verifie si on sort de l'ecran
-		sprite->pos.x = sprite->pos.x - sprite->speed;	
-		if (sprite->pos.x < 0)	sprite->pos.x = 0;
-	}
 }
-*/
 
-
+/**
+   
+ */
 void dessinerSprite( Sprite *sprite, SDL_Surface *destination )
 {
 	/* si le sprite est animé, on gere l'animation */
@@ -225,72 +200,9 @@ void dessinerSprite( Sprite *sprite, SDL_Surface *destination )
 
 }
 
-/**
-   Initialise la map dja fait
-void init_map(int map[12][12])
-{
-
-	int i,j;
-
-	for(i=0;i<12;i++)
-	{
-		for(j=0;j<12;j++)
-		{
-			map[i][j]=rand()%2;
-		}
-	}
-
-}
-*/
-
-
-/** Pour afficher la map
-void blitWall(int map[12][12], SDL_Surface *ecran)
-{
-	SDL_Surface *mur, *caisse;
-	SDL_Rect position;
-
-	caisse=IMG_Load("caisse.jpg");		
-	mur=IMG_Load("mur.jpg");
-
-	int i,j;
-	for(i=0;i<12;i++)
-	{
-		for(j=0;j<12;j++)
-		{
-			position.x=i*34;
-			position.y=j*34;
-	
-			switch(map[i][j])
-			{
-				case 0 :
-					SDL_BlitSurface( mur, NULL, ecran, &position);		
-					break;
-				
-				/*case 1 :
-					SDL_BlitSurface( caisse, NULL, ecran, &position);		
-					break;
-			*/
-			}
-
-		}
-
-	}
-
-}
-*/
-
-int main()
+int InitSDL()
 {
 	SDL_Surface *ecran;
-	SDL_Event event;
-	int continuer = 0;
-	int current_time, prochain_rendu = 0;
-	
-	Sprite bomberman;
-	int map[12][12]={0};
-	init_map(map);
-	
 
 	/* initialisation de SDL_Video */
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
@@ -309,126 +221,6 @@ int main()
 		return 1;
 	}
 	
-	/* On charge le sprite controlable avec l'image bbm*/
-	if (!chargerSprite( &bomberman, "bm.bmp"))
-	{
-		SDL_Quit();
-		return 1;
-	}
-
-	// on place le sprite que l'on controle au milieu
-	bomberman.pos.x = width_ECRAN/2;
-	bomberman.pos.y = height_ECRAN/2;
-	fixDirectionSprite( &bomberman, DOWN);
-	fixDirectionSprite( &bomberman, NO_DIRECTION);
-
-	while (continuer!=1)
-	{
-		while (SDL_PollEvent(&event))
-		{
-			switch (event.type)
-			{
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym)
-				{
-					case SDLK_ESCAPE:
-						continuer = 1;
-						break;
-					
-					// on deplace le sprite au clavier
-					case SDLK_UP:
-						fixDirectionSprite(&bomberman, UP);
-						break;
-				
-					case SDLK_RIGHT:
-						fixDirectionSprite(&bomberman, RIGHT);
-						break;
-				
-					case SDLK_DOWN:
-						fixDirectionSprite(&bomberman, DOWN);
-						break;
-				
-					case SDLK_LEFT:
-						fixDirectionSprite(&bomberman, LEFT);
-						break;
-				
-					default:
-						printf("Une touche à été pressée.\n");
-				}
-				break;
-			
-			case SDL_KEYUP:
-				switch (event.key.keysym.sym)
-				{
-					// Si on relache une touche, plus de deplacement 
-					case SDLK_UP:
-						if (bomberman.direction == UP)
-							fixDirectionSprite( &bomberman, NO_DIRECTION );
-						break;
-				
-					case SDLK_RIGHT:
-						if (bomberman.direction == RIGHT)
-							fixDirectionSprite( &bomberman, NO_DIRECTION );
-						break;
-				
-					case SDLK_DOWN:
-						if (bomberman.direction == DOWN)
-							fixDirectionSprite( &bomberman, NO_DIRECTION );
-						break;
-				
-					case SDLK_LEFT:
-						if (bomberman.direction == LEFT)
-							fixDirectionSprite( &bomberman, NO_DIRECTION );
-						break;
-					
-					default:
-						;
-				}
-				break;
-
-			case SDL_QUIT:
-				continuer = 1;
-				break;
-			
-			default:
-				;
-			}
-		}
-		
-		/* On recupère le temps écoulé en mili-secondes */
-		current_time = SDL_GetTicks();
-		
-		/* On regarde s'il est temps d'effectuer le prochain rendu */
-		if (current_time > prochain_rendu)
-		{
-			/* un rendu toutes les 20 milli-secondes = 50 images par secondes */
-			prochain_rendu = current_time + 20;
-			
-			
-			// puis les positions des sprites
-			miseAJourSprite(&bomberman);
-			
-		
-			/* On dessine la scene */
-			
-			/* On efface l'écran */
-			SDL_FillRect(ecran, NULL, 0);
-
-			/* On dessine les sprites à l'écran */
-			dessinerSprite(&bomberman, ecran);
-						
-			/* On met à jour de la zone d'affichage de la fenetre */
-			
-		}
-		blitWall(map, ecran);
-		SDL_Flip( ecran );
-		
-	}
-
-	
-	deleteSprite(&bomberman);
-	SDL_Quit();
-	
-
-	return 0;
 }
+
+#endif

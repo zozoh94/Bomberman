@@ -12,12 +12,17 @@
 #define K_ENTER 8
 #define K_SPACE 9
 #define K_ESCAPE 10
-void Solo(map *m, player *p){
-  AddPlayers(m, &p);
-  GameLoop(m);
+void Solo(map *m, SDL_Surface *dest){
+  Sprite spr;
+  player *tab = malloc(sizeof(player*));
+  player *p = InitPlayer(1, 1, 0, 1, 15, 5, 0, J1, m, &spr, "bm.bmp");
+  tab[0] = p;
+  InitMap(m, 1, tab);
+  GameLoop(m, SOLO, dest);
 }
 
-void GameLoop(map *m, vCond cond){
+void GameLoop(map *m, vCond cond, SDL_Surface *dest){
+  SDL_Event event;
   int win;
   player* winner;
   //Tableau des appuis à tester, 0 = relevé, 1 = appuyé
@@ -43,16 +48,16 @@ void GameLoop(map *m, vCond cond){
 	case SDLK_DOWN:
 	  inputTab[K_DOWN] = 1;
 	  break;
-	case SDLK_Q:
+	case SDLK_q:
 	  inputTab[K_Q] = 1;
 	  break;
-	case SDLK_Z:
+	case SDLK_z:
 	  inputTab[K_Z] = 1;
 	  break;
-	case SDLK_D:
+	case SDLK_d:
 	  inputTab[K_D] = 1;
 	  break;
-	case SDLK_S:
+	case SDLK_s:
 	  inputTab[K_S] = 1;
 	  break;
 	case SDLK_RETURN:
@@ -82,16 +87,16 @@ void GameLoop(map *m, vCond cond){
 	case SDLK_DOWN:
 	  inputTab[K_DOWN] = 0;
 	  break;
-	case SDLK_Q:
+	case SDLK_q:
 	  inputTab[K_Q] = 0;
 	  break;
-	case SDLK_Z:
+	case SDLK_z:
 	  inputTab[K_Z] = 0;
 	  break;
-	case SDLK_D:
+	case SDLK_d:
 	  inputTab[K_D] = 0;
 	  break;
-	case SDLK_S:
+	case SDLK_s:
 	  inputTab[K_S] = 0;
 	  break;
 	case SDLK_RETURN:
@@ -109,15 +114,16 @@ void GameLoop(map *m, vCond cond){
 	break;
       }
     }
-    
-    BombLoop(m);
-    PlayerLoop(m);
-    Affichage();
+    SDL_FillRect(ecran, NULL, 0);
+    BombLoop(m, dest);
+    PlayerLoop(m, inputTab ,dest);
+    MapLoop(m, dest);
     TestWin(m, cond, &winner);
+    SDL_Flip( ecran ); 
   }
 }
 
-void BombLoop(map* map){
+void BombLoop(map* map, SDL_Surface *dest){
   bombList* l = map->bombs;
   while(l->next != NULL){
     l->data->timer--;
@@ -131,14 +137,28 @@ void BombLoop(map* map){
   }
 }
 
-void PlayerLoop(map* map, int* input){
+void PlayerLoop(map* map, int* input, SDL_Surface *dest){
   int i;
-  player* p;
-  for(i = 0; i < map->nbrPlayer; i++){
-    p = map->players[i];
+  player *p;
+  for(i = 0; i < map->nbrPlayers; i++){
+    p = &(map->players[i]);
     
     if(p->moveTimer > 0){ // On arrête le décompte à -1
       p->moveTimer --;
+      switch(p->sprite->orientation){
+      case 0 :
+	p->sprite->source.y=(p->y)*32 + (p->moveTimer - p->speed)/32;
+	break;
+      case 1 :
+	p->sprite->source.x=(p->x)*32 + (p->moveTimer - p->speed)/32;
+	break;
+      case 2 :
+	p->sprite->source.y=(p->y)*32 - (p->moveTimer - p->speed)/32;
+	break;
+      case 3 :
+	p->sprite->source.x=(p->x)*32 - (p->moveTimer - p->speed)/32;
+	break;
+      }
     }
     
     if(p->moveTimer == 0){
@@ -153,31 +173,65 @@ void PlayerLoop(map* map, int* input){
     //INPUT DES JOUEURS
     if(p->type == J1){
       if(input[K_LEFT]==1 && p->moveTimer == -1){
-	tryMove(p, p->x-1, p->y);
+	TryMove(p, p->x-1, p->y);
       }
       if(input[K_UP]==1 && p->moveTimer == -1){
-	tryMove(p, p->x, p->y-1);
+	TryMove(p, p->x, p->y-1);
       }
       if(input[K_RIGHT]==1 && p->moveTimer == -1){
-	tryMove(p, p->x+1, p->y);
+	TryMove(p, p->x+1, p->y);
       }
       if(input[K_DOWN]==1 && p->moveTimer == -1){
-	tryMove(p, p->x, p->y+1);
+	TryMove(p, p->x, p->y+1);
       }
     }
-
+    
     if(p->type == J2){
       if(input[K_Q]==1 && p->moveTimer == -1){
-	tryMove(p, p->x-1, p->y);
+	TryMove(p, p->x-1, p->y);
       }
       if(input[K_Z]==1 && p->moveTimer == -1){
-	tryMove(p, p->x, p->y-1);
+	TryMove(p, p->x, p->y-1);
       }
       if(input[K_D]==1 && p->moveTimer == -1){
-	tryMove(p, p->x+1, p->y);
+	TryMove(p, p->x+1, p->y);
       }
       if(input[K_S]==1 && p->moveTimer == -1){
-	tryMove(p, p->x, p->y+1);
+	TryMove(p, p->x, p->y+1);
       }
+    }
   }
+  //Affichage des joueurs
+  dessinerSprite(&(p->sprite), dest);
+}
+
+void MapLoop(map* map, SDL_Surface *dest){
+  SDL_Surface *mur, *caisse;
+  SDL_Rect position;
+
+  int i,j;
+  for(i=0;i<map->width;i++)
+    {
+      for(j=0;j<map->height;j++)
+	{
+	  position.x=i*32;
+	  position.y=j*32;
+	  
+	  switch(map->grid[i][j])
+	    {
+	    case UNDESTRUCTIBLE_BLOCK :
+	      SDL_BlitSurface( map->undestructibleBlock, NULL, dest, &position);
+	      break;
+	    case DESTRUCTIBLE_BLOCK :
+	      SDL_BlitSurface( map->destructibleBlock, NULL, dest, &position);
+	      break;
+	    default :
+	      SDL_BlitSurface( map->floor, NULL, dest, &position);
+	      break;
+	    }
+	  
+	}
+      
+    }
+  
 }

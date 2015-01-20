@@ -25,17 +25,17 @@ enum e_vCond{
    Initialise un jeu en solo
    Map, 1 joueur
  */
-void Solo(map *m, player *p);
+void Solo(map *m, player *p, SDL_Surface *dest);
 
 //Boucle de jeu
-void GameLoop();
+void GameLoop(map *m, vCond cond, SDL_Surface *dest);
 
 /**
    Contrôle les timer et explosions des bombes.
    Récupère la liste des bombes contenue dans map, et pour chaque bombe, vérifie si elle doit exploser, la fait exploser le cas échéant, sinon décrémente son timer.
    @param map* map: La carte qui contient les bombes
  */
-void BombLoop(map* map);
+void BombLoop(map* map, SDL_Surface *dest);
 
 /**
    Contrôle les timer des joueurs.
@@ -43,7 +43,13 @@ void BombLoop(map* map);
    @param map* map: La carte qui contient les joueurs
    int* input: le tableau des input à gérer éventuellement
  */
-void PlayerLoop(map* map, int* input);
+void PlayerLoop(map* map, int* input, SDL_Surface *dest);
+
+
+/**
+   Affiche la map
+ */
+void MapLoop(map* map, SDL_Surface *dest);
 
 /**
    Test si les conditions de victoire sont remplies

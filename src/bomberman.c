@@ -2,24 +2,53 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include "map.h" 
+#include "game.h"
 
 void pauseSDL();
 
 int main(int argc, char **argv)
 {
-    if (SDL_Init(SDL_INIT_EVERYTHING) == -1) // Démarrage de la SDL. Si erreur :
+  SDL_Event event;
+  
+  int continuer = 0;
+  
+  int InitSDL();
+  map** listMaps;
+  int nbrMap = ListMaps(&listMaps);
+  while (continuer!=1)
     {
-        fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError()); // Écriture de l'erreur
-        exit(EXIT_FAILURE); // On quitte le programme
+      while (SDL_WaitEvent(&event))
+	{
+	  switch (event.type)
+	    {
+	    case SDL_KEYDOWN:
+	      switch (event.key.keysym.sym)
+		{
+		case SDLK_ESCAPE:
+		  continuer = 1;
+		  break;
+		case SDLK_RETURN:
+		  
+		  break;
+		default:
+		  ;
+		case SDL_QUIT:
+		  continuer = 1;
+		  break;
+		}
+	    }
+	  
+	}
+      
+      
+      
     }
+  
+  //DELETE SPRITE
+  FreeMaps(listMaps, nbrMap);
 
-    SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE); // Ouverture de la fenêtre
-
-    pauseSDL(); // Mise en pause du programme
-    
-    SDL_Quit();
-    
-    return EXIT_SUCCESS;
+  SDL_Quit();
+  return EXIT_SUCCESS;
 }
 
 void pauseSDL()

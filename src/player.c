@@ -1,6 +1,6 @@
 #include "player.h"
 
-player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, btype bombT, typeP type, map *map){
+player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, btype bombT, typeP type, map *map, Sprite *sprite, const char *image){
   player *p = malloc(sizeof(player));
   p->x = x;
   p->y = y;
@@ -15,6 +15,8 @@ player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, b
   p->bombT = bombT;
   p->type = type;
   p->map = map;
+  p->sprite = sprite;
+  chargerBombermanSprite(sprite, image);
   return p;
 }
 
@@ -35,6 +37,23 @@ void TryMove(player *p, int X, int Y){
       p->moveTimer = p->speed;
       p->destX = X;
       p->destY = Y;
+      switch(X-p->x){
+      case 0 :
+	switch(Y-p->y){
+	case 1 :
+	  p->sprite->orientation = 0;
+	  break;
+	case -1 :
+	  p->sprite->orientation = 2;
+	  break;
+	}
+      case 1 :
+	p->sprite->orientation = 1;
+	break;
+      case -1 :
+	p->sprite->orientation = 3;
+	break;
+      }
     }
   }
 }
@@ -43,4 +62,7 @@ void Move(player* p){
   p->x = p->destX;
   p->y = p->destY;
   p->moveTimer = -1;
+  p->sprite->anim = 0;
+  p->sprite->source.x = (p->x)*32;
+  p->sprite->source.y = (p->y)*32;
 }

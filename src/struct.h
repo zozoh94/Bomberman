@@ -2,6 +2,9 @@
 #define STRUCT_H
 
 #include <stdbool.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include "sprite.c"
 
 typedef enum e_map_Error map_Error;
 typedef enum e_case_Type case_Type;
@@ -89,6 +92,11 @@ struct s_map{
     map_Error error; //Indique un code d'erreur si l'initialisation de la structure a échoué
     char* filename; //Nom du fichier map
     int** startingBlocks; //Enregistrement des points de départ de la map
+  //Images de la map, à charger avec destructibleWall=IMG_Load("nomdufichier.jpg");
+  SDL_Surface *destructibleBlock; //Image des murs destructibles
+  SDL_Surface *undestructibleBlock; //Image des murs indestructibles
+  SDL_Surface *floor; //Image du sol
+
 };
 
 /*
@@ -126,6 +134,7 @@ struct s_player{
   int moveTimer; //Le timer du déplacement
   typeP type; //Type de player
   map *map; //Pointeur vers la map
+  Sprite *sprite; // Image
   
   //Stats des bombes
   int bombR; //rayon des bombes

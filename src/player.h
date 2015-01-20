@@ -6,6 +6,7 @@
 #include "struct.h"
 #include "map.h"
 #include "bomb.h"
+#include "sprite.c"
 
 /**
    Initialise un joueur.
@@ -16,7 +17,7 @@
    int speed: temps de déplacement au départ
    @return Un joueur
  */
-player* InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, btype bombT, typeP type, map *map);
+player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, btype bombT, typeP type, map *map, Sprite *sprite, const char *image);
 
 /**
    Pose une bombe aux coordonnées du joueur p si c'est possible:
