@@ -93,10 +93,15 @@ struct s_map{
     map_Error error; //Indique un code d'erreur si l'initialisation de la structure a échoué
     char* filename; //Nom du fichier map
     int** startingBlocks; //Enregistrement des points de départ de la map
-  //Images de la map, à charger avec destructibleWall=IMG_Load("nomdufichier.jpg");
-  SDL_Surface *destructibleBlock; //Image des murs destructibles "destr"
-  SDL_Surface *undestructibleBlock; //Image des murs indestructibles "indestr"
-  SDL_Surface *floor; //Image du sol "floor"
+    //Images de la map, à charger avec destructibleWall=IMG_Load("nomdufichier.jpg");
+    SDL_Surface *destructibleBlock; //Image des murs destructibles "destr"
+    SDL_Surface *undestructibleBlock; //Image des murs indestructibles "indestr"
+    SDL_Surface *floor; //Image du sol "floor"
+    //Images des bonus
+    SDL_Surface *bonusRadius;
+    SDL_Surface *bonusBombLimit;
+    SDL_Surface *bonusSpeed;
+    SDL_Surface *bonusInvincibility;
 
 };
 
