@@ -64,7 +64,11 @@ int ListMaps(map*** ptrListMap)
 		    listMaps[nbrMap-1]->players = NULL;
 		    listMaps[nbrMap-1]->bombs = NULL;
 		    listMaps[nbrMap-1]->startingBlocks = NULL;
-			
+		    listMaps[nbrMap-1]->bonusRadius = IMG_Load("bonus_radius.bmp");
+		    listMaps[nbrMap-1]->bonusBombLimit = IMG_Load("bonus_bomb_limit.bmp");
+		    listMaps[nbrMap-1]->bonusSpeed = IMG_Load("bonus_speed.bmp");
+		    listMaps[nbrMap-1]->bonusInvincibility = IMG_Load("bonus_invincibility.bmp");
+		    
 		    //On peut maintenant parser le fichier .map formaté en JSON
 		    file = fopen(mapFile->d_name, "r");
 		    if (file!=NULL)

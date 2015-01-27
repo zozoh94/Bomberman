@@ -205,7 +205,6 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       //  Sinon
       //   Si peut poser bombe (et safe), pose bombe puis se déplace vers le joueur
 
-      
       //vérifier l'état du jeu
       //chercher un objectif
       //chercher comment aller là bas ou si il faut poser une bombe
