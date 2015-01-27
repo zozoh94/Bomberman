@@ -196,12 +196,11 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     {
 	for(int j=0; j<map->width; j++)
 	{
-	    if(map->grid[i][j]==STARTING_BLOCK)
+	    if(map->grid[j][i]==STARTING_BLOCK)
 		++nbrStartingBlock;
 	}
     }
     if(nbrStartingBlock<nbrPlayers){
-	fprintf(stderr, "%d joueurs %d emplacements\n",nbrPlayers, nbrStartingBlock);
 	return MAP_TOO_MUCH_PLAYER_ERROR;
     }
     int proba = 20;
@@ -212,10 +211,10 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	for(int j=0; j<map->width; j++)
     	{
     	    //On supprime aléatoirement des blocs déstructibles
-    	    if(map->grid[i][j]==DESTRUCTIBLE_BLOCK && map->autoRemove==true)
+    	    if(map->grid[j][i]==DESTRUCTIBLE_BLOCK && map->autoRemove==true)
     	    {
     		if(proba > rand() % 100)
-    		    map->grid[i][j] = UNDESTRUCTIBLE_BLOCK;
+    		    map->grid[j][i] = EMPTY_BLOCK;
     	    }
     	}
     }
@@ -227,16 +226,16 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	{
 	    for(int j=(int)(map->width/2); j<map->width; j++)
     	    {
-		if(map->grid[i][j]==STARTING_BLOCK)
-		    map->grid[i][j]=EMPTY_BLOCK;
+		if(map->grid[j][i]==STARTING_BLOCK)
+		    map->grid[j][i]=EMPTY_BLOCK;
 	    }
 	}
 	for(int i=(int)(map->height/2); i<map->height; i++)
     	{
 	    for(int j=0; j<(int)(map->width/2); j++)
     	    {
-		if(map->grid[i][j]==STARTING_BLOCK)
-		    map->grid[i][j]=EMPTY_BLOCK;
+		if(map->grid[j][i]==STARTING_BLOCK)
+		    map->grid[j][i]=EMPTY_BLOCK;
 	    }
 	}
     	//On laisse un seul starting block dans la partie superieur gauche
@@ -245,10 +244,10 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	{
     	    for(int j=0; j<(int)(map->width/2); j++)
     	    {
-		if(map->grid[i][j]==STARTING_BLOCK && !startingBlockFound)
+		if(map->grid[j][i]==STARTING_BLOCK && !startingBlockFound)
 		    startingBlockFound = true;
-		else if(map->grid[i][j]==STARTING_BLOCK && startingBlockFound)
-		    map->grid[i][j]=EMPTY_BLOCK;
+		else if(map->grid[j][i]==STARTING_BLOCK && startingBlockFound)
+		    map->grid[j][i]=EMPTY_BLOCK;
     	    }
     	}
 	if(startingBlockFound)
@@ -259,10 +258,10 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	{
     	    for(int j=map->width-1; j<=(int)(map->width/2); j--)
     	    {
-		if(map->grid[i][j]==STARTING_BLOCK && !startingBlockFound)
+		if(map->grid[j][i]==STARTING_BLOCK && !startingBlockFound)
 		    startingBlockFound = true;
-		else if(map->grid[i][j]==STARTING_BLOCK && startingBlockFound)
-		    map->grid[i][j]=EMPTY_BLOCK;
+		else if(map->grid[j][i]==STARTING_BLOCK && startingBlockFound)
+		    map->grid[j][i]=EMPTY_BLOCK;
     	    }
     	}
     }
@@ -277,9 +276,9 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
 		{
 		    for(int j=0; j<map->width; j++)
 		    {
-			if(map->grid[i][j]==STARTING_BLOCK && proba > rand() % 100 && nbrStartingBlock != nbrPlayers)
+			if(map->grid[j][i]==STARTING_BLOCK && proba > rand() % 100 && nbrStartingBlock != nbrPlayers)
 			{
-			    map->grid[i][j]=EMPTY_BLOCK;
+			    map->grid[j][i]=EMPTY_BLOCK;
 			    --nbrStartingBlock;
 			}
 		    }
@@ -298,12 +297,12 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     {
     	for(int j=0; j<map->width; j++)
     	{
-    	    if(map->grid[i][j] == STARTING_BLOCK)
+    	    if(map->grid[j][i] == STARTING_BLOCK)
     	    {
     		map->startingBlocks[k][0]=i;
     		map->startingBlocks[k][1]=j;
     		++k;
-    		map->grid[i][j] = EMPTY_BLOCK;
+    		map->grid[j][i] = EMPTY_BLOCK;
     	    }
     	}
     }
