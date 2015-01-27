@@ -143,31 +143,12 @@ int ListMaps(map*** ptrListMap)
 					if(!json_object_is_type(grid->array[0], json_type_string))
 					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
 					listMaps[nbrMap-1]->width = strlen(json_object_get_string(grid->array[0]));
-					//On initialise la matrice de la grille
-					//listMaps[nbrMap-1]->grid = malloc(grid->length*sizeof(int*));
+					
 					listMaps[nbrMap-1]->grid = malloc(listMaps[nbrMap-1]->width*sizeof(int*));
 					for(int i=0; i<listMaps[nbrMap-1]->width; i++)
 					{
 					    listMaps[nbrMap-1]->grid[i] = malloc(listMaps[nbrMap-1]->height*sizeof(int));
 					}
-					/*const char *c = json_object_get_string(grid->array[0]);
-					for(int i=0; i<listMaps[nbrMap-1]->height; i++)
-					{
-					    listMaps[nbrMap-1]->grid[i][0] = c[i] - '0';
-					}
-					for(int i=1; i<listMaps[nbrMap-1]->width; i++)
-					{
-					    if(json_object_is_type(grid->array[i], json_type_string))
-					    {
-						const char *c = json_object_get_string(grid->array[i]);
-						for(int j=0; j<listMaps[nbrMap-1]->height; j++)
-						{
-						    listMaps[nbrMap-1]->grid[i][j] = c[j] - '0';
-						}
-					    }
-					    else
-						listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
-						}*/
 					for(int i=0; i<listMaps[nbrMap-1]->height; i++)
 					{
 					    if(json_object_is_type(grid->array[i], json_type_string))
