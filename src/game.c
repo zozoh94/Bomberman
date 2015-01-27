@@ -169,6 +169,14 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
     //IA
     if(p->moveTimer == -1 && p->type == IA){
       //IA ICI
+
+
+
+
+
+
+
+
     }
     
     //INPUT DES JOUEURS

@@ -23,23 +23,27 @@ int main(int argc, char **argv)
       while (SDL_WaitEvent(&event) && continuer!=1)
 	{
 	  switch (event.type)
-	    {
-	    case SDL_KEYDOWN:
-	      switch (event.key.keysym.sym)
-		{
-		case SDLK_ESCAPE:
-		  continuer = 1;
-		  break;
-		case SDLK_RETURN:
-		  Solo(listMaps[0], ecran);
-		  break;
-		default:
-		  ;
-		case SDL_QUIT: // LA CROIX MARCHE PAS, HAAA
-		  continuer = 1;
-		  break;
-		}
-	    }
+	  {
+	
+	    	case SDL_KEYDOWN:
+			  	switch (event.key.keysym.sym)
+				{
+					case SDLK_ESCAPE:
+			  		continuer = 1;
+			  		break;
+	
+					case SDLK_RETURN:
+			  		Solo(listMaps[0], ecran);
+			  		break;
+					default:
+			  		;
+				}
+
+			
+			case SDL_QUIT: 
+		  	continuer = 1;
+		  	break;
+	   }
 	  
 	}
       
