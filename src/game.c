@@ -14,10 +14,19 @@
 #define K_ESCAPE 10
 void Solo(map *m, SDL_Surface *dest){
   Sprite *spr=malloc(sizeof(Sprite));
-  player **tab = malloc(sizeof(player*));
-  player *p = InitPlayer(3, 3, 0, 1, 150, 5, 0, J1, m, spr, "bm.bmp");
+  player **tab = malloc(sizeof(player*)*2);
+  player *p = InitPlayer(1, 1, 0, 1, 150, 5, 0, J1, m, spr, "p1.bmp");
+  player *ia = InitPlayer(1, 1, 0, 1, 150, 5, 0, IA, m, spr, "p2.bmp");
   tab[0] = p;
-  fprintf(stderr,"%d",InitMap(m, 1, tab));
+  tab[1] = ia;
+  fprintf(stderr,"%d, map(%d,%d):\n",InitMap(m, 1, tab),m->width, m->height);
+  int i,j;
+  for(i = 0; i < m->width; i++){
+    for(j = 0; j < m->height; j++){
+      fprintf(stderr,"%d",m->grid[j][i]);
+    }
+    fprintf(stderr,"\n");
+  }
   GameLoop(m, SOLO, dest);  
 }
 
@@ -147,19 +156,21 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       p->moveTimer --;
       switch(p->sprite->orientation){
       case 0 :
-	p->sprite->source.y=(p->y)*32 + (p->moveTimer - p->speed)/32;
+	p->sprite->source.y=(p->y)*32/* + 32/(p->moveTimer - p->speed)*/;
 	break;
       case 1 :
-	p->sprite->source.x=(p->x)*32 + (p->moveTimer - p->speed)/32;
+	p->sprite->source.x=(p->x)*32/* + 32/(p->moveTimer - p->speed)*/;
 	break;
       case 2 :
-	p->sprite->source.y=(p->y)*32 - (p->moveTimer - p->speed)/32;
+	p->sprite->source.y=(p->y)*32/* - 32/(p->moveTimer - p->speed)*/;
 	break;
       case 3 :
-	p->sprite->source.x=(p->x)*32 - (p->moveTimer - p->speed)/32;
+	p->sprite->source.x=(p->x)*32/* - 32/(p->moveTimer - p->speed)*/;
 	break;
       }
     }
+    p->sprite->source.x=(p->x)*32;
+    p->sprite->source.y=(p->y)*32;
     if(p->moveTimer == 0){
       Move(p);
     }
@@ -167,8 +178,7 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
     //IA
     if(p->moveTimer == -1 && p->type == IA){
       //IA ICI
-    }
-    
+    }    
     //INPUT DES JOUEURS
     if(p->type == J1){
       if(input[K_LEFT]==1 && p->moveTimer == -1){
@@ -199,6 +209,7 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	TryMove(p, p->x, p->y+1);
       }
     }
+    fprintf(stderr,"bom: %d/%d spr: %d/%d (%d/%d)\n", p->x, p->y, p->sprite->source.x, p->sprite->source.y, (p->x)/32, (p->y)/32);
     dessinerSprite(p->sprite, dest);
   }
 }

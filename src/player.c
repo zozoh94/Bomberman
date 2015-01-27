@@ -37,21 +37,21 @@ void TryMove(player *p, int X, int Y){
       p->moveTimer = p->speed;
       p->destX = X;
       p->destY = Y;
-      switch(X-p->x){
+      switch(X-(p->x)){
       case 0 :
-	switch(Y-p->y){
+	switch(Y-(p->y)){
 	case 1 :
-	  p->sprite->orientation = 0;
+	  fixDirectionSprite(p->sprite,0);
 	  break;
 	case -1 :
-	  p->sprite->orientation = 2;
+	  fixDirectionSprite(p->sprite,2);
 	  break;
 	}
       case 1 :
-	p->sprite->orientation = 1;
+	fixDirectionSprite(p->sprite,1);
 	break;
       case -1 :
-	p->sprite->orientation = 3;
+	fixDirectionSprite(p->sprite,3);
 	break;
       }
     }
