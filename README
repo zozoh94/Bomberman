@@ -1,4 +1,24 @@
-Email du prof: marc.bouffard@u-psud.fr
+>>>>>>>
+A ENVOYER AVANT LE 1ER FEVRIER 23H59
+Envoyer à: marc.bouffard@u-psud.fr et joel.falcou@lri.fr
+- les sources (.h, .c et makefile) et ressources (images, son etc)
+- un rapport de 10 à 15 pages (
+	cahier des charges
+	commandes de compilateur
+	PAS DE CODE
+	choix des algos
+	problèmes rencontrés
+	bibliothèques utilisées)
+pour le mail
+objet: [INGE3_PROJET_C]G2_HAMELIN_LENAIR_NGUYEN_THIERRY
+corps du mail
+Enzo Hamelin G2
+Tristan Le Nair G2
+Tri Thong N Guyen G2
+Clément Thierry G2
+Sujet: Bomberman
+<<<<<<<
+
 TODO:
 	- Créer la structure carte
 	- Créer les fonctions pour lire et générer les cartes

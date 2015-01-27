@@ -63,11 +63,11 @@ enum e_case_Type
     STARTING_BLOCK,
     DESTRUCTIBLE_BLOCK,
     BOMB_BLOCK,
-    BOMB_SQUAREX_BLOCK,
+    BOMB_SQUAREX_BLOCK, // >>PAS DEFINI 
     BONUS_RADIUS_BLOCK, //augmentation du rayon
     BONUS_BOMB_LIMIT_BLOCK, //augmentation de la limite de bombes
     BONUS_SPEED_BLOCK, //augmentation de la vitesse
-    BONUS_INVINCIBILITY_BLOCK, //invincibilité
+    BONUS_INVINCIBILITY_BLOCK, //invincibilité >>>PAS DEFINI 
 };
 /*
   idées: 

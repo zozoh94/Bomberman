@@ -13,12 +13,12 @@
 #define K_SPACE 9
 #define K_ESCAPE 10
 void Solo(map *m, SDL_Surface *dest){
-  Sprite *spr=malloc(sizeof(Sprite));
-  player **tab = malloc(sizeof(player*));
-  player *p = InitPlayer(1, 1, 0, 1, 15, 5, 0, J1, m, spr, "bm.bmp");
+  player **tab = malloc(sizeof(player*)*2);
+  player *p = AutoInit(m,J1,"p1.bmp");
+  player *ia = AutoInit(m,IA,"p2.bmp");
   tab[0] = p;
-  fprintf(stderr,"%d",InitMap(m, 1, tab));
-  // DERNIER FLAG ATTEINT
+  tab[1] = ia;
+  fprintf(stderr,"%d\n",InitMap(m, 2, tab));
   GameLoop(m, SOLO, dest);  
 }
 
@@ -117,9 +117,9 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
       }
     }
     SDL_FillRect(dest, NULL, 0);
+    MapLoop(m, dest);
     BombLoop(m, dest);
     PlayerLoop(m, inputTab ,dest);
-    MapLoop(m, dest);
     TestWin(m, cond, &winner);
     SDL_Flip(dest);
   }
@@ -144,41 +144,53 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
   player *p=NULL;
   for(i = 0; i < map->nbrPlayers; i++){
     p = map->players[i];
-    fprintf(stderr,"%d/%d\n", p->x, p->y);
+    
     if(p->moveTimer > 0){ // On arrête le décompte à -1
       p->moveTimer --;
+      /* Déplacement fluide, pas fonctionnel
       switch(p->sprite->orientation){
       case 0 :
-	p->sprite->source.y=(p->y)*32 + (p->moveTimer - p->speed)/32;
+	p->sprite->pos.y=(p->y)*32;
 	break;
       case 1 :
-	p->sprite->source.x=(p->x)*32 + (p->moveTimer - p->speed)/32;
+	p->sprite->pos.x=(p->x)*32;
 	break;
       case 2 :
-	p->sprite->source.y=(p->y)*32 - (p->moveTimer - p->speed)/32;
+	p->sprite->pos.y=(p->y)*32;
 	break;
       case 3 :
-	p->sprite->source.x=(p->x)*32 - (p->moveTimer - p->speed)/32;
+	p->sprite->pos.x=(p->x)*32;
 	break;
-      }
+      */
     }
     if(p->moveTimer == 0){
       Move(p);
+      switch(map->grid[p->x][p->y]){
+      case BONUS_RADIUS_BLOCK:
+	p->bombR+=1;
+	map->grid[p->x][p->y]=0;
+	break;
+      case BONUS_BOMB_LIMIT_BLOCK:
+	p->bombMax+=1;
+	map->grid[p->x][p->y]=0;
+	break;	
+      case BONUS_SPEED_BLOCK:
+	p->speed-=1;
+	map->grid[p->x][p->y]=0;
+	break;
+      default:
+	break;
+      }
     }
-    
     //IA
     if(p->moveTimer == -1 && p->type == IA){
       //IA ICI
 
-
-
-
-
-
-
-
+      //vérifier l'état du jeu
+      //chercher un objectif
+      //chercher comment aller là bas ou si il faut poser une bombe
+      // donner l'ordre "trymove(X,Y)" ou poserBomb
     }
-    
     //INPUT DES JOUEURS
     if(p->type == J1){
       if(input[K_LEFT]==1 && p->moveTimer == -1){
@@ -194,7 +206,6 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	TryMove(p, p->x, p->y+1);
       }
     }
-    
     if(p->type == J2){
       if(input[K_Q]==1 && p->moveTimer == -1){
 	TryMove(p, p->x-1, p->y);
@@ -209,15 +220,15 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	TryMove(p, p->x, p->y+1);
       }
     }
+    p->sprite->pos.x = (p->x)*32;
+    p->sprite->pos.y = (p->y)*32;
+    fprintf(stderr,"bom%d: %d/%d spr: %d/%d\n",i, p->x, p->y, p->sprite->pos.x, p->sprite->pos.y);
     dessinerSprite(p->sprite, dest);
   }
-  //CA MARCHE JUSQU'ICI
-  //Affichage des joueurs
 }
 
 void MapLoop(map* map, SDL_Surface *dest){
   SDL_Rect position;
-
   int i,j;
   for(i=0;i<map->width;i++)
     {
@@ -225,7 +236,6 @@ void MapLoop(map* map, SDL_Surface *dest){
 	{
 	  position.x=i*32;
 	  position.y=j*32;
-	  
 	  switch(map->grid[i][j])
 	    {
 	    case UNDESTRUCTIBLE_BLOCK :
@@ -238,11 +248,8 @@ void MapLoop(map* map, SDL_Surface *dest){
 	      SDL_BlitSurface( map->floor, NULL, dest, &position);
 	      break;
 	    }
-	  
 	}
-      
     }
-  
 }
 
 int TestWin(map* map, vCond cond, player** winner){

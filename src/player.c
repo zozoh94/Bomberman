@@ -10,7 +10,7 @@ player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, b
   p->bombs = 0;
   p->bombMax = bombMax;
   p->speed = speed;
-  p->moveTimer = 0;
+  p->moveTimer = -1;
   p->bombR = bombR;
   p->bombT = bombT;
   p->type = type;
@@ -18,6 +18,11 @@ player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, b
   p->sprite = sprite;
   chargerBombermanSprite(sprite, image);
   return p;
+}
+
+player *AutoInit(map *map, typeP type, const char *image){
+  Sprite *spr=malloc(sizeof(Sprite));
+  return InitPlayer(0,0,0,1,300,3,0,type,map,spr,image);
 }
 
 void PlaceBomb(player *p){
@@ -32,26 +37,27 @@ void PlaceBomb(player *p){
 }
 
 void TryMove(player *p, int X, int Y){
-  if(p->moveTimer == -1){
-    if(p->map->grid[X][Y]==0 || p->map->grid[X][Y]==2 || p->map->grid[X][Y]>10){
+  if(p->moveTimer == -1 && X >= 0 && Y >= 0 && X < p->map->width && Y < p->map->height){
+    if(p->map->grid[X][Y]==0 || p->map->grid[X][Y]>10){
       p->moveTimer = p->speed;
       p->destX = X;
       p->destY = Y;
-      switch(X-p->x){
+      p->sprite->anim = 0;
+      switch(X-(p->x)){
       case 0 :
-	switch(Y-p->y){
+	switch(Y-(p->y)){
 	case 1 :
-	  p->sprite->orientation = 0;
+	  fixDirectionSprite(p->sprite,0);
 	  break;
 	case -1 :
-	  p->sprite->orientation = 2;
+	  fixDirectionSprite(p->sprite,2);
 	  break;
 	}
       case 1 :
-	p->sprite->orientation = 1;
+	fixDirectionSprite(p->sprite,1);
 	break;
       case -1 :
-	p->sprite->orientation = 3;
+	fixDirectionSprite(p->sprite,3);
 	break;
       }
     }
@@ -63,6 +69,6 @@ void Move(player* p){
   p->y = p->destY;
   p->moveTimer = -1;
   p->sprite->anim = 0;
-  p->sprite->source.x = (p->x)*32;
-  p->sprite->source.y = (p->y)*32;
+  p->sprite->pos.x = (p->x)*32;
+  p->sprite->pos.y = (p->y)*32;
 }

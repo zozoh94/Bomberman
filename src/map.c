@@ -118,13 +118,13 @@ int ListMaps(map*** ptrListMap)
 				{
 				    if (json_object_is_type(val, json_type_string))
 				    {
-				      char chaine[252];
-				      strcpy(chaine, json_object_get_string(val));
-				      listMaps[nbrMap-1]->undestructibleBlock = IMG_Load(strcat(chaine, "_undestr.bmp"));
-				      strcpy(chaine, json_object_get_string(val));
-				      listMaps[nbrMap-1]->destructibleBlock = IMG_Load(strcat(chaine, "_destr.bmp"));
-				      strcpy(chaine, json_object_get_string(val));
-				      listMaps[nbrMap-1]->floor = IMG_Load(strcat(chaine, "_floor.bmp"));
+					char chaine[255];
+					strcpy(chaine, json_object_get_string(val));
+					listMaps[nbrMap-1]->undestructibleBlock = IMG_Load(strcat(chaine, "_undestr.bmp"));
+					strcpy(chaine, json_object_get_string(val));
+					listMaps[nbrMap-1]->destructibleBlock = IMG_Load(strcat(chaine, "_destr.bmp"));
+					strcpy(chaine, json_object_get_string(val));
+					listMaps[nbrMap-1]->floor = IMG_Load(strcat(chaine, "_floor.bmp"));
 				    }
 				    else
 				    {
@@ -143,25 +143,20 @@ int ListMaps(map*** ptrListMap)
 					if(!json_object_is_type(grid->array[0], json_type_string))
 					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
 					listMaps[nbrMap-1]->width = strlen(json_object_get_string(grid->array[0]));
-					//On initialise la matrice de la grille
-					listMaps[nbrMap-1]->grid = malloc(grid->length*sizeof(int*));
-					for(int i=0; i<grid->length; i++)
-					{
-					    listMaps[nbrMap-1]->grid[i] = malloc(listMaps[nbrMap-1]->width*sizeof(int));
-					}
-					const char *c = json_object_get_string(grid->array[0]);
+					
+					listMaps[nbrMap-1]->grid = malloc(listMaps[nbrMap-1]->width*sizeof(int*));
 					for(int i=0; i<listMaps[nbrMap-1]->width; i++)
 					{
-					    listMaps[nbrMap-1]->grid[0][i] = c[i] - '0';
+					    listMaps[nbrMap-1]->grid[i] = malloc(listMaps[nbrMap-1]->height*sizeof(int));
 					}
-					for(int i=1; i<grid->length; i++)
+					for(int i=0; i<listMaps[nbrMap-1]->height; i++)
 					{
 					    if(json_object_is_type(grid->array[i], json_type_string))
 					    {
 						const char *c = json_object_get_string(grid->array[i]);
 						for(int j=0; j<listMaps[nbrMap-1]->width; j++)
 						{
-						    listMaps[nbrMap-1]->grid[i][j] = c[j] - '0';
+						    listMaps[nbrMap-1]->grid[j][i] = c[j] - '0';
 						}
 					    }
 					    else
@@ -201,13 +196,12 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     {
 	for(int j=0; j<map->width; j++)
 	{
-	    if(map->grid[i][j]==STARTING_BLOCK)
+	    if(map->grid[j][i]==STARTING_BLOCK)
 		++nbrStartingBlock;
 	}
     }
     if(nbrStartingBlock<nbrPlayers){
-      fprintf(stderr, "%d joueurs %d emplacements\n",nbrPlayers, nbrStartingBlock);
-      return MAP_TOO_MUCH_PLAYER_ERROR;
+	return MAP_TOO_MUCH_PLAYER_ERROR;
     }
     int proba = 20;
     map->nbrPlayers = nbrPlayers;
@@ -217,10 +211,10 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	for(int j=0; j<map->width; j++)
     	{
     	    //On supprime aléatoirement des blocs déstructibles
-    	    if(map->grid[i][j]==DESTRUCTIBLE_BLOCK && map->autoRemove==true)
+    	    if(map->grid[j][i]==DESTRUCTIBLE_BLOCK && map->autoRemove==true)
     	    {
     		if(proba > rand() % 100)
-    		    map->grid[i][j] = UNDESTRUCTIBLE_BLOCK;
+    		    map->grid[j][i] = EMPTY_BLOCK;
     	    }
     	}
     }
@@ -232,16 +226,16 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	{
 	    for(int j=(int)(map->width/2); j<map->width; j++)
     	    {
-		if(map->grid[i][j]==STARTING_BLOCK)
-		    map->grid[i][j]=EMPTY_BLOCK;
+		if(map->grid[j][i]==STARTING_BLOCK)
+		    map->grid[j][i]=EMPTY_BLOCK;
 	    }
 	}
 	for(int i=(int)(map->height/2); i<map->height; i++)
     	{
 	    for(int j=0; j<(int)(map->width/2); j++)
     	    {
-		if(map->grid[i][j]==STARTING_BLOCK)
-		    map->grid[i][j]=EMPTY_BLOCK;
+		if(map->grid[j][i]==STARTING_BLOCK)
+		    map->grid[j][i]=EMPTY_BLOCK;
 	    }
 	}
     	//On laisse un seul starting block dans la partie superieur gauche
@@ -250,13 +244,13 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	{
     	    for(int j=0; j<(int)(map->width/2); j++)
     	    {
-		if(map->grid[i][j]==STARTING_BLOCK && !startingBlockFound)
+		if(map->grid[j][i]==STARTING_BLOCK && !startingBlockFound)
 		    startingBlockFound = true;
-		else if(map->grid[i][j]==STARTING_BLOCK && startingBlockFound)
-		    map->grid[i][j]=EMPTY_BLOCK;
+		else if(map->grid[j][i]==STARTING_BLOCK && startingBlockFound)
+		    map->grid[j][i]=EMPTY_BLOCK;
     	    }
     	}
-	if(startingBlockFound)
+	if(!startingBlockFound)
 	    return MAP_1VS1_ERROR;
 	startingBlockFound = false;
     	//On laisse un seul starting block dans la partie inférieur droite
@@ -264,10 +258,10 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	{
     	    for(int j=map->width-1; j<=(int)(map->width/2); j--)
     	    {
-		if(map->grid[i][j]==STARTING_BLOCK && !startingBlockFound)
+		if(map->grid[j][i]==STARTING_BLOCK && !startingBlockFound)
 		    startingBlockFound = true;
-		else if(map->grid[i][j]==STARTING_BLOCK && startingBlockFound)
-		    map->grid[i][j]=EMPTY_BLOCK;
+		else if(map->grid[j][i]==STARTING_BLOCK && startingBlockFound)
+		    map->grid[j][i]=EMPTY_BLOCK;
     	    }
     	}
     }
@@ -282,9 +276,9 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
 		{
 		    for(int j=0; j<map->width; j++)
 		    {
-			if(map->grid[i][j]==STARTING_BLOCK && proba > rand() % 100 && nbrStartingBlock != nbrPlayers)
+			if(map->grid[j][i]==STARTING_BLOCK && proba > rand() % 100 && nbrStartingBlock != nbrPlayers)
 			{
-			    map->grid[i][j]=EMPTY_BLOCK;
+			    map->grid[j][i]=EMPTY_BLOCK;
 			    --nbrStartingBlock;
 			}
 		    }
@@ -303,12 +297,12 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     {
     	for(int j=0; j<map->width; j++)
     	{
-    	    if(map->grid[i][j] == STARTING_BLOCK)
+    	    if(map->grid[j][i] == STARTING_BLOCK)
     	    {
-    		map->startingBlocks[k][0]=i;
-    		map->startingBlocks[k][1]=j;
+    		map->startingBlocks[k][0]=j;
+    		map->startingBlocks[k][1]=i;
     		++k;
-    		map->grid[i][j] = EMPTY_BLOCK;
+    		map->grid[j][i] = EMPTY_BLOCK;
     	    }
     	}
     }
