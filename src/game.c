@@ -15,10 +15,9 @@
 void Solo(map *m, SDL_Surface *dest){
   Sprite *spr=malloc(sizeof(Sprite));
   player **tab = malloc(sizeof(player*));
-  player *p = InitPlayer(1, 1, 0, 1, 15, 5, 0, J1, m, spr, "bm.bmp");
+  player *p = InitPlayer(3, 3, 0, 1, 150, 5, 0, J1, m, spr, "bm.bmp");
   tab[0] = p;
   fprintf(stderr,"%d",InitMap(m, 1, tab));
-  // DERNIER FLAG ATTEINT
   GameLoop(m, SOLO, dest);  
 }
 
@@ -117,9 +116,9 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
       }
     }
     SDL_FillRect(dest, NULL, 0);
+    MapLoop(m, dest);
     BombLoop(m, dest);
     PlayerLoop(m, inputTab ,dest);
-    MapLoop(m, dest);
     TestWin(m, cond, &winner);
     SDL_Flip(dest);
   }
@@ -144,7 +143,6 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
   player *p=NULL;
   for(i = 0; i < map->nbrPlayers; i++){
     p = map->players[i];
-    fprintf(stderr,"%d/%d\n", p->x, p->y);
     if(p->moveTimer > 0){ // On arrête le décompte à -1
       p->moveTimer --;
       switch(p->sprite->orientation){
@@ -203,21 +201,17 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
     }
     dessinerSprite(p->sprite, dest);
   }
-  //CA MARCHE JUSQU'ICI
-  //Affichage des joueurs
 }
 
 void MapLoop(map* map, SDL_Surface *dest){
   SDL_Rect position;
-
   int i,j;
-  for(i=0;i<map->width;i++)
+  for(i=0;i<map->height;i++)
     {
-      for(j=0;j<map->height;j++)
+      for(j=0;j<map->width;j++)
 	{
 	  position.x=i*32;
 	  position.y=j*32;
-	  
 	  switch(map->grid[i][j])
 	    {
 	    case UNDESTRUCTIBLE_BLOCK :
@@ -230,11 +224,8 @@ void MapLoop(map* map, SDL_Surface *dest){
 	      SDL_BlitSurface( map->floor, NULL, dest, &position);
 	      break;
 	    }
-	  
 	}
-      
     }
-  
 }
 
 int TestWin(map* map, vCond cond, player** winner){
