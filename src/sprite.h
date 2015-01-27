@@ -15,9 +15,6 @@
 
 
 
-#define width_ECRAN 408
-#define height_ECRAN 408
-
 typedef struct
 {
 	// pour l'affichage
@@ -73,6 +70,6 @@ void dessinerSprite( Sprite *sprite, SDL_Surface *destination );
 
 SDL_Surface* InitSDL();
 
-
+SDL_Surface *ScaleSurface(SDL_Surface *Surface, int width, int height);
 
 #endif

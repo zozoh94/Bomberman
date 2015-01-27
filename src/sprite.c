@@ -152,11 +152,17 @@ SDL_Surface* InitSDL()
 	
 	
 	/* On fixe le mode d'affichage à 384*384 */
-	ecran = SDL_SetVideoMode(width_ECRAN, height_ECRAN, 32, SDL_SWSURFACE| SDL_DOUBLEBUF);
+	ecran = SDL_SetVideoMode(408, 408, 32, SDL_SWSURFACE| SDL_DOUBLEBUF | SDL_RESIZABLE);
 	if ( ecran == NULL )
 	{
 		fprintf(stderr, "Echec de changement du mode video : %s.\n", SDL_GetError());
 		return NULL;
 	}
 	return ecran;
+}
+
+SDL_Surface *ScaleSurface(SDL_Surface *Surface, int width, int height)
+{
+  Surface = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE| SDL_DOUBLEBUF | SDL_RESIZABLE);
+  return Surface;
 }

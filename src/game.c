@@ -14,11 +14,14 @@
 #define K_ESCAPE 10
 void Solo(map *m, SDL_Surface *dest){
   player **tab = malloc(sizeof(player*)*2);
-  player *p = AutoInit(m,J1,"p1.bmp");
-  player *ia = AutoInit(m,IA,"p2.bmp");
-  tab[0] = p;
+  player *p1 = AutoInit(m,J1,"p1.bmp");
+  player *p2 = AutoInit(m,J2,"p2.bmp");
+  player *ia = AutoInit(m,IA,"p3.bmp");
+  tab[0] = p1;
   tab[1] = ia;
-  fprintf(stderr,"%d\n",InitMap(m, 2, tab));
+  tab[2] = p2;
+  fprintf(stderr,"%d\n",InitMap(m, 3, tab));
+  dest = ScaleSurface(dest,(m->width)*32,(m->height)*32);
   GameLoop(m, SOLO, dest);  
 }
 
@@ -135,6 +138,12 @@ void BombLoop(map* map, SDL_Surface *dest){
     if(l->data->timer<=0){ // Explosion de la bombe
       Explode(map, l->data);
     }
+    if(l->data->timer>=0){
+      //Afficher bombe
+    }
+    if(l->data->timer<=0){
+      //Afficher flammes sur les cases de l->data->explozone
+    }
     l = l->next;
   }
 }
@@ -185,11 +194,23 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
     //IA
     if(p->moveTimer == -1 && p->type == IA){
       //IA ICI
+      // Regarde si il y a des bombes qui risques de le tuer
+      // Si oui
+      //  fuit, FIN
+      // Sinon:
+      //  Cherche les joueurs
+      //  Regarde quels joueurs sont atteignables
+      //  Si == 0
+      //   
+      //  Sinon
+      //   Si peut poser bombe (et safe), pose bombe puis se déplace vers le joueur
 
       //vérifier l'état du jeu
       //chercher un objectif
       //chercher comment aller là bas ou si il faut poser une bombe
       // donner l'ordre "trymove(X,Y)" ou poserBomb
+
+
     }
     //INPUT DES JOUEURS
     if(p->type == J1){
@@ -205,6 +226,9 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       if(input[K_DOWN]==1 && p->moveTimer == -1){
 	TryMove(p, p->x, p->y+1);
       }
+      if(input[K_ENTER]==1 && p->moveTimer == -1){
+	PlaceBomb(p);
+      }
     }
     if(p->type == J2){
       if(input[K_Q]==1 && p->moveTimer == -1){
@@ -219,10 +243,12 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       if(input[K_S]==1 && p->moveTimer == -1){
 	TryMove(p, p->x, p->y+1);
       }
+      if(input[K_SPACE]==1 && p->moveTimer == -1){
+	PlaceBomb(p);
+      }
     }
     p->sprite->pos.x = (p->x)*32;
     p->sprite->pos.y = (p->y)*32;
-    fprintf(stderr,"bom%d: %d/%d spr: %d/%d\n",i, p->x, p->y, p->sprite->pos.x, p->sprite->pos.y);
     dessinerSprite(p->sprite, dest);
   }
 }
