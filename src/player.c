@@ -32,8 +32,8 @@ void PlaceBomb(player *p){
 }
 
 void TryMove(player *p, int X, int Y){
-  if(p->moveTimer == -1){
-    if(p->map->grid[X][Y]==0 || p->map->grid[X][Y]==2 || p->map->grid[X][Y]>10){
+  if(p->moveTimer == -1 && X >= 0 && Y >= 0 && X < p->map->height && Y < p->map->width){ // Hauteur et largeur inversées? pour l'instant ça marche
+    if(p->map->grid[X][Y]==0 || p->map->grid[X][Y]>10){
       p->moveTimer = p->speed;
       p->destX = X;
       p->destY = Y;

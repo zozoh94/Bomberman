@@ -1,9 +1,12 @@
 {
-name : Test,
-grid : [ 0011111001,
-0111101011,
-0110011011 ],
-author : Enzo Hamelin,
-auto_remove : true,
-theme : neige
+    "name" : "Test",
+    "grid" : [
+		   "20000000002",
+	       "00000000000",
+	       "33333333333",
+	       "00000000000",
+	       "20000000002" ],
+    "author" : "Enzo Hamelin",
+    "auto_remove" : true,
+    "theme" : "classic"
 }
