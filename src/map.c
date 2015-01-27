@@ -250,7 +250,7 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
 		    map->grid[j][i]=EMPTY_BLOCK;
     	    }
     	}
-	if(startingBlockFound)
+	if(!startingBlockFound)
 	    return MAP_1VS1_ERROR;
 	startingBlockFound = false;
     	//On laisse un seul starting block dans la partie inférieur droite
@@ -299,8 +299,8 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	{
     	    if(map->grid[j][i] == STARTING_BLOCK)
     	    {
-    		map->startingBlocks[k][0]=i;
-    		map->startingBlocks[k][1]=j;
+    		map->startingBlocks[k][0]=j;
+    		map->startingBlocks[k][1]=i;
     		++k;
     		map->grid[j][i] = EMPTY_BLOCK;
     	    }

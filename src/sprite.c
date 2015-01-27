@@ -30,7 +30,7 @@ int chargerBombermanSprite( Sprite *sprite, const char *image )
 	sprite->orientation = DOWN;
 
 	// temps d'affichage pour une animation
-	sprite->time_anim = 8;
+	sprite->time_anim = 128;
 
 	// Le temps qu'il reste à afficher l'animation courante
 	sprite->time_current_anim = 0;
@@ -44,8 +44,8 @@ int chargerBombermanSprite( Sprite *sprite, const char *image )
 	sprite->source.w = sprite->width;
 	sprite->source.h = sprite->height;
 
-	//sprite->pos.x = 0;
-	//sprite->pos.y = 0;
+	sprite->pos.x = 0;
+	sprite->pos.y = 0;
 	
 	// on definit enfin la speed et la direction du sprite
 	sprite->speed = 2;

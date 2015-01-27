@@ -20,6 +20,11 @@
 player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, btype bombT, typeP type, map *map, Sprite *sprite, const char *image);
 
 /**
+   Initialise avec les valeurs par défaut un joueur
+ */
+player *AutoInit(map *map, typeP type, const char *image);
+
+/**
    Pose une bombe aux coordonnées du joueur p si c'est possible:
    - Si il n'y en a pas déjà
    - Si le moveTimer du joueur est prêt (=-1) (on ne pose pas de bombe en se déplaçant)
