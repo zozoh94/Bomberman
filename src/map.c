@@ -118,13 +118,13 @@ int ListMaps(map*** ptrListMap)
 				{
 				    if (json_object_is_type(val, json_type_string))
 				    {
-				      char chaine[252];
-				      strcpy(chaine, json_object_get_string(val));
-				      listMaps[nbrMap-1]->undestructibleBlock = IMG_Load(strcat(chaine, "_undestr.bmp"));
-				      strcpy(chaine, json_object_get_string(val));
-				      listMaps[nbrMap-1]->destructibleBlock = IMG_Load(strcat(chaine, "_destr.bmp"));
-				      strcpy(chaine, json_object_get_string(val));
-				      listMaps[nbrMap-1]->floor = IMG_Load(strcat(chaine, "_floor.bmp"));
+					char chaine[255];
+					strcpy(chaine, json_object_get_string(val));
+					listMaps[nbrMap-1]->undestructibleBlock = IMG_Load(strcat(chaine, "_undestr.bmp"));
+					strcpy(chaine, json_object_get_string(val));
+					listMaps[nbrMap-1]->destructibleBlock = IMG_Load(strcat(chaine, "_destr.bmp"));
+					strcpy(chaine, json_object_get_string(val));
+					listMaps[nbrMap-1]->floor = IMG_Load(strcat(chaine, "_floor.bmp"));
 				    }
 				    else
 				    {
@@ -143,25 +143,20 @@ int ListMaps(map*** ptrListMap)
 					if(!json_object_is_type(grid->array[0], json_type_string))
 					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
 					listMaps[nbrMap-1]->width = strlen(json_object_get_string(grid->array[0]));
-					//On initialise la matrice de la grille
-					listMaps[nbrMap-1]->grid = malloc(grid->length*sizeof(int*));
-					for(int i=0; i<grid->length; i++)
-					{
-					    listMaps[nbrMap-1]->grid[i] = malloc(listMaps[nbrMap-1]->width*sizeof(int));
-					}
-					const char *c = json_object_get_string(grid->array[0]);
+					
+					listMaps[nbrMap-1]->grid = malloc(listMaps[nbrMap-1]->width*sizeof(int*));
 					for(int i=0; i<listMaps[nbrMap-1]->width; i++)
 					{
-					    listMaps[nbrMap-1]->grid[0][i] = c[i] - '0';
+					    listMaps[nbrMap-1]->grid[i] = malloc(listMaps[nbrMap-1]->height*sizeof(int));
 					}
-					for(int i=1; i<grid->length; i++)
+					for(int i=0; i<listMaps[nbrMap-1]->height; i++)
 					{
 					    if(json_object_is_type(grid->array[i], json_type_string))
 					    {
 						const char *c = json_object_get_string(grid->array[i]);
 						for(int j=0; j<listMaps[nbrMap-1]->width; j++)
 						{
-						    listMaps[nbrMap-1]->grid[i][j] = c[j] - '0';
+						    listMaps[nbrMap-1]->grid[j][i] = c[j] - '0';
 						}
 					    }
 					    else
@@ -206,8 +201,8 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
 	}
     }
     if(nbrStartingBlock<nbrPlayers){
-      fprintf(stderr, "%d joueurs %d emplacements\n",nbrPlayers, nbrStartingBlock);
-      return MAP_TOO_MUCH_PLAYER_ERROR;
+	fprintf(stderr, "%d joueurs %d emplacements\n",nbrPlayers, nbrStartingBlock);
+	return MAP_TOO_MUCH_PLAYER_ERROR;
     }
     int proba = 20;
     map->nbrPlayers = nbrPlayers;
