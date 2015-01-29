@@ -12,17 +12,62 @@
 #define K_ENTER 8
 #define K_SPACE 9
 #define K_ESCAPE 10
-void Solo(map *m, SDL_Surface *dest){
-  player **tab = malloc(sizeof(player*)*3);
-  player *p1 = AutoInit(m,J1,"p1.bmp");
-  player *p2 = AutoInit(m,J2,"p2.bmp");
-  player *ia = AutoInit(m,IA,"p3.bmp");
-  tab[0] = p1;
-  tab[1] = ia;
-  tab[2] = p2;
-  fprintf(stderr,"%d\n",InitMap(m, 3, tab));
+
+void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
+  player **tab;
+  int nbrjoueurs;
+  player *one;
+  player *two;
+  player *three;
+  player *four;
+  switch(nbrPlayers){
+  case(VSIA):
+    nbrjoueurs = 4;
+    tab = malloc(sizeof(player*)*nbrjoueurs);
+    one = AutoInit(m,J1,"p1.bmp");
+    two = AutoInit(m,J2,"p2.bmp");
+    three = AutoInit(m,IA,"p3.bmp");
+    four = AutoInit(m,IA,"p4.bmp");
+    tab[0] = one;
+    tab[1] = two;
+    tab[2] = three;
+    tab[3] = four;
+    break;
+    
+  case(PVP):
+    nbrjoueurs = 2;
+    tab = malloc(sizeof(player*)*nbrjoueurs);
+    one = AutoInit(m,J1,"p1.bmp");
+    two = AutoInit(m,J2,"p2.bmp");
+    tab[0] = one;
+    tab[1] = two;
+    break;
+    
+  case(SOLOVSBCPIA):
+    nbrjoueurs = 4;
+    tab = malloc(sizeof(player*)*nbrjoueurs);
+    one = AutoInit(m,J1,"p1.bmp");
+    two = AutoInit(m,IA,"p2.bmp");
+    three = AutoInit(m,IA,"p3.bmp");
+    four = AutoInit(m,IA,"p4.bmp");
+    tab[0] = one;
+    tab[1] = two;
+    tab[2] = three;
+    tab[3] = four;
+    break;
+    
+  default:
+    nbrjoueurs = 2;
+    tab = malloc(sizeof(player*)*nbrjoueurs);
+    one = AutoInit(m,J1,"p1.bmp");
+    two = AutoInit(m,IA,"p2.bmp");
+    tab[0] = one;
+    tab[1] = two;
+    break;
+  }
+  fprintf(stderr,"%d\n",InitMap(m, nbrjoueurs, tab));
   dest = ScaleSurface(dest,(m->width)*32,(m->height)*32);
-  GameLoop(m, SOLO, dest);  
+  GameLoop(m, cond, dest);  
 }
 
 void GameLoop(map *m, vCond cond, SDL_Surface *dest){
@@ -131,6 +176,7 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
 void BombLoop(map* map, SDL_Surface *dest){
   bombList* l = map->bombs;
   while(l!=NULL && l->next != NULL){
+    fprintf(stderr,"Bombe en %d %d \n", l->data->x, l->data->y);
     l->data->timer--;
     if(l->data->timer==-EXPLOSIONTIME){ // Destruction de la bombe
       map->bombs = RemoveBombList(map->bombs, l->data);

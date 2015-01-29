@@ -30,7 +30,7 @@ void PlaceBomb(player *p){
   if(p->bombs < p->bombMax && p->moveTimer == -1){
     if(p->map->grid[p->x][p->y] != 4){ //si il n'y a pas déjà une bombe
       p->bombs++;
-      AddBombList(p->map->bombs, CreateBomb(p));
+      p->map->bombs = AddBombList(p->map->bombs, CreateBomb(p));
       p->map->grid[p->x][p->y] = 4;
     }
   }

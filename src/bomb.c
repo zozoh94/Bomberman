@@ -3,14 +3,14 @@
 
 bomb* InitBomb(int x, int y, int rayon, int timer, player* myPlayer, btype type)
 {
-  bomb *bomb = malloc (sizeof(bomb));
-  bomb->x = x;
-  bomb->y = y;
-  bomb->explosion = rayon;
-  bomb->timer = timer;
-  bomb->myPlayer = myPlayer;
-  bomb->type = type;
-  return bomb;
+  bomb *b = malloc(sizeof(bomb));
+  b->x = x;
+  b->y = y;
+  b->explosion = rayon;
+  b->timer = timer;
+  b->myPlayer = myPlayer;
+  b->type = type;
+  return b;
 }
 
 bomb* CreateBomb(player* p){
@@ -20,6 +20,7 @@ bomb* CreateBomb(player* p){
 
 void Explode(map* map, bomb* bomb)
 {
+  fprintf(stderr,"Boom\n");
   int i;
   RemoveBombList(map->bombs, bomb); //retire la bombe de la liste des bombes de la map
   bomb->myPlayer->bombs --; //décrémente le nombre de bombes posées par le joueur qui a posé la bombe
@@ -132,10 +133,10 @@ bombList* NewBombList()
 	
 bombList *AddBombList(bombList* l, bomb* b)
 {
-  bombList *bomblist = malloc (sizeof(bomb));
-  bomblist->data = b;
-  bomblist->next = l;
-  return bomblist;
+  bombList *bl = malloc (sizeof(bomb));
+  bl->data = b;
+  bl->next = l;
+  return bl;
 }
 
 bombList* RemoveBombList(bombList* l, bomb* b)

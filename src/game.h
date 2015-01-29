@@ -4,28 +4,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL/SDL.h>
+#include "struct.h"
 #include "map.h"
 #include "player.h"
 #include "bomb.h"
 
 //Dans ce fichier, les initialisations de parties et les boucles de jeux.
 
-/**
-   @enum e_vCond
-   @brief Conditions de victoires
-*/
-typedef enum e_vCond vCond;
-enum e_vCond{
-  SOLO,
-  VSIA,
-  MULTI
-};
+
 
 /**
-   Initialise un jeu en solo
-   Map, 1 joueur
+   Initialise le jeu
  */
-void Solo(map *m, SDL_Surface *dest);
+void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest);
 
 //Boucle de jeu
 void GameLoop(map *m, vCond cond, SDL_Surface *dest);

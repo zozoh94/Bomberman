@@ -144,14 +144,21 @@ SDL_Surface* InitSDL()
 
 	/* initialisation de SDL_Video */
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-	{
-		fprintf(stderr, "Echec d'initialisation de SDL.\n");
-		return NULL;
-	}
+	  {
+	    fprintf(stderr, "Echec d'initialisation de SDL.\n");
+	    return NULL;
+	  }
 	printf("SDL initialisé avec succès.\n");
 	
+	if(TTF_Init() == -1)
+	  {
+	    fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+	    return NULL;
+	  }
+	printf("ttf initialisé avec succès.\n");
+
 	/* On fixe le mode d'affichage à 384*384 */
-	ecran = SDL_SetVideoMode(408, 408, 32, SDL_SWSURFACE| SDL_DOUBLEBUF | SDL_RESIZABLE);
+	ecran = SDL_SetVideoMode(640, 460, 32, SDL_SWSURFACE| SDL_DOUBLEBUF);
 	if ( ecran == NULL )
 	{
 		fprintf(stderr, "Echec de changement du mode video : %s.\n", SDL_GetError());

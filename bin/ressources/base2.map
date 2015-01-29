@@ -1,8 +1,0 @@
-{
-    "name" : "Test2",
-    "grid" : [ "0011111001",
-	       "0111101011",
-	       "0110011011" ],
-    "author" : "Enzo Hamelin",
-    "auto_remove" : true
-}

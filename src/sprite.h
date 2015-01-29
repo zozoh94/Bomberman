@@ -6,6 +6,7 @@
 #include <time.h>
 #include <SDL/SDL.h>
 #include<SDL/SDL_image.h>
+#include<SDL/SDL_ttf.h>
 
 #define NO_DIRECTION	9
 #define DOWN	0

@@ -15,6 +15,8 @@ typedef struct s_player player;
 typedef enum e_btype btype;
 typedef struct s_bomb bomb;
 typedef struct s_bombList bombList;
+typedef enum e_vCond vCond;
+typedef enum e_nbrP nbrP;
 
 #define FOREACH_map_JSON_Key(map_JSON_Key) \
     map_JSON_Key(name)			   \
@@ -105,6 +107,22 @@ struct s_map{
     SDL_Surface *bonusInvincibility;
 };
 
+/**
+   @enum e_vCond
+   @brief Conditions de victoires
+*/
+enum e_vCond{
+  POINTS,
+  VERSUS
+};
+
+enum e_nbrP{
+  SOLOVSIA,
+  SOLOVSBCPIA,
+  PVP,
+  VSIA
+};
+
 /*
   Enumeration typeP
   Le type de joueur (J1, J2, IA)
@@ -160,6 +178,7 @@ struct s_bomb{
   int timer; //Temps avant explosion
   player* myPlayer; //Joueur ayant posé la bombe
   btype type; //Type de la bombe
+  
 };
 
 
