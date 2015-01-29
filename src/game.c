@@ -186,6 +186,7 @@ void BombLoop(map* map, SDL_Surface *dest){
     }
     if(l->data->timer>=0){
       //Afficher bombe
+      SDL_BlitSurface(l->data->sprite, NULL, dest, &position);
     }
     if(l->data->timer<=0){
       //Afficher flammes sur les cases de l->data->explozone
@@ -325,5 +326,29 @@ void MapLoop(map* map, SDL_Surface *dest){
 }
 
 int TestWin(map* map, vCond cond, player** winner){
+  switch (cond)
+    {
+    case POINTS :
+      for(int i = 0;i< map->nbrPlayers;i++){
+	if (map->players[i]->score==30)
+	  {
+	    winner = &map->players[i];
+	    return 1;
+	  }
+      }
+      break;
+    case VERSUS :
+      for(int i = 0;i< map->nbrPlayers;i++){
+	if (map->players[i]->score==30)
+	  {
+	    winner = &map->players[i];
+	    return 1;
+	  }
+      }
+      break;
+    default :
+      break;
+    }
   return 0;
 }
+

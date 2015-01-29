@@ -100,7 +100,7 @@ int ParseMap(map *map)
 		{
 		    if (json_object_is_type(val, json_type_string))
 		    {
-			map->name = malloc(sizeof(json_object_get_string(val)));
+		      map->name = malloc(strlen(json_object_get_string(val))+1);
 			strcpy(map->name, json_object_get_string(val));
 		    }
 		    else
@@ -112,7 +112,7 @@ int ParseMap(map *map)
 		{
 		    if (json_object_is_type(val, json_type_string))
 		    {
-			map->author = malloc(sizeof(json_object_get_string(val)));
+			map->author = malloc(strlen(json_object_get_string(val))+1);
 			strcpy(map->author, json_object_get_string(val));
 		    }
 		    else
@@ -173,104 +173,6 @@ int ParseMap(map *map)
 				const char *c = json_object_get_string(grid->array[i]);
 				for(int j=0; j<map->width; j++)
 				{
-				    if (json_object_is_type(val, json_type_string))
-				    {
-				      listMaps[nbrMap-1]->name = malloc(strlen(json_object_get_string(val))+1);
-				      strcpy(listMaps[nbrMap-1]->name, json_object_get_string(val));
-				    }
-				    else
-				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_name_ERROR;
-				    }
-				}
-				if(strcmp(key, map_JSON_Key_Str[KEY_author]) == 0)
-				{
-				    if (json_object_is_type(val, json_type_string))
-				    {
-				      listMaps[nbrMap-1]->author = malloc(strlen(json_object_get_string(val))+1);
-				      strcpy(listMaps[nbrMap-1]->author, json_object_get_string(val));
-				    }
-				    else
-				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_author_ERROR;
-				    }
-				}
-				if(strcmp(key, map_JSON_Key_Str[KEY_auto_remove]) == 0)
-				{
-				    if (json_object_is_type(val, json_type_boolean))
-				    {
-					listMaps[nbrMap-1]->autoRemove = json_object_get_string(val);
-				    }
-				    else
-				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_auto_remove_ERROR;
-				    }
-				}
-				if(strcmp(key, map_JSON_Key_Str[KEY_theme]) == 0)
-				{
-				    if (json_object_is_type(val, json_type_string))
-				    {
-					char chaine[255];
-					strcpy(chaine, json_object_get_string(val));
-					listMaps[nbrMap-1]->undestructibleBlock = IMG_Load(strcat(chaine, "_undestr.bmp"));
-					if ( listMaps[nbrMap-1]->undestructibleBlock==NULL )
-					  {
-					    fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", chaine, SDL_GetError());
-					  }
-					strcpy(chaine, json_object_get_string(val));
-					listMaps[nbrMap-1]->destructibleBlock = IMG_Load(strcat(chaine, "_destr.bmp"));
-					if ( listMaps[nbrMap-1]->destructibleBlock==NULL )
-					  {
-					    fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", chaine, SDL_GetError());
-					  }
-					strcpy(chaine, json_object_get_string(val));
-					listMaps[nbrMap-1]->floor = IMG_Load(strcat(chaine, "_floor.bmp"));
-					if ( listMaps[nbrMap-1]->floor==NULL )
-					  {
-					    fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", chaine, SDL_GetError());
-					  }
-				    }
-				    else
-				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_theme_ERROR;
-				    }
-				}
-
-				if(strcmp(key,  map_JSON_Key_Str[KEY_grid]) == 0)
-				{
-				    if (json_object_is_type(val, json_type_array))
-				    {
-					array_list *grid = json_object_get_array(val);
-					if(grid->length<=0)
-					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
-					listMaps[nbrMap-1]->height = grid->length;
-					if(!json_object_is_type(grid->array[0], json_type_string))
-					    listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
-					listMaps[nbrMap-1]->width = strlen(json_object_get_string(grid->array[0]));
-					
-					listMaps[nbrMap-1]->grid = malloc(listMaps[nbrMap-1]->width*sizeof(int*));
-					for(int i=0; i<listMaps[nbrMap-1]->width; i++)
-					{
-					    listMaps[nbrMap-1]->grid[i] = malloc(listMaps[nbrMap-1]->height*sizeof(int));
-					}
-					for(int i=0; i<listMaps[nbrMap-1]->height; i++)
-					{
-					    if(json_object_is_type(grid->array[i], json_type_string))
-					    {
-						const char *c = json_object_get_string(grid->array[i]);
-						for(int j=0; j<listMaps[nbrMap-1]->width; j++)
-						{
-						    listMaps[nbrMap-1]->grid[j][i] = c[j] - '0';
-						}
-					    }
-					    else
-						listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
-					}
-				    }
-				    else
-				    {
-					listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
-				    }
 				    map->grid[j][i] = c[j] - '0';
 				}
 			    }

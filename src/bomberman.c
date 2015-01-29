@@ -6,8 +6,6 @@
 #include "map.h" 
 #include "game.h"
 
-void pauseSDL();
-
 void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y, char* texte){
   SDL_Rect position;
   SDL_Surface *txt = TTF_RenderText_Blended(font, texte, couleur);
@@ -16,7 +14,7 @@ void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y
   SDL_BlitSurface(txt, NULL, ecr, &position);
 }
 
-int main(int argc, char **argv)
+int main()
 {
   SDL_Event event;
   SDL_Surface* ecran;
@@ -31,8 +29,8 @@ int main(int argc, char **argv)
   fprintf(stderr,"%d cartes chargées\n",nbrMap);
   TTF_Font *titre = TTF_OpenFont("Bomberman.ttf",56);
   TTF_Font *fontmenu = TTF_OpenFont("Bomberman.ttf", 24);
-  SDL_Color white = {255, 255, 255}; 
-  SDL_Color gray = {150, 150, 150};
+  SDL_Color white = {255, 255, 255, 0}; 
+  SDL_Color gray = {150, 150, 150, 0};
 
   int menu = 0; // 0 = mode, 1 = joueurs, 2 = cartes
   int smenu = 0; // dépend du menu
@@ -159,20 +157,4 @@ int main(int argc, char **argv)
   SDL_Quit();
   TTF_Quit();
   return EXIT_SUCCESS;
-}
-
-void pauseSDL()
-{
-    int continuer = 1;
-    SDL_Event event;
- 
-    while (continuer)
-    {
-        SDL_WaitEvent(&event);
-        switch(event.type)
-        {
-            case SDL_QUIT:
-                continuer = 0;
-        }
-    }
 }
