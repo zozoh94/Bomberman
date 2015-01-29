@@ -40,18 +40,23 @@ bomb* CreateBomb(player* p){
 
 int DoExplode(int x, int y, map* map, bomb* bomb){
   int i;
+  if(x<0 || x >= map->width || y < 0 || y >= map->height){
+    return 1;
+  }
   if (map->grid[x][y]==UNDESTRUCTIBLE_BLOCK) //bloc indestructible : fin
     {
       return 1;
     }
-  else if (map->grid[bomb->x][bomb->y]==DESTRUCTIBLE_BLOCK) //bloc destructible : destruction du bloc + score du joueur + fin
+  else if (map->grid[x][y]==DESTRUCTIBLE_BLOCK) //bloc destructible : destruction du bloc + score du joueur + fin
     {
-      map->grid[x][y]=0;
-      bomb->myPlayer->score = bomb->myPlayer->score +2;
+      bomb->explozone[x][y]=1;
+      map->grid[x][y]=0; // AJOUTER LES BONUS ICI ««<
+      bomb->myPlayer->score = bomb->myPlayer->score +1;
       return 1;
     }
   else if (map->grid[x][y]==BOMB_BLOCK) //bombe : explosion de la bombe + continue
     {
+      bomb->explozone[x][y]=1;
       GetBomb (map,bomb->x,bomb->y)->timer = 0;
       return 0;
     }
@@ -60,7 +65,7 @@ int DoExplode(int x, int y, map* map, bomb* bomb){
       bomb->explozone[x][y]=1;
       //gestion des morts
       for(i=0; i < map->nbrPlayers; i++){
-	if ((map->players[i]->x=x) && (map->players[i]->y=y))
+	if ((map->players[i]->x==x) && (map->players[i]->y==y))
 	  {
 	    map->players[i]->x=map->startingBlocks[i][0];
 	    map->players[i]->y=map->startingBlocks[i][1];
@@ -78,7 +83,6 @@ void Explode(map* map, bomb* bomb){
   int i,x,y;
   x = bomb->x ;
   y = bomb->y ;
-  
   bomb->explozone[x][y]=1;
   map->grid[x][y] = 0;
   DoExplode(x,y,map,bomb);
@@ -125,7 +129,6 @@ bombList* NewBombList()
 	
 bombList *AddBombList(bombList* l, bomb* b)
 {
-  fprintf(stderr,"ADDBOMBLIST\n");
   bombList *bl = malloc (sizeof(bomb));
   bl->data = b;
   bl->next = l;
@@ -134,19 +137,22 @@ bombList *AddBombList(bombList* l, bomb* b)
 
 bombList* RemoveBombList(bombList* l, bomb* b)
 {
-  fprintf(stderr,"REMOVE BOMBLIST\n");
   bombList *previous = l;
   bombList *temp;
   if (previous->data == b) //cas du premier élément
     {
-      l = previous->next;
+      if(previous->next != NULL){
+	l = previous->next;
+      }else{
+	l = NULL;
+      }
       deleteSprite(previous->data->sprite);
       free(previous);
     }
   else //parcoure la liste en deux temps, avec temp et avec previous qui a l'ancienne valeur de temp
     {
       temp = previous->next;
-      while ((temp!=NULL) || (temp->data==b))
+      while ((temp!=NULL) && (temp->data!=b))
 	{
 	  previous = temp;
 	  temp = temp->next;

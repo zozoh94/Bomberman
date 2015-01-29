@@ -248,3 +248,11 @@ SDL_Surface *ScaleSurface(SDL_Surface *Surface, int width, int height)
   Surface = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE| SDL_DOUBLEBUF | SDL_RESIZABLE);
   return Surface;
 }
+
+void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y, char* texte){
+  SDL_Rect position;
+  SDL_Surface *txt = TTF_RenderText_Blended(font, texte, couleur);
+  position.x = x;
+  position.y = y;
+  SDL_BlitSurface(txt, NULL, ecr, &position);
+}

@@ -8,7 +8,7 @@
 #include "player.h"
 #include "map.h"
 
-#define TIMERBOMB 1000
+#define TIMERBOMB 800
 
 /**
    Initialise une bombe

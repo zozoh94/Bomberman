@@ -22,7 +22,7 @@ player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, b
 
 player *AutoInit(map *map, typeP type, const char *image){
   Sprite *spr=malloc(sizeof(Sprite));
-  return InitPlayer(0,0,0,1,100,3,0,type,map,spr,image);
+  return InitPlayer(0,0,0,1,50,3,0,type,map,spr,image);
 }
 
 void PlaceBomb(player *p){

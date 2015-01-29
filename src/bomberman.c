@@ -6,14 +6,6 @@
 #include "map.h" 
 #include "game.h"
 
-void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y, char* texte){
-  SDL_Rect position;
-  SDL_Surface *txt = TTF_RenderText_Blended(font, texte, couleur);
-  position.x = x;
-  position.y = y;
-  SDL_BlitSurface(txt, NULL, ecr, &position);
-}
-
 int main()
 {
   SDL_Event event;
@@ -108,18 +100,21 @@ int main()
 		case SDLK_RETURN:
 		  switch(menu){
 		  case(0):
-		    nbrPlayers = smenu;
+		    cond = smenu;
+		    fprintf(stderr,"%d nbrPlayers\n",nbrPlayers);
 		    smenu = 0;
 		    menu = 1;
 		    break;
 		  case(1):
-		    cond = smenu;
+		    nbrPlayers = smenu;
+		    fprintf(stderr,"%d nbrPlayers\n",nbrPlayers);
 		    smenu = 0;
 		    menu = 2;
 		    break;
 		  case(2):
 		    ParseMap(listMaps[smenu]);
 		    fprintf(stderr,"charge la map %s: %d\n",listMaps[smenu]->name,listMaps[smenu]->error);
+		    fprintf(stderr,"%d nbrPlayers\n",nbrPlayers);
 		    StartGame(listMaps[smenu], nbrPlayers, cond, ecran);
 		    smenu = 0;
 		    menu = 0;

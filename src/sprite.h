@@ -77,4 +77,6 @@ SDL_Surface* InitSDL();
 
 SDL_Surface *ScaleSurface(SDL_Surface *Surface, int width, int height);
 
+void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y, char* texte);
+
 #endif
