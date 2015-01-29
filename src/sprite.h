@@ -63,6 +63,10 @@ typedef struct
 
 int chargerBombermanSprite( Sprite *sprite, const char *image );
 
+int ChargeBomb( Sprite *sprite, const char *image );
+
+int ChargeFlame( Sprite *sprite, const char *image );
+
 void deleteSprite( Sprite *sprite );
 
 void fixDirectionSprite( Sprite *sprite, int direction );
@@ -72,5 +76,7 @@ void dessinerSprite( Sprite *sprite, SDL_Surface *destination );
 SDL_Surface* InitSDL();
 
 SDL_Surface *ScaleSurface(SDL_Surface *Surface, int width, int height);
+
+void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y, char* texte);
 
 #endif

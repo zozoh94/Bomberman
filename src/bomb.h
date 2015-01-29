@@ -3,11 +3,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "sprite.h"
 #include "struct.h"
 #include "player.h"
 #include "map.h"
 
-#define TIMERBOMB 1000
+#define TIMERBOMB 800
 
 /**
    Initialise une bombe
@@ -26,6 +27,13 @@ bomb* InitBomb(int x, int y, int rayon, int timer, player* myPlayer, btype type)
    Crée une bombe du type de celles que pose le joueur
 */
 bomb* CreateBomb(player* p);
+
+/**
+   Effets de l'explosion en X Y,
+   renvoie 1 si l'explosion continue pas
+   sinon renvoie 0.
+ */
+int DoExplode(int x, int y, map* map, bomb* bomb);
 
 /**
    Explose la bombe.

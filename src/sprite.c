@@ -54,6 +54,82 @@ int chargerBombermanSprite( Sprite *sprite, const char *image )
 	return 1;
 }
 
+int ChargeBomb( Sprite *sprite, const char *image ){
+  sprite->image = IMG_Load( image );
+  if ( sprite->image==NULL )
+  {
+    fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", image, SDL_GetError());
+    return 0;
+  }
+		
+  // on fixe la cle de transparance ici blanc
+  SDL_SetColorKey( sprite->image, SDL_SRCCOLORKEY, SDL_MapRGB( sprite->image->format, 255, 255, 255 ));
+
+  // le sprite n'est pas animé par defaut
+  sprite->anim = 0;
+
+  // on commence par la première animation
+  sprite->current_anim =0;
+
+  // le sprite dispose de trois animations
+  sprite->total_anims = 0;
+
+  // temps d'affichage pour une animation
+  sprite->time_anim = 15;
+
+  // Le temps qu'il reste à afficher l'animation courante
+  sprite->time_current_anim = 0;
+
+  // On definit ensuite les dimentions du sprite.
+  sprite->width = 24;
+  sprite->height = 24;
+	
+  sprite->source.x = sprite->current_anim * sprite->width;
+  sprite->source.y = 0;
+  sprite->source.w = sprite->width;
+  sprite->source.h = sprite->height;
+
+  return 1;
+}
+
+int ChargeFlame( Sprite *sprite, const char *image ){
+  sprite->image = IMG_Load( image );
+  if ( sprite->image==NULL )
+  {
+    fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", image, SDL_GetError());
+    return 0;
+  }
+		
+  // on fixe la cle de transparance ici blanc
+  SDL_SetColorKey( sprite->image, SDL_SRCCOLORKEY, SDL_MapRGB( sprite->image->format, 255, 255, 255 ));
+
+  // le sprite n'est pas animé par defaut
+  sprite->anim = 0;
+
+  // on commence par la première animation
+  sprite->current_anim =0;
+
+  // le sprite dispose de trois animations
+  sprite->total_anims = 0;
+
+  // temps d'affichage pour une animation
+  sprite->time_anim = 15;
+
+  // Le temps qu'il reste à afficher l'animation courante
+  sprite->time_current_anim = 0;
+
+  // On definit ensuite les dimentions du sprite.
+  sprite->width = 24;
+  sprite->height = 24;
+	
+  sprite->source.x = sprite->current_anim * sprite->width;
+  sprite->source.y = 0;
+  sprite->source.w = sprite->width;
+  sprite->source.h = sprite->height;
+
+  return 1;
+}
+
 void deleteSprite( Sprite *sprite )
 {
 	SDL_FreeSurface( sprite->image );
@@ -171,4 +247,12 @@ SDL_Surface *ScaleSurface(SDL_Surface *Surface, int width, int height)
 {
   Surface = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE| SDL_DOUBLEBUF | SDL_RESIZABLE);
   return Surface;
+}
+
+void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y, char* texte){
+  SDL_Rect position;
+  SDL_Surface *txt = TTF_RenderText_Blended(font, texte, couleur);
+  position.x = x;
+  position.y = y;
+  SDL_BlitSurface(txt, NULL, ecr, &position);
 }

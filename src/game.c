@@ -1,5 +1,5 @@
 #include "game.h"
-#define EXPLOSIONTIME 10
+#define EXPLOSIONTIME 100
 #define KEYNUMBER 11
 #define K_LEFT 0
 #define K_UP 1
@@ -20,6 +20,7 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   player *two;
   player *three;
   player *four;
+  fprintf(stderr,"GAME: %d \n",nbrPlayers);
   switch(nbrPlayers){
   case(VSIA):
     nbrjoueurs = 4;
@@ -66,7 +67,7 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
     break;
   }
   fprintf(stderr,"%d\n",InitMap(m, nbrjoueurs, tab));
-  dest = ScaleSurface(dest,(m->width)*32,(m->height)*32);
+  dest = ScaleSurface(dest,(m->width)*32,(m->height)*32+64);
   GameLoop(m, cond, dest);  
 }
 
@@ -74,6 +75,10 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
   SDL_Event event;
   int win;
   player* winner;
+  TTF_Font *font = TTF_OpenFont("Bomberman.ttf", 24);
+  SDL_Color white = {255, 255, 255, 0}; 
+  int scoreY = m->height-52;
+  int scoreM = m->width/2;
   //Tableau des appuis à tester, 0 = relevé, 1 = appuyé
   int* inputTab = malloc(sizeof(int)*KEYNUMBER);
   for(win = 0; win < KEYNUMBER; win++){
@@ -165,6 +170,12 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
       }
     }
     SDL_FillRect(dest, NULL, 0);
+    //AFFICHAGE DES SCORES
+    for(int i = 0; i<m->nbrPlayers;i++){
+      char* score = malloc(sizeof(char)*255);
+      sprintf(score, "P%d: %d",i,m->players[i]->score);
+      printText(dest, font, white, (16+(i%2)*scoreM), (scoreY+(i/2)*32), score);
+    }
     MapLoop(m, dest);
     BombLoop(m, dest);
     PlayerLoop(m, inputTab ,dest);
@@ -175,23 +186,35 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
 
 void BombLoop(map* map, SDL_Surface *dest){
   bombList* l = map->bombs;
-  while(l!=NULL && l->next != NULL){
-    fprintf(stderr,"Bombe en %d %d \n", l->data->x, l->data->y);
+  while(l!=NULL){
     l->data->timer--;
-    if(l->data->timer==-EXPLOSIONTIME){ // Destruction de la bombe
-      map->bombs = RemoveBombList(map->bombs, l->data);
-    }
-    if(l->data->timer<=0){ // Explosion de la bombe
+    if(l->data->timer==0){ // Explosion de la bombe
       Explode(map, l->data);
     }
     if(l->data->timer>=0){
-      //Afficher bombe
-      SDL_BlitSurface(l->data->sprite, NULL, dest, &position);
+      l->data->sprite->pos.x = (l->data->x)*32+4;
+      l->data->sprite->pos.y = (l->data->y)*32+4;
+      dessinerSprite(l->data->sprite, dest);
     }
     if(l->data->timer<=0){
-      //Afficher flammes sur les cases de l->data->explozone
+      SDL_Rect position;
+      for(int i = 0; i < map->width; i++){
+	for(int j = 0; j < map->height; j++){
+	  if(l->data->explozone[i][j] == 1){
+	    position.x=i*32+4;
+	    position.y=j*32+4;
+	    SDL_BlitSurface( l->data->flamme, NULL, dest, &position);
+	  }
+	}
+      }
     }
-    l = l->next;
+    if(l->data->timer==-EXPLOSIONTIME){ // Destruction de la bombe
+      l->data->myPlayer->bombs --; //décrémente le nombre de bombes posées par le joueur qui a posé la bombe
+      map->bombs = RemoveBombList(map->bombs, l->data);
+      l = l->next;
+    }else{
+      l = l->next;
+    }
   }
 }
 
@@ -326,6 +349,7 @@ void MapLoop(map* map, SDL_Surface *dest){
 }
 
 int TestWin(map* map, vCond cond, player** winner){
+  int restant;
   switch (cond)
     {
     case POINTS :
@@ -338,14 +362,20 @@ int TestWin(map* map, vCond cond, player** winner){
       }
       break;
     case VERSUS :
+      restant = map->nbrPlayers; // nombres de joueurs sur la map
       for(int i = 0;i< map->nbrPlayers;i++){
-	if (map->players[i]->score==30)
+	if ((map->players[i]->score)<=0) // On retire ceux qui n'ont plus de vie
 	  {
-	    winner = &map->players[i];
-	    return 1;
-	  }
+	    restant-=1;
+	  }else{
+	  winner = &map->players[i]; //Si il lui reste de la vie on le met en winner,
+	}
+	if(restant == 1){
+	  return 1; // On ne le renvoie que si il est le seul restant de toute façon.
+	}
       }
       break;
+      
     default :
       break;
     }
