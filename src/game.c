@@ -175,21 +175,32 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
 
 void BombLoop(map* map, SDL_Surface *dest){
   bombList* l = map->bombs;
-  while(l!=NULL && l->next != NULL){
+  while(l!=NULL){
     fprintf(stderr,"Bombe en %d %d \n", l->data->x, l->data->y);
     l->data->timer--;
     if(l->data->timer==-EXPLOSIONTIME){ // Destruction de la bombe
+      l->data->myPlayer->bombs --; //décrémente le nombre de bombes posées par le joueur qui a posé la bombe
       map->bombs = RemoveBombList(map->bombs, l->data);
     }
     if(l->data->timer<=0){ // Explosion de la bombe
       Explode(map, l->data);
     }
     if(l->data->timer>=0){
-      //Afficher bombe
-      SDL_BlitSurface(l->data->sprite, NULL, dest, &position);
+      l->data->sprite->pos.x = (l->data->x)*32+4;
+      l->data->sprite->pos.y = (l->data->y)*32+4;
+      dessinerSprite(l->data->sprite, dest);
     }
     if(l->data->timer<=0){
-      //Afficher flammes sur les cases de l->data->explozone
+      SDL_Rect position;
+      for(int i = 0; i < map->width; i++){
+	for(int j = 0; j < map->height; j++){
+	  if(l->data->explozone[i][j] == 1){
+	    position.x=i*32+4;
+	    position.y=j*32+4;
+	    SDL_BlitSurface( l->data->flamme, NULL, dest, &position);
+	  }
+	}
+      }
     }
     l = l->next;
   }

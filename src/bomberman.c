@@ -88,7 +88,6 @@ int main()
 	  // Choix de la carte
 	  case(2):
 	    mmax = nbrMap;
-	    fprintf(stderr,"%d/%d: %s\n",smenu,mmax,listMaps[smenu]->name);
 	    printText(ecran, fontmenu, white, 320-(1*24)/2, 256, "A");
 	    printText(ecran, fontmenu, white, 320-(strlen(listMaps[smenu]->name)*24)/2, 288, listMaps[smenu]->name);
 	    printText(ecran, fontmenu, white, 320-(1*24)/2, 320, "V");
@@ -119,9 +118,11 @@ int main()
 		    menu = 2;
 		    break;
 		  case(2):
+		    ParseMap(listMaps[smenu]);
+		    fprintf(stderr,"charge la map %s: %d\n",listMaps[smenu]->name,listMaps[smenu]->error);
+		    StartGame(listMaps[smenu], nbrPlayers, cond, ecran);
 		    smenu = 0;
 		    menu = 0;
-		    StartGame(listMaps[smenu], nbrPlayers, cond, ecran);
 		    break;
 		  default:
 		    break;

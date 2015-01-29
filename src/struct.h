@@ -179,7 +179,7 @@ struct s_bomb{
   player* myPlayer; //Joueur ayant posé la bombe
   btype type; //Type de la bombe
   Sprite* sprite; //Image de la bombe
-  Sprite* flamme; //Image des flammes
+  SDL_Surface* flamme; //Image des flammes
   int** explozone; //Cases touchées par l'explosion (0 = non 1 = oui);
 };
 

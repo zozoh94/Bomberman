@@ -63,6 +63,10 @@ typedef struct
 
 int chargerBombermanSprite( Sprite *sprite, const char *image );
 
+int ChargeBomb( Sprite *sprite, const char *image );
+
+int ChargeFlame( Sprite *sprite, const char *image );
+
 void deleteSprite( Sprite *sprite );
 
 void fixDirectionSprite( Sprite *sprite, int direction );
