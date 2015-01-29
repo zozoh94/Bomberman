@@ -2,17 +2,10 @@
 
 int ListMaps(map*** ptrListMap)
 {
-    static const char *map_JSON_Key_Str[] = {
-	FOREACH_map_JSON_Key(GENERATE_STRING)
-    };
     map** listMaps = NULL;
     map** listMapsRealloc;
     struct dirent *mapFile;
     DIR *mapsDir;
-    FILE* file = NULL;
-    char string[MAX_LEN_LINE] = "";
-    char stringFile[MAX_LEN] = "";
-    json_object *jobj = NULL;
     chdir("ressources"); //faire chemin relatif au fichier et pas relatif à là d'où on l'execute
     mapsDir = opendir("." );
     struct stat statFile;
@@ -70,20 +63,115 @@ int ListMaps(map*** ptrListMap)
 		    listMaps[nbrMap-1]->bonusInvincibility = IMG_Load("bonus_invincibility.bmp");
 		    
 		    //On peut maintenant parser le fichier .map formaté en JSON
-		    file = fopen(mapFile->d_name, "r");
-		    if (file!=NULL)
+		    int result = ParseMap(listMaps[nbrMap-1]);
+		    if(result != 0)
+			return result;
+		}
+	    }
+	}	
+    }
+    closedir(mapsDir);
+    return nbrMap;
+}
+
+int ParseMap(map *map)
+{
+    static const char *map_JSON_Key_Str[] = {
+	FOREACH_map_JSON_Key(GENERATE_STRING)
+    };
+    char string[MAX_LEN_LINE] = "";
+    char stringFile[MAX_LEN] = "";
+    json_object *jobj = NULL;
+    FILE* file = NULL;
+    file = fopen(map->filename, "r");
+    if (file!=NULL)
+    {
+	while (fgets(string, MAX_LEN_LINE, file) != NULL) // On lit le fichier tant qu'on ne reçoit pas d'erreur (NULL)
+	{
+	    strcat(stringFile, string);
+	}
+	jobj = json_tokener_parse(stringFile);
+	if(jobj != NULL)
+	{
+	    //On parse
+	    json_object_object_foreach(jobj, key, val)
+	    {
+		if(strcmp(key, map_JSON_Key_Str[KEY_name]) == 0)
+		{
+		    if (json_object_is_type(val, json_type_string))
 		    {
-			while (fgets(string, MAX_LEN_LINE, file) != NULL) // On lit le fichier tant qu'on ne reçoit pas d'erreur (NULL)
+			map->name = malloc(sizeof(json_object_get_string(val)));
+			strcpy(map->name, json_object_get_string(val));
+		    }
+		    else
+		    {
+			map->error = MAP_FORMAT_name_ERROR;
+		    }
+		}
+		if(strcmp(key, map_JSON_Key_Str[KEY_author]) == 0)
+		{
+		    if (json_object_is_type(val, json_type_string))
+		    {
+			map->author = malloc(sizeof(json_object_get_string(val)));
+			strcpy(map->author, json_object_get_string(val));
+		    }
+		    else
+		    {
+			map->error = MAP_FORMAT_author_ERROR;
+		    }
+		}
+		if(strcmp(key, map_JSON_Key_Str[KEY_auto_remove]) == 0)
+		{
+		    if (json_object_is_type(val, json_type_boolean))
+		    {
+			map->autoRemove = json_object_get_string(val);
+		    }
+		    else
+		    {
+			map->error = MAP_FORMAT_auto_remove_ERROR;
+		    }
+		}
+		if(strcmp(key, map_JSON_Key_Str[KEY_theme]) == 0)
+		{
+		    if (json_object_is_type(val, json_type_string))
+		    {
+			char chaine[255];
+			strcpy(chaine, json_object_get_string(val));
+			map->undestructibleBlock = IMG_Load(strcat(chaine, "_undestr.bmp"));
+			strcpy(chaine, json_object_get_string(val));
+			map->destructibleBlock = IMG_Load(strcat(chaine, "_destr.bmp"));
+			strcpy(chaine, json_object_get_string(val));
+			map->floor = IMG_Load(strcat(chaine, "_floor.bmp"));
+		    }
+		    else
+		    {
+			map->error = MAP_FORMAT_theme_ERROR;
+		    }
+		}
+
+		if(strcmp(key,  map_JSON_Key_Str[KEY_grid]) == 0)
+		{
+		    if (json_object_is_type(val, json_type_array))
+		    {
+			array_list *grid = json_object_get_array(val);
+			if(grid->length<=0)
+			    map->error = MAP_FORMAT_grid_ERROR;
+			map->height = grid->length;
+			if(!json_object_is_type(grid->array[0], json_type_string))
+			    map->error = MAP_FORMAT_grid_ERROR;
+			map->width = strlen(json_object_get_string(grid->array[0]));
+					
+			map->grid = malloc(map->width*sizeof(int*));
+			for(int i=0; i<map->width; i++)
 			{
-			    strcat(stringFile, string);
+			    map->grid[i] = malloc(map->height*sizeof(int));
 			}
-			jobj = json_tokener_parse(stringFile);
-			if(jobj != NULL)
+			for(int i=0; i<map->height; i++)
 			{
-			    //On parse
-			    json_object_object_foreach(jobj, key, val)
+			    if(json_object_is_type(grid->array[i], json_type_string))
 			    {
-				if(strcmp(key, map_JSON_Key_Str[KEY_name]) == 0)
+				const char *c = json_object_get_string(grid->array[i]);
+				for(int j=0; j<map->width; j++)
 				{
 				    if (json_object_is_type(val, json_type_string))
 				    {
@@ -183,25 +271,31 @@ int ListMaps(map*** ptrListMap)
 				    {
 					listMaps[nbrMap-1]->error = MAP_FORMAT_grid_ERROR;
 				    }
+				    map->grid[j][i] = c[j] - '0';
 				}
 			    }
-			}
-			else
-			{
-			    return MAP_FORMAT_ERROR;
+			    else
+				map->error = MAP_FORMAT_grid_ERROR;
 			}
 		    }
 		    else
 		    {
-			listMaps[nbrMap-1]->error = MAP_FILE_ERROR;
+			map->error = MAP_FORMAT_grid_ERROR;
 		    }
-		    fclose(file);
 		}
 	    }
-	}	
+	}
+	else
+	{
+	    return MAP_FORMAT_ERROR;
+	}
     }
-    closedir(mapsDir);
-    return nbrMap;
+    else
+    {
+	map->error = MAP_FILE_ERROR;
+    }
+    fclose(file);
+    return 0;
 }
 
 int InitMap(map* map, int nbrPlayers, player** listPlayer)
