@@ -36,9 +36,8 @@ int main(int argc, char **argv)
 
   int menu = 0; // 0 = mode, 1 = joueurs, 2 = cartes
   int smenu = 0; // dépend du menu
-  int mmax = 3; // menumax
+  int mmax = 2; // menumax
 
-  map *m = listMaps[0];
   nbrP nbrPlayers = 0;
   vCond cond = 0;
   
@@ -52,25 +51,49 @@ int main(int argc, char **argv)
 	    //pour la position: 320 (moitié de l'écran) - (nombre de lettre * taille des lettres)/2
 	    //              et: 128 (sous le titre) + 32 par ligne.
 	    // Choix du mode de jeu
-	  case 0:
+	  case(0):
 	    mmax = 2;
-	    printText(ecran, fontmenu, white, 320-(10*24)/2, 128, "Mode point");
+	    printText(ecran, fontmenu, gray, 320-(10*24)/2, 128, "Mode point");
 	    printText(ecran, fontmenu, gray, 320-(11*24)/2, 160, "Mode versus");
+	    switch(smenu){
+	    case(0):
+	      printText(ecran, fontmenu, white, 320-(10*24)/2, 128, "Mode point");
+
+	      break;
+	    case(1):
+	      printText(ecran, fontmenu, white, 320-(11*24)/2, 160, "Mode versus");
+	      break;
+	    }
 	    break;
 	    // Choix du nombre de joueurs
-	  case 1:
+	  case(1):
 	    mmax = 4;
-	    printText(ecran, fontmenu, white, 320-(10*24)/2, 128, "J1 vs 1 IA");
+	    printText(ecran, fontmenu, gray, 320-(10*24)/2, 128, "J1 vs 1 IA");
 	    printText(ecran, fontmenu, gray, 320-(10*24)/2, 160, "J1 vs 3 IA");
 	    printText(ecran, fontmenu, gray, 320-(8*24)/2, 192, "J1 vs J2");
 	    printText(ecran, fontmenu, gray, 320-(16*24)/2, 224, "J1 vs J2 vs 2 IA");
+	    switch(smenu){
+	    case(0):
+	      printText(ecran, fontmenu, white, 320-(10*24)/2, 128, "J1 vs 1 IA");
+	      break;
+	    case(1):
+	      printText(ecran, fontmenu, white, 320-(10*24)/2, 160, "J1 vs 3 IA");
+	      break;
+	    case(2):
+	      printText(ecran, fontmenu, white, 320-(8*24)/2, 192, "J1 vs J2");
+	      break;
+	    case(3):
+	      printText(ecran, fontmenu, white, 320-(16*24)/2, 224, "J1 vs J2 vs 2 IA");
+	      break;
+	    }
 	    break;
 	  // Choix de la carte
-	  case 2:
+	  case(2):
 	    mmax = nbrMap;
-	    printText(ecran, fontmenu, white, 320-(1*24)/2, 128, "^");
-	    printText(ecran, fontmenu, white, 320-(strlen(listMaps[smenu]->name)*24)/2, 160, listMaps[smenu]->name);
-	    printText(ecran, fontmenu, white, 320-(1*24)/2, 192, "v");
+	    fprintf(stderr,"%d/%d: %s\n",smenu,mmax,listMaps[smenu]->name);
+	    printText(ecran, fontmenu, white, 320-(1*24)/2, 256, "A");
+	    printText(ecran, fontmenu, white, 320-(strlen(listMaps[smenu]->name)*24)/2, 288, listMaps[smenu]->name);
+	    printText(ecran, fontmenu, white, 320-(1*24)/2, 320, "V");
 	    break;
 	  }
 	  SDL_Flip(ecran);
@@ -86,8 +109,37 @@ int main(int argc, char **argv)
 		  continuer = 1;
 		  break;
 		case SDLK_RETURN:
-		  StartGame(m, nbrPlayers, cond, ecran);
+		  switch(menu){
+		  case(0):
+		    nbrPlayers = smenu;
+		    smenu = 0;
+		    menu = 1;
+		    break;
+		  case(1):
+		    cond = smenu;
+		    smenu = 0;
+		    menu = 2;
+		    break;
+		  case(2):
+		    smenu = 0;
+		    menu = 0;
+		    StartGame(listMaps[smenu], nbrPlayers, cond, ecran);
+		    break;
+		  default:
+		    break;
+		  }
 		  break;
+		case SDLK_BACKSPACE:
+		  if(menu>0)
+		    menu--;
+		  break;
+		case SDLK_UP:
+		  smenu=(smenu-1+mmax)%mmax;
+		  break;
+		case SDLK_DOWN:
+		  smenu=(smenu+1)%mmax;
+		  break;
+		  
 		default:
 		  break;
 		}
