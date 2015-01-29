@@ -20,11 +20,19 @@
 
 /**
  * @fn int ListMap(map*** ptrListMap)
- * @brief Initialise toutes les cartes du dossier 'maps', parse la map, le nom de la map et son auteur
+ * @brief Initialise toutes les cartes du dossier 'maps'
  * @param ptrListMap adresse de la list de Map
  * @return Retourne le nombre de maps si tout s'est bien passé, un map_Error sinon.
  */
 int ListMaps(map*** ptrListMap);
+
+/**
+ * @fn int ParseMap(map *map)
+ * @brief Initialise une carte, parse la map
+ * @param map Pointeur sur la map que l'on souhaite utilisé
+ * @return Retourne le nombre de maps si tout s'est bien passé, un map_Error sinon.
+ */
+int ParseMap(map *map);
 
 /**
  * @fn int InitMap(map* map)
