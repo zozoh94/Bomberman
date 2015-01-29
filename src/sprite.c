@@ -150,7 +150,6 @@ SDL_Surface* InitSDL()
 	}
 	printf("SDL initialisé avec succès.\n");
 	
-	
 	/* On fixe le mode d'affichage à 384*384 */
 	ecran = SDL_SetVideoMode(408, 408, 32, SDL_SWSURFACE| SDL_DOUBLEBUF | SDL_RESIZABLE);
 	if ( ecran == NULL )

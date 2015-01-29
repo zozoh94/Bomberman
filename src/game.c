@@ -13,7 +13,7 @@
 #define K_SPACE 9
 #define K_ESCAPE 10
 void Solo(map *m, SDL_Surface *dest){
-  player **tab = malloc(sizeof(player*)*2);
+  player **tab = malloc(sizeof(player*)*3);
   player *p1 = AutoInit(m,J1,"p1.bmp");
   player *p2 = AutoInit(m,J2,"p2.bmp");
   player *ia = AutoInit(m,IA,"p3.bmp");

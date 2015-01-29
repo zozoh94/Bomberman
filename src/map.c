@@ -87,8 +87,8 @@ int ListMaps(map*** ptrListMap)
 				{
 				    if (json_object_is_type(val, json_type_string))
 				    {
-					listMaps[nbrMap-1]->name = malloc(sizeof(json_object_get_string(val)));
-					strcpy(listMaps[nbrMap-1]->name, json_object_get_string(val));
+				      listMaps[nbrMap-1]->name = malloc(strlen(json_object_get_string(val))+1);
+				      strcpy(listMaps[nbrMap-1]->name, json_object_get_string(val));
 				    }
 				    else
 				    {
@@ -99,8 +99,8 @@ int ListMaps(map*** ptrListMap)
 				{
 				    if (json_object_is_type(val, json_type_string))
 				    {
-					listMaps[nbrMap-1]->author = malloc(sizeof(json_object_get_string(val)));
-					strcpy(listMaps[nbrMap-1]->author, json_object_get_string(val));
+				      listMaps[nbrMap-1]->author = malloc(strlen(json_object_get_string(val))+1);
+				      strcpy(listMaps[nbrMap-1]->author, json_object_get_string(val));
 				    }
 				    else
 				    {
@@ -125,10 +125,22 @@ int ListMaps(map*** ptrListMap)
 					char chaine[255];
 					strcpy(chaine, json_object_get_string(val));
 					listMaps[nbrMap-1]->undestructibleBlock = IMG_Load(strcat(chaine, "_undestr.bmp"));
+					if ( listMaps[nbrMap-1]->undestructibleBlock==NULL )
+					  {
+					    fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", chaine, SDL_GetError());
+					  }
 					strcpy(chaine, json_object_get_string(val));
 					listMaps[nbrMap-1]->destructibleBlock = IMG_Load(strcat(chaine, "_destr.bmp"));
+					if ( listMaps[nbrMap-1]->destructibleBlock==NULL )
+					  {
+					    fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", chaine, SDL_GetError());
+					  }
 					strcpy(chaine, json_object_get_string(val));
 					listMaps[nbrMap-1]->floor = IMG_Load(strcat(chaine, "_floor.bmp"));
+					if ( listMaps[nbrMap-1]->floor==NULL )
+					  {
+					    fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", chaine, SDL_GetError());
+					  }
 				    }
 				    else
 				    {
@@ -339,8 +351,8 @@ void FreeMaps(map** listMap, int nbrMaps)
 	//On libère la mémoire de la liste de joueurs
 	free(listMap[i]->players);
 	//On libère la mémoire des enregistrements de startingBlock
-	for(int i=0; i<listMap[i]->nbrPlayers; i++)
-	    free(listMap[i]->startingBlocks[i]);
+	for(int k=0; k<listMap[i]->nbrPlayers; k++)
+	    free(listMap[i]->startingBlocks[k]);
 	free(listMap[i]->startingBlocks);
 	//On peux liberer la mémoire de la structure
 	free(listMap[i]);
