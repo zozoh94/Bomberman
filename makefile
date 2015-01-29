@@ -1,10 +1,11 @@
-JSON_C_DIR=usr/local
 CC = gcc
-CFLAGS = -W -Wall -std=gnu99 -O4 -I$(JSON_C_DIR)/include/json-c
-LDFLAGS = -lSDL -lSDL_image -lSDL_ttf -L$(JSON_C_DIR)/lib/ljson-c
+CFLAGS = -W -Wall -std=gnu99 -O4 -Iinclude/json-c -Iinclude/SDL
+LDFLAGS = -Llib -lSDL -lSDL_image -lSDL_ttf -ljson-c
 DEP = bomb.o player.o game.o map.o sprite.o
 
-
+ifeq (${WIN32_CROSS_PLATFORM}, 1)
+    CC = x86_64-w64-mingw32-gcc
+endif
 ifeq (${DEBUG}, 1)
     CFLAGS += -g
 endif

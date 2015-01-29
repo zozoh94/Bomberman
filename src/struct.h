@@ -2,9 +2,9 @@
 #define STRUCT_H
 
 #include <stdbool.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
+#include "../include/SDL/SDL.h"
+#include "../include/SDL/SDL_image.h"
+#include "../include/SDL/SDL_ttf.h"
 #include "sprite.h"
 
 typedef enum e_map_Error map_Error;

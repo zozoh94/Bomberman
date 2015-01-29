@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
+#include "../include/SDL/SDL.h"
+#include "../include/SDL/SDL_ttf.h"
 #include "map.h" 
 #include "game.h"
 
