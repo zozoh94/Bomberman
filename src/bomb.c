@@ -13,9 +13,25 @@ bomb* InitBomb(int x, int y, int rayon, int timer, player* myPlayer, btype type)
   if(ChargeBomb (b->sprite, "bomb.png") == 0){
     fprintf(stderr,"erreur chargement image bombe\n");
   }
-  b->flamme = IMG_Load("flame.png");
-  if(b->flamme == NULL){
-    fprintf(stderr,"erreur chargement image flammes\n");
+  b->flammeC = IMG_Load("flameC.png");
+  if(b->flammeC == NULL){
+    fprintf(stderr,"erreur chargement image flammes centre\n");
+  }
+  b->flammeD = IMG_Load("flameD.png");
+  if(b->flammeD == NULL){
+    fprintf(stderr,"erreur chargement image flammes droite\n");
+  }
+  b->flammeB = IMG_Load("flameB.png");
+  if(b->flammeB == NULL){
+    fprintf(stderr,"erreur chargement image flammes bas\n");
+  }
+  b->flammeG = IMG_Load("flameG.png");
+  if(b->flammeG == NULL){
+    fprintf(stderr,"erreur chargement image flammes gauche\n");
+  }
+  b->flammeH = IMG_Load("flameH.png");
+  if(b->flammeH == NULL){
+    fprintf(stderr,"erreur chargement image flammes haut\n");
   }
 
   int **explZ=malloc(sizeof(int*)*myPlayer->map->width);
@@ -123,25 +139,25 @@ void Explode(map* map, bomb* bomb){
   DoExplode(x,y,map,bomb,5);
   for (i=0;i<bomb->explosion;i++)
     {
-      if(DoExplode(x+i,y,map,bomb) == 1){
+      if(DoExplode(x+i,y,map,bomb,1) == 1){
 	break;
       }
     }
   for (i=0;i<bomb->explosion;i++)
     {
-      if(DoExplode(x-i,y,map,bomb) == 3){
+      if(DoExplode(x-i,y,map,bomb,3) == 1){
 	break;
       }
     }
   for (i=0;i<bomb->explosion;i++)
     {
-      if(DoExplode(x,y+i,map,bomb) == 2){
+      if(DoExplode(x,y+i,map,bomb,2) == 1){
 	break;
       }
     }
   for (i=0;i<bomb->explosion;i++)
     {
-      if(DoExplode(x,y-i,map,bomb) == 4){
+      if(DoExplode(x,y-i,map,bomb,4) == 1){
 	break;
       }
     }

@@ -42,22 +42,22 @@ void TryMove(player *p, int X, int Y){
       p->moveTimer = p->speed;
       p->destX = X;
       p->destY = Y;
-      p->sprite->anim = 0;
       switch(X-(p->x)){
       case 0 :
 	switch(Y-(p->y)){
 	case 1 :
-	  fixDirectionSprite(p->sprite,0);
+	  fixDirectionSprite(p->sprite,DOWN);
 	  break;
 	case -1 :
-	  fixDirectionSprite(p->sprite,2);
+	  fixDirectionSprite(p->sprite,UP);
 	  break;
 	}
+	break;
       case 1 :
-	fixDirectionSprite(p->sprite,1);
+	fixDirectionSprite(p->sprite,RIGHT);
 	break;
       case -1 :
-	fixDirectionSprite(p->sprite,3);
+	fixDirectionSprite(p->sprite,LEFT);
 	break;
       }
     }
@@ -68,7 +68,5 @@ void Move(player* p){
   p->x = p->destX;
   p->y = p->destY;
   p->moveTimer = -1;
-  p->sprite->anim = 0;
-  p->sprite->pos.x = (p->x)*32;
-  p->sprite->pos.y = (p->y)*32;
+  fixDirectionSprite(p->sprite,NO_DIRECTION);
 }

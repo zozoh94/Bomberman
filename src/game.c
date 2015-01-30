@@ -206,10 +206,26 @@ void BombLoop(map* map, SDL_Surface *dest){
       SDL_Rect position;
       for(int i = 0; i < map->width; i++){
 	for(int j = 0; j < map->height; j++){
-	  if(l->data->explozone[i][j] == 1){
-	    position.x=i*32+4;
-	    position.y=j*32+4;
-	    SDL_BlitSurface( l->data->flamme, NULL, dest, &position);
+	  if(l->data->explozone[i][j] != 0){
+	    position.x=i*32;
+	    position.y=j*32;
+	    switch(l->data->explozone[i][j]){
+	    case 1: //droite
+	      SDL_BlitSurface( l->data->flammeD, NULL, dest, &position);
+	      break;
+	    case 2: //bas
+	      SDL_BlitSurface( l->data->flammeB, NULL, dest, &position);
+	      break;
+	    case 3: //gauche
+	      SDL_BlitSurface( l->data->flammeG, NULL, dest, &position);
+	      break;
+	    case 4: //haut
+	      SDL_BlitSurface( l->data->flammeH, NULL, dest, &position);
+	      break;
+	    default: //centre
+	      SDL_BlitSurface( l->data->flammeC, NULL, dest, &position);
+	      break;
+	    }
 	  }
 	}
       }
@@ -228,25 +244,29 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
   int i;
   player *p=NULL;
   for(i = 0; i < map->nbrPlayers; i++){
+    int modX = 0;
+    int modY = 0;
     p = map->players[i];
     
     if(p->moveTimer > 0){ // On arrête le décompte à -1
       p->moveTimer --;
-      /* Déplacement fluide, pas fonctionnel
+    }
+    if(p->moveTimer > 0){
+      // Déplacement fluide
       switch(p->sprite->orientation){
-      case 0 :
-	p->sprite->pos.y=(p->y)*32;
+      case UP :
+	modY = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
 	break;
-      case 1 :
-	p->sprite->pos.x=(p->x)*32;
+      case RIGHT :
+	modX = (int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
 	break;
-      case 2 :
-	p->sprite->pos.y=(p->y)*32;
+      case DOWN :
+	modY = 	(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;
 	break;
-      case 3 :
-	p->sprite->pos.x=(p->x)*32;
+      case LEFT :
+	modX = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
 	break;
-      */
+      }
     }
     if(p->moveTimer == 0){
       Move(p);
@@ -324,8 +344,8 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	PlaceBomb(p);
       }
     }
-    p->sprite->pos.x = (p->x)*32;
-    p->sprite->pos.y = (p->y)*32;
+    p->sprite->pos.x = (p->x)*32+5+modX; //Le sprite fait 22*32 donc on le décale de (32-22)/2 = 10
+    p->sprite->pos.y = (p->y)*32+modY;
     dessinerSprite(p->sprite, dest);
   }
 }
