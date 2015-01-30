@@ -1,8 +1,14 @@
 CC = gcc
 CFLAGS = -W -Wall -std=gnu99 -O4 -Iinclude/json-c
-LDFLAGS = -Llib -lSDL -lSDL_image -lSDL_ttf -ljson-c
+LDFLAGS = -ljson-c
 DEP = bomb.o player.o game.o map.o sprite.o
 
+ifeq (${WIN32}, 1)
+    CFLAGS += -I/usr/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main
+    LDFLAGS += -L/usr/lib -lmingw32 -lSDLmain -lSDL -mwindows
+else
+    LDFLAGS += -Llib -lSDL -lSDL_image -lSDL_ttf
+endif
 ifeq (${WIN32_CROSS_PLATFORM}, 1)
     CC = x86_64-w64-mingw32-gcc
 endif
