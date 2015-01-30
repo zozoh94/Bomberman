@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL/SDL.h>
+#include "../include/SDL/SDL.h"
 #include "struct.h"
 #include "map.h"
 #include "player.h"
