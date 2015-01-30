@@ -3,6 +3,7 @@
 #include <string.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
+#include <time.h>
 #include "map.h" 
 #include "game.h"
 
@@ -10,7 +11,7 @@ int main()
 {
   SDL_Event event;
   SDL_Surface* ecran;
-  
+  srand(time(NULL));
   
   int continuer = 0;
   

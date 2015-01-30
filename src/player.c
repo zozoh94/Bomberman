@@ -27,7 +27,7 @@ player *AutoInit(map *map, typeP type, const char *image){
 
 void PlaceBomb(player *p){
   //On suppose que le joueur est à un endroit où il peut marcher (espace vide)
-  if(p->bombs < p->bombMax && p->moveTimer == -1){
+  if(p->bombs < p->bombMax && p->moveTimer == -1 && p->x>=0 && p->y >= 0 && p->x < p->map->width && p->y < p->map->height){
     if(p->map->grid[p->x][p->y] != 4){ //si il n'y a pas déjà une bombe
       p->bombs++;
       p->map->bombs = AddBombList(p->map->bombs, CreateBomb(p));

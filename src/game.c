@@ -68,6 +68,12 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   }
   fprintf(stderr,"%d\n",InitMap(m, nbrjoueurs, tab));
   dest = ScaleSurface(dest,(m->width)*32,(m->height)*32+64);
+  m->victory = cond;
+  if(cond == VERSUS){
+    for(int i = 0; i < m->nbrPlayers; i++){
+      m->players[i]->score = 1;
+    }
+  }
   GameLoop(m, cond, dest);  
 }
 
@@ -271,9 +277,10 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       //  Cherche les joueurs
       //  Regarde quels joueurs sont atteignables
       //  Si == 0
-      //   
+      //   péter le plus de bloc possibles
       //  Sinon
       //   Si peut poser bombe (et safe), pose bombe puis se déplace vers le joueur
+
 
       //vérifier l'état du jeu
       //chercher un objectif
@@ -339,6 +346,22 @@ void MapLoop(map* map, SDL_Surface *dest){
 	      break;
 	    case DESTRUCTIBLE_BLOCK :
 	      SDL_BlitSurface( map->destructibleBlock, NULL, dest, &position);
+	      break;
+	    case BONUS_RADIUS_BLOCK :
+	      SDL_BlitSurface( map->floor, NULL, dest, &position);
+	      SDL_BlitSurface( map->bonusRadius, NULL, dest, &position);
+	      break;
+	    case BONUS_BOMB_LIMIT_BLOCK :
+	      SDL_BlitSurface( map->floor, NULL, dest, &position);
+	      SDL_BlitSurface( map->bonusBombLimit, NULL, dest, &position);
+	      break;
+	    case BONUS_SPEED_BLOCK :
+	      SDL_BlitSurface( map->floor, NULL, dest, &position);
+	      SDL_BlitSurface( map->bonusSpeed, NULL, dest, &position);
+	      break;
+	    case BONUS_INVINCIBILITY_BLOCK :
+	      SDL_BlitSurface( map->floor, NULL, dest, &position);
+	      SDL_BlitSurface( map->bonusInvincibility, NULL, dest, &position);
 	      break;
 	    default :
 	      SDL_BlitSurface( map->floor, NULL, dest, &position);

@@ -34,6 +34,15 @@ enum map_JSON_Key {
 };
 
 /**
+   @enum e_vCond
+   @brief Conditions de victoires
+*/
+enum e_vCond{
+  POINTS,
+  VERSUS
+};
+
+/**
  * @enum map_Error
  * @brief Enumération de erreurs possibles lors de l'initialisation de la structure map
  */
@@ -72,6 +81,7 @@ enum e_case_Type
     BONUS_SPEED_BLOCK, //augmentation de la vitesse
     BONUS_INVINCIBILITY_BLOCK, //invincibilité >>>PAS DEFINI
 };
+
 /*
   idées: 
   -passe muraille
@@ -96,6 +106,7 @@ struct s_map{
     map_Error error; //Indique un code d'erreur si l'initialisation de la structure a échoué
     char* filename; //Nom du fichier map
     int** startingBlocks; //Enregistrement des points de départ de la map
+  vCond victory; //Conditions de victoire
     //Images de la map, à charger avec destructibleWall=IMG_Load("nomdufichier.jpg");
     SDL_Surface *destructibleBlock; //Image des murs destructibles "destr"
     SDL_Surface *undestructibleBlock; //Image des murs indestructibles "indestr"
@@ -105,15 +116,6 @@ struct s_map{
     SDL_Surface *bonusBombLimit;
     SDL_Surface *bonusSpeed;
     SDL_Surface *bonusInvincibility;
-};
-
-/**
-   @enum e_vCond
-   @brief Conditions de victoires
-*/
-enum e_vCond{
-  POINTS,
-  VERSUS
 };
 
 enum e_nbrP{

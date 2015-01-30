@@ -1,8 +1,5 @@
 #include "bomb.h"
 
-
-
-
 bomb* InitBomb(int x, int y, int rayon, int timer, player* myPlayer, btype type){
   bomb *b = malloc (sizeof(bomb));
   b->x = x;
@@ -39,7 +36,7 @@ bomb* CreateBomb(player* p){
 }
 
 int DoExplode(int x, int y, map* map, bomb* bomb){
-  int i;
+  int i, random;
   if(x<0 || x >= map->width || y < 0 || y >= map->height){
     return 1;
   }
@@ -50,8 +47,26 @@ int DoExplode(int x, int y, map* map, bomb* bomb){
   else if (map->grid[x][y]==DESTRUCTIBLE_BLOCK) //bloc destructible : destruction du bloc + score du joueur + fin
     {
       bomb->explozone[x][y]=1;
-      map->grid[x][y]=0; // AJOUTER LES BONUS ICI ««<
-      bomb->myPlayer->score = bomb->myPlayer->score +1;
+      if (map->victory == POINTS)
+	  {
+	    bomb->myPlayer->score = bomb->myPlayer->score +1;
+	  }
+      random = rand()%9;
+      switch (random)
+	{
+	case 0 :
+	  map->grid[x][y]=BONUS_RADIUS_BLOCK;
+	  break;
+	case 1 :
+	  map->grid[x][y]=BONUS_BOMB_LIMIT_BLOCK;
+	  break;
+	case 2 :
+	  map->grid[x][y]=BONUS_SPEED_BLOCK;
+	  break;
+	default :
+	  map->grid[x][y]=0; 
+	  break;
+	}
       return 1;
     }
   else if (map->grid[x][y]==BOMB_BLOCK) //bombe : explosion de la bombe + continue
@@ -67,11 +82,30 @@ int DoExplode(int x, int y, map* map, bomb* bomb){
       for(i=0; i < map->nbrPlayers; i++){
 	if ((map->players[i]->x==x) && (map->players[i]->y==y))
 	  {
-	    map->players[i]->x=map->startingBlocks[i][0];
-	    map->players[i]->y=map->startingBlocks[i][1];
-	    if(map->players[i] != bomb->myPlayer){
-	      bomb->myPlayer->score += 5;
-	    }
+	    if (map->victory == POINTS)
+	      {
+		
+		map->players[i]->x=map->startingBlocks[i][0];
+		map->players[i]->y=map->startingBlocks[i][1];
+		if(map->players[i] != bomb->myPlayer){
+		  bomb->myPlayer->score += 5;
+		}
+	      }
+	    else if (map->victory == VERSUS)
+	      {
+		if (map->players[i]->score>1)
+		  {
+		    map->players[i]->x=map->startingBlocks[i][0];
+		    map->players[i]->y=map->startingBlocks[i][1];
+		    map->players[i]->score--;
+		  }
+		else
+		  {
+		    map->players[i]->x=-1;
+		    map->players[i]->y=-1;
+		    map->players[i]->score--;
+		  }
+	      }
 	  }
       }
       return 0;

@@ -57,6 +57,7 @@ int ListMaps(map*** ptrListMap)
 		    listMaps[nbrMap-1]->players = NULL;
 		    listMaps[nbrMap-1]->bombs = NULL;
 		    listMaps[nbrMap-1]->startingBlocks = NULL;
+		    listMaps[nbrMap-1]->victory = 0;
 		    listMaps[nbrMap-1]->bonusRadius = IMG_Load("bonus_radius.bmp");
 		    listMaps[nbrMap-1]->bonusBombLimit = IMG_Load("bonus_bomb_limit.bmp");
 		    listMaps[nbrMap-1]->bonusSpeed = IMG_Load("bonus_speed.bmp");
