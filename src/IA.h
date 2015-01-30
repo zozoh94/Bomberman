@@ -5,6 +5,7 @@
 #include "player.h"
 #include "map.h"
 #include "bomb.h"
+#include "astar.h"
 
 /**
    prend les coordonnées où on est, où on veut aller, et le tableau de bombes à esquiver.

@@ -7,13 +7,25 @@ int* AllerVers(int xA, int yA, int xDest, int yDest, map* m, int** bombes){
   if(bombes[xA][yA] == 1){
     surBombe = 1;
   }
-  //Astar de xA yA à xDest yDest en passant par map
-  //Recuperer le tout premier mouvement
-  //Le mettre dans ret
   ret[0]=-1;
   ret[1]=-1;
   ret[2] = -1;
-
+ 
+  tasNoeud *tas = malloc(sizeof(tasNoeud));
+  tas->x = xA;
+  tas->y = yA;
+  tas->poids = 0;
+  tas->droite = NULL;
+  tas->gauche = NULL;
+  while(tas->x != xDest && tas->y != yDest && tas != NUll){
+    
+  }
+  
+  //Astar de xA yA à xDest yDest en passant par map
+  //Recuperer le tout premier mouvement
+  //Le mettre dans ret
+  
+  
   return ret;
 }
 
@@ -86,7 +98,8 @@ int* TrouverProche(int x, int y, map* m, int** tab){
     for(j=0; j<m->height;j++){
       if(tab[i][j]=0){
 	int* temp = allerVers(x,y,i,j,m);
-	if( temp[2] < prochest){
+	
+	if( temp[2] < prochest && temp[2] != -1){
 	  prochest = temp[2];
 	  ret[0] = i;
 	  ret[1] = j;

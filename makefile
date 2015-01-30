@@ -2,7 +2,7 @@ JSON_C_DIR=usr/local
 CC = gcc
 CFLAGS = -W -Wall -std=gnu99 -O4 -I$(JSON_C_DIR)/include/json-c
 LDFLAGS = -lSDL -lSDL_image -lSDL_ttf -L$(JSON_C_DIR)/lib/ljson-c
-DEP = bomb.o player.o game.o map.o sprite.o
+DEP = bomb.o player.o game.o map.o sprite.o IA.o
 
 
 ifeq (${DEBUG}, 1)
