@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -W -Wall -std=gnu99 -O4 -Iinclude/json-c -Iinclude/SDL
+CFLAGS = -W -Wall -std=gnu99 -O4 -Iinclude/json-c
 LDFLAGS = -Llib -lSDL -lSDL_image -lSDL_ttf -ljson-c
 DEP = bomb.o player.o game.o map.o sprite.o
 
