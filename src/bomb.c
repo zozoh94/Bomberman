@@ -35,7 +35,7 @@ bomb* CreateBomb(player* p){
   return InitBomb(p->x, p->y, p->bombR, TIMERBOMB, p, p->bombT);
 }
 
-int DoExplode(int x, int y, map* map, bomb* bomb){
+int DoExplode(int x, int y, map* map, bomb* bomb, int dir){
   int i, random;
   if(x<0 || x >= map->width || y < 0 || y >= map->height){
     return 1;
@@ -46,7 +46,7 @@ int DoExplode(int x, int y, map* map, bomb* bomb){
     }
   else if (map->grid[x][y]==DESTRUCTIBLE_BLOCK) //bloc destructible : destruction du bloc + score du joueur + fin
     {
-      bomb->explozone[x][y]=1;
+      bomb->explozone[x][y]=dir;
       if (map->victory == POINTS)
 	  {
 	    bomb->myPlayer->score = bomb->myPlayer->score +1;
@@ -71,13 +71,14 @@ int DoExplode(int x, int y, map* map, bomb* bomb){
     }
   else if (map->grid[x][y]==BOMB_BLOCK) //bombe : explosion de la bombe + continue
     {
-      bomb->explozone[x][y]=1;
+      bomb->explozone[x][y]=dir;
       GetBomb (map,bomb->x,bomb->y)->timer = 1;
       return 0;
     }
   else //rien ou bonus : continue
     {
-      bomb->explozone[x][y]=1;
+      map->grid[x][y]=0; //Détruit les bonus si il y en as.
+      bomb->explozone[x][y]=dir;
       //gestion des morts
       for(i=0; i < map->nbrPlayers; i++){
 	if ((map->players[i]->x==x) && (map->players[i]->y==y))
@@ -119,7 +120,7 @@ void Explode(map* map, bomb* bomb){
   y = bomb->y ;
   bomb->explozone[x][y]=1;
   map->grid[x][y] = 0;
-  DoExplode(x,y,map,bomb);
+  DoExplode(x,y,map,bomb,5);
   for (i=0;i<bomb->explosion;i++)
     {
       if(DoExplode(x+i,y,map,bomb) == 1){
@@ -128,19 +129,19 @@ void Explode(map* map, bomb* bomb){
     }
   for (i=0;i<bomb->explosion;i++)
     {
-      if(DoExplode(x-i,y,map,bomb) == 1){
+      if(DoExplode(x-i,y,map,bomb) == 3){
 	break;
       }
     }
   for (i=0;i<bomb->explosion;i++)
     {
-      if(DoExplode(x,y+i,map,bomb) == 1){
+      if(DoExplode(x,y+i,map,bomb) == 2){
 	break;
       }
     }
   for (i=0;i<bomb->explosion;i++)
     {
-      if(DoExplode(x,y-i,map,bomb) == 1){
+      if(DoExplode(x,y-i,map,bomb) == 4){
 	break;
       }
     }

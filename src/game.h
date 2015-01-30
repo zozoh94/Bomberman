@@ -8,6 +8,7 @@
 #include "map.h"
 #include "player.h"
 #include "bomb.h"
+#include "IA.h"
 
 //Dans ce fichier, les initialisations de parties et les boucles de jeux.
 

@@ -260,7 +260,7 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	map->grid[p->x][p->y]=0;
 	break;	
       case BONUS_SPEED_BLOCK:
-	p->speed-=1;
+	p->speed-=3;
 	map->grid[p->x][p->y]=0;
 	break;
       default:
@@ -269,25 +269,25 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
     }
     //IA
     if(p->moveTimer == -1 && p->type == IA){
-      //IA ICI
-      // Regarde si il y a des bombes qui risques de le tuer
-      // Si oui
-      //  fuit, FIN
-      // Sinon:
-      //  Cherche les joueurs
-      //  Regarde quels joueurs sont atteignables
-      //  Si == 0
-      //   péter le plus de bloc possibles
-      //  Sinon
-      //   Si peut poser bombe (et safe), pose bombe puis se déplace vers le joueur
-
-
-      //vérifier l'état du jeu
-      //chercher un objectif
-      //chercher comment aller là bas ou si il faut poser une bombe
-      // donner l'ordre "trymove(X,Y)" ou poserBomb
-
-
+      int **bombes = ChercheBombes(p->map);
+      if(bombes[p->x][p->y]==1){ // On est menacé par une bombe
+	//fuire
+      }else{
+	int **possible = ChercheDest(p->map, p);
+	int *dest = TrouverProche(p->x, p->y, p->map, possible, bombes);
+	if(dest[0]!=-1){//on a une destination
+	  int *va = AllerVers(p->x,p->y,dest[0],dest[1],p->map);
+	  if(va[2]<=2 && dest[2]==10){ //joueur
+	    PlaceBomb(p);
+	  }else if(va[2] == 0){//poser bombe
+	    PlaceBomb(p);
+	  }else{//déplacer
+	    TryMove(p, va[0], va[1]);
+	  }
+	}else{//On bouge au pif
+	  TryMove(p, p->x+1, p->y);
+	}
+      }
     }
     //INPUT DES JOUEURS
     if(p->type == J1){

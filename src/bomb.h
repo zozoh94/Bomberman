@@ -32,8 +32,15 @@ bomb* CreateBomb(player* p);
    Effets de l'explosion en X Y,
    renvoie 1 si l'explosion continue pas
    sinon renvoie 0.
+   met dir dans explozone.
+   Directions = 
+   1 - droite
+   2 - bas
+   3 - gauche
+   4 - haut
+   5 - bombe
  */
-int DoExplode(int x, int y, map* map, bomb* bomb);
+int DoExplode(int x, int y, map* map, bomb* bomb, int dir);
 
 /**
    Explose la bombe.

@@ -19,20 +19,28 @@ tasNoeud* addNoeud(tasNoeud *tas, noeud *n){
     }
     tas->last = -1;
   }
-  tas->noeuds[++tas->last] = n;
+  tas->noeuds[++(tas->last)] = n;
   remonter(tas,tas->last);
   return tas;
 }
 
 noeud* getNoeud(tasNoeud *tas, int p){
-  noeud *ret = tas->noeuds[p];
-  removeNoeud(tas, p);
-  return ret;
+  if(tas->last >= p){
+    noeud *ret = tas->noeuds[p];
+    removeNoeud(tas, p);
+    return ret;
+  }else{
+    fprintf(stderr,"Le noeud %d n'existe pas!\n",p);
+    return NULL;
+  }
 }
 
 int remonter(tasNoeud *tas, int position){
   if(position == 0){ // on est au sommet de l'arbre, ne peut pas remonter
     return 0;
+  }
+  if(position < 0){
+    fprintf(stderr,"POSITION NEGATIF ERREUR!!!!\n");
   }
   noeud *parent = (tas->noeuds[(position-1)/2]);
   noeud *actuel = (tas->noeuds[position]);
@@ -60,6 +68,8 @@ int descendre(tasNoeud *tas, int position){
     }else{
       enfantF = enfantD;
     }
+  }else if(enfantD == NULL){
+    enfantF = enfantG;
   }else{
     if(enfantG->poids < enfantD->poids){
       enfantF = enfantG;
@@ -80,20 +90,21 @@ int descendre(tasNoeud *tas, int position){
 
 void removeNoeud(tasNoeud *tas, int p){
   if(tas->last == 0){
+    if(p != 0){
+      fprintf(stderr,"ERREUR REMOVENOEUD PAS ZERO");
+    }
     tas->last--;
     tas->noeuds[0] = NULL;
+  }else if(tas->last == p){
+    tas->noeuds[p] = NULL;
+    tas->last--;
   }else{
     tas->noeuds[p] = tas->noeuds[tas->last];
     tas->noeuds[tas->last--] = NULL;
-    descendre(tas, p);
+    if(tas->last!=-1){
+      descendre(tas, p);
+    }
   }
-}
-
-void deleteNoeud(noeud *n){
-  if(n->last!=NULL){
-    deleteNoeud(n->last);
-  }
-  free(n);
 }
 
 void deleteTas(tasNoeud *tas){

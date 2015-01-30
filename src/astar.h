@@ -39,8 +39,6 @@ int descendre(tasNoeud *tas, int position);
 
 void removeNoeud(tasNoeud *tas, int p);
 
-void deleteNoeud(noeud *n);
-
 void deleteTas(tasNoeud *tas);
 
 #endif
