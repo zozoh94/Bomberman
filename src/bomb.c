@@ -72,7 +72,7 @@ int DoExplode(int x, int y, map* map, bomb* bomb){
   else if (map->grid[x][y]==BOMB_BLOCK) //bombe : explosion de la bombe + continue
     {
       bomb->explozone[x][y]=1;
-      GetBomb (map,bomb->x,bomb->y)->timer = 0;
+      GetBomb (map,bomb->x,bomb->y)->timer = 1;
       return 0;
     }
   else //rien ou bonus : continue

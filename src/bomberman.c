@@ -1,14 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-<<<<<<< HEAD
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
 #include <time.h>
-=======
 #include "../include/SDL/SDL.h"
 #include "../include/SDL/SDL_ttf.h"
->>>>>>> 3c062f4bf043734287848d849acd23d566cb0a9d
 #include "map.h" 
 #include "game.h"
 

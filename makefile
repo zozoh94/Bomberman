@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -W -Wall -std=gnu99 -O4 -Iinclude/json-c -Iinclude/SDL
-LDFLAGS = -Llib -lSDL -lSDL_image -lSDL_ttf -ljson-c
+LDFLAGS = -Llib -lSDL -lSDL_image -lSDL_ttf -ljson
 DEP = bomb.o player.o game.o map.o sprite.o IA.o
 
 ifeq (${WIN32_CROSS_PLATFORM}, 1)

@@ -13,7 +13,7 @@
    int[0] = x, int [1] = y, int[2] = distance
    utiliser algorithme A*? :D
  */
-int* AllerVers(int xA, int yA, int xDest, int yDest, map* m, int **bombes);
+int* AllerVers(int xA, int yA, int xDest, int yDest, map* m/*, int **bombes*/);
 
 /**
    Cherche les bloc menaçants à cause de bombes
