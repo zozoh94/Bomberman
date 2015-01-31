@@ -1,13 +1,7 @@
 CC = gcc
-#~ <<<<<<< HEAD
-CFLAGS = -W -Wall -std=gnu99 -O4 -Iinclude/json-c -Iinclude/SDL
-LDFLAGS = -Llib -lSDL -lSDL_image -lSDL_ttf -ljson
+CFLAGS = -W -Wall -std=gnu99 -O4 -Iinclude/json-c
+LDFLAGS = -ljson-c
 DEP = bomb.o player.o game.o map.o sprite.o IA.o astar.o
-#~ =======
-#~ CFLAGS = -W -Wall -std=gnu99 -O4 -Iinclude/json-c
-#~ LDFLAGS = -ljson-c
-#~ DEP = bomb.o player.o game.o map.o sprite.o
-#~ >>>>>>> 7445a9ab6355b7e9c102c3cf1941ca336fafd747
 
 ifeq (${WIN32}, 1)
     CFLAGS += -I/usr/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main

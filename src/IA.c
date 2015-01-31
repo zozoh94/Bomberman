@@ -199,7 +199,7 @@ int** ChercheDest(map* m, player *p, int** bombes){
     }
   }
   for(i=0; i<m->nbrPlayers;i++){
-    if(m->players[i] != p){
+    if(m->players[i]->x!=-1 && m->players[i] != p){
       if(bombes[m->players[i]->x][m->players[i]->y]== 0){
 	ret[m->players[i]->x][m->players[i]->y] = 6;
       }

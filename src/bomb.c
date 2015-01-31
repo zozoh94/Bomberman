@@ -113,6 +113,8 @@ int DoExplode(int x, int y, map* map, bomb* b, int dir){
 		map->players[i]->invulnerability = 32;
 		if(map->players[i] != b->myPlayer){
 		  b->myPlayer->score += 5;
+		}else{
+		  b->myPlayer->score -= 3;
 		}
 	      }
 	    else if (map->victory == VERSUS)
