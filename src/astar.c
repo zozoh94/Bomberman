@@ -12,15 +12,20 @@ noeud* creerNoeud(int x, int y, int poids, noeud *last){
 tasNoeud* addNoeud(tasNoeud *tas, noeud *n){
   int i;
   if(tas == NULL){
-    tas = malloc(sizeof(tas));
+    tas = malloc(sizeof(tasNoeud));
     tas->noeuds = malloc(sizeof(noeud*)*TTABLE);
     for(i = 0; i < TTABLE; i++){
       tas->noeuds[i] = NULL;
     }
     tas->last = -1;
   }
-  tas->noeuds[++(tas->last)] = n;
-  remonter(tas,tas->last);
+  tas->last += 1;
+  if(tas->last >= 0 && tas->last < TTABLE){
+    tas->noeuds[tas->last] = n;
+    remonter(tas,tas->last);
+  }else{
+    fprintf(stderr,"erreur out of tas %d\n", tas->last);
+  }
   return tas;
 }
 
@@ -44,7 +49,7 @@ int remonter(tasNoeud *tas, int position){
   }
   noeud *parent = (tas->noeuds[(position-1)/2]);
   noeud *actuel = (tas->noeuds[position]);
-  if(parent->poids < actuel->poids){
+  if(parent->poids > actuel->poids){
     tas->noeuds[position] = parent;
     tas->noeuds[(position-1)/2] = actuel;
     return remonter(tas, (position-1)/2);
@@ -67,9 +72,11 @@ int descendre(tasNoeud *tas, int position){
       return position;
     }else{
       enfantF = enfantD;
+      pos = ((position+1)*2);
     }
   }else if(enfantD == NULL){
     enfantF = enfantG;
+    pos =  ((position+1)*2-1);
   }else{
     if(enfantG->poids < enfantD->poids){
       enfantF = enfantG;
@@ -79,7 +86,7 @@ int descendre(tasNoeud *tas, int position){
       pos = (position+1)*2;
     }
   }
-  if(enfantF->poids > actuel->poids){
+  if(enfantF->poids < actuel->poids){
     tas->noeuds[position] = enfantF;
     tas->noeuds[pos] = actuel;
     return descendre(tas, pos);

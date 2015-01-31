@@ -264,75 +264,74 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
   int i;
   player *p=NULL;
   for(i = 0; i < map->nbrPlayers; i++){
-    int modX = 0;
-    int modY = 0;
     p = map->players[i];
-    
-    if(p->invulnerability>0){
-      p->invulnerability--;
-    }
-    if(p->moveTimer > 0){ // On arrête le décompte à -1
-      p->moveTimer --;
-    }
-    if(p->moveTimer > 0){
-      // Déplacement fluide
-      switch(p->sprite->orientation){
-      case UP :
-	modY = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
-	break;
-      case RIGHT :
-	modX = (int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
-	break;
-      case DOWN :
-	modY = 	(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;
-	break;
-      case LEFT :
-	modX = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
-	break;
+    if(p->x!=-1){ // Si le joueur n'est pas KO, sinon on l'oublie tout simplement 
+      int modX = 0;
+      int modY = 0;
+      if(p->invulnerability>0){
+	p->invulnerability--;
       }
-    }
-    if(p->moveTimer == 0){
-      Move(p);
-      switch(map->grid[p->x][p->y]){
-      case BONUS_RADIUS_BLOCK:
-	if(p->bombR<15){
-	  p->bombR+=1;
-	}
-	map->grid[p->x][p->y]=0;
-	break;
-      case BONUS_BOMB_LIMIT_BLOCK:
-	if(p->bombMax<15){
-	  p->bombMax+=1;
-	}
-	map->grid[p->x][p->y]=0;
-	break;	
-      case BONUS_SPEED_BLOCK:
-	if(p->speed>15){
-	  p->speed-=3;
-	}
-	map->grid[p->x][p->y]=0;
-	break;
-      case BONUS_INVINCIBILITY_BLOCK:
-	p->invulnerability=3000;
-	map->grid[p->x][p->y]=0;
-	break;
-      default:
-	break;
+      if(p->moveTimer > 0){ // On arrête le décompte à -1
+	p->moveTimer --;
       }
-    }
-    //IA
-    if(p->moveTimer == -1 && p->type == IA){
-      int **bombes = ChercheBombes(p->map);
-      if(bombes[p->x][p->y]==1){ // On est menacé par une bombe
-	//fuire
-      }else{
-	int **possible = ChercheDest(p->map, p);
+      if(p->moveTimer > 0){
+	// Déplacement fluide
+	switch(p->sprite->orientation){
+	case UP :
+	  modY = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
+	  break;
+	case RIGHT :
+	  modX = (int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
+	  break;
+	case DOWN :
+	  modY = 	(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;
+	  break;
+	case LEFT :
+	  modX = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
+	  break;
+	}
+      }
+      if(p->moveTimer == 0){
+	Move(p);
+	switch(map->grid[p->x][p->y]){
+	case BONUS_RADIUS_BLOCK:
+	  if(p->bombR<15){
+	    p->bombR+=1;
+	  }
+	  map->grid[p->x][p->y]=0;
+	  break;
+	case BONUS_BOMB_LIMIT_BLOCK:
+	  if(p->bombMax<15){
+	    p->bombMax+=1;
+	  }
+	  map->grid[p->x][p->y]=0;
+	  break;	
+	case BONUS_SPEED_BLOCK:
+	  if(p->speed>15){
+	    p->speed-=3;
+	  }
+	  map->grid[p->x][p->y]=0;
+	  break;
+	case BONUS_INVINCIBILITY_BLOCK:
+	  p->invulnerability=3000;
+	  map->grid[p->x][p->y]=0;
+	  break;
+	default:
+	  break;
+	}
+      }
+      //IA
+      if(p->moveTimer == -1 && p->type == IA){
+	int **bombes = ChercheBombes(p->map);
+	int **possible = ChercheDest(p->map, p, bombes);
 	int *dest = TrouverProche(p->x, p->y, p->map, possible, bombes);
 	if(dest[0]!=-1){//on a une destination
-	  int *va = AllerVers(p->x,p->y,dest[0],dest[1],p->map);
-	  if(va[2]<=2 && dest[2]==10){ //joueur
+	  int *va = AllerVers(p->x,p->y,dest[0],dest[1],p->map,bombes);
+	  //Si on est à portée de bombe du joueur, que c'est un joueur et qu'on est pas menacé
+	  if(va[2]<=(p->bombR) && dest[2]==6 && bombes[p->x][p->y] == 0){
 	    PlaceBomb(p);
-	  }else if(va[2] == 0){//poser bombe
+	    //Si on est sur une case bien, et qu'on est pas menacé
+	  }else if(va[2] == 0 && dest[2]>0 && bombes[p->x][p->y] == 0){//poser bombe
 	    PlaceBomb(p);
 	  }else{//déplacer
 	    TryMove(p, va[0], va[1]);
@@ -341,45 +340,45 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	  TryMove(p, p->x+1, p->y);
 	}
       }
+      //INPUT DES JOUEURS
+      if(p->type == J1){
+	if(input[K_LEFT]==1 && p->moveTimer == -1){
+	  TryMove(p, p->x-1, p->y);
+	}
+	if(input[K_UP]==1 && p->moveTimer == -1){
+	  TryMove(p, p->x, p->y-1);
+	}
+	if(input[K_RIGHT]==1 && p->moveTimer == -1){
+	  TryMove(p, p->x+1, p->y);
+	}
+	if(input[K_DOWN]==1 && p->moveTimer == -1){
+	  TryMove(p, p->x, p->y+1);
+	}
+	if(input[K_ENTER]==1 && p->moveTimer == -1){
+	  PlaceBomb(p);
+	}
+      }
+      if(p->type == J2){
+	if(input[K_Q]==1 && p->moveTimer == -1){
+	  TryMove(p, p->x-1, p->y);
+	}
+	if(input[K_Z]==1 && p->moveTimer == -1){
+	  TryMove(p, p->x, p->y-1);
+	}
+	if(input[K_D]==1 && p->moveTimer == -1){
+	  TryMove(p, p->x+1, p->y);
+	}
+	if(input[K_S]==1 && p->moveTimer == -1){
+	  TryMove(p, p->x, p->y+1);
+	}
+	if(input[K_SPACE]==1 && p->moveTimer == -1){
+	  PlaceBomb(p);
+	}
+      }
+      p->sprite->pos.x = (p->x)*32+5+modX; //Le sprite fait 22*32 donc on le décale de (32-22)/2 = 10
+      p->sprite->pos.y = (p->y)*32+modY;
+      dessinerSprite(p->sprite, dest);
     }
-    //INPUT DES JOUEURS
-    if(p->type == J1){
-      if(input[K_LEFT]==1 && p->moveTimer == -1){
-	TryMove(p, p->x-1, p->y);
-      }
-      if(input[K_UP]==1 && p->moveTimer == -1){
-	TryMove(p, p->x, p->y-1);
-      }
-      if(input[K_RIGHT]==1 && p->moveTimer == -1){
-	TryMove(p, p->x+1, p->y);
-      }
-      if(input[K_DOWN]==1 && p->moveTimer == -1){
-	TryMove(p, p->x, p->y+1);
-      }
-      if(input[K_ENTER]==1 && p->moveTimer == -1){
-	PlaceBomb(p);
-      }
-    }
-    if(p->type == J2){
-      if(input[K_Q]==1 && p->moveTimer == -1){
-	TryMove(p, p->x-1, p->y);
-      }
-      if(input[K_Z]==1 && p->moveTimer == -1){
-	TryMove(p, p->x, p->y-1);
-      }
-      if(input[K_D]==1 && p->moveTimer == -1){
-	TryMove(p, p->x+1, p->y);
-      }
-      if(input[K_S]==1 && p->moveTimer == -1){
-	TryMove(p, p->x, p->y+1);
-      }
-      if(input[K_SPACE]==1 && p->moveTimer == -1){
-	PlaceBomb(p);
-      }
-    }
-    p->sprite->pos.x = (p->x)*32+5+modX; //Le sprite fait 22*32 donc on le décale de (32-22)/2 = 10
-    p->sprite->pos.y = (p->y)*32+modY;
-    dessinerSprite(p->sprite, dest);
   }
 }
 

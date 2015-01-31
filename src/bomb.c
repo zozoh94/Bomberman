@@ -51,7 +51,7 @@ bomb* CreateBomb(player* p){
   return InitBomb(p->x, p->y, p->bombR, TIMERBOMB, p, p->bombT);
 }
 
-int DoExplode(int x, int y, map* map, bomb* bomb, int dir){
+int DoExplode(int x, int y, map* map, bomb* b, int dir){
   int i, random;
   if(x<0 || x >= map->width || y < 0 || y >= map->height){
     return 1;
@@ -62,10 +62,10 @@ int DoExplode(int x, int y, map* map, bomb* bomb, int dir){
     }
   else if (map->grid[x][y]==DESTRUCTIBLE_BLOCK) //bloc destructible : destruction du bloc + score du joueur + fin
     {
-      bomb->explozone[x][y]=dir;
+      b->explozone[x][y]=dir;
       if (map->victory == POINTS)
 	  {
-	    bomb->myPlayer->score = bomb->myPlayer->score +1;
+	    b->myPlayer->score = b->myPlayer->score +1;
 	  }
       random = rand()%15;
       switch (random)
@@ -90,14 +90,16 @@ int DoExplode(int x, int y, map* map, bomb* bomb, int dir){
     }
   else if (map->grid[x][y]==BOMB_BLOCK) //bombe : explosion de la bombe + continue
     {
-      bomb->explozone[x][y]=dir;
-      GetBomb (map,bomb->x,bomb->y)->timer = 1;
+      b->explozone[x][y]=dir;
+      bomb *bbis = GetBomb (map,b->x,b->y);
+      bbis->timer = 1;
+      bbis->myPlayer = b->myPlayer;
       return 0;
     }
   else //rien ou bonus : continue
     {
       map->grid[x][y]=0; //Détruit les bonus si il y en as.
-      bomb->explozone[x][y]=dir;
+      b->explozone[x][y]=dir;
       //gestion des morts
       for(i=0; i < map->nbrPlayers; i++){
 	if ((map->players[i]->x==x) && (map->players[i]->y==y) && (map->players[i]->invulnerability==0))
@@ -109,8 +111,10 @@ int DoExplode(int x, int y, map* map, bomb* bomb, int dir){
 		map->players[i]->destX=map->startingBlocks[i][0];
 		map->players[i]->destY=map->startingBlocks[i][1];
 		map->players[i]->invulnerability = 32;
-		if(map->players[i] != bomb->myPlayer){
-		  bomb->myPlayer->score += 5;
+		if(map->players[i] != b->myPlayer){
+		  b->myPlayer->score += 5;
+		}else{
+		  b->myPlayer->score -= 3;
 		}
 	      }
 	    else if (map->victory == VERSUS)
@@ -147,25 +151,25 @@ void Explode(map* map, bomb* bomb){
   bomb->explozone[x][y]=1;
   map->grid[x][y] = 0;
   DoExplode(x,y,map,bomb,5);
-  for (i=0;i<bomb->explosion;i++)
+  for (i=1;i<bomb->explosion;i++)
     {
       if(DoExplode(x+i,y,map,bomb,1) == 1){
 	break;
       }
     }
-  for (i=0;i<bomb->explosion;i++)
+  for (i=1;i<bomb->explosion;i++)
     {
       if(DoExplode(x-i,y,map,bomb,3) == 1){
 	break;
       }
     }
-  for (i=0;i<bomb->explosion;i++)
+  for (i=1;i<bomb->explosion;i++)
     {
       if(DoExplode(x,y+i,map,bomb,2) == 1){
 	break;
       }
     }
-  for (i=0;i<bomb->explosion;i++)
+  for (i=1;i<bomb->explosion;i++)
     {
       if(DoExplode(x,y-i,map,bomb,4) == 1){
 	break;

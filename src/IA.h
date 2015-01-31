@@ -13,7 +13,7 @@
    int[0] = x, int [1] = y, int[2] = distance
    utiliser algorithme A*? :D
  */
-int* AllerVers(int xA, int yA, int xDest, int yDest, map* m/*, int **bombes*/);
+int* AllerVers(int xA, int yA, int xDest, int yDest, map* m, int **bombes);
 
 /**
    Cherche les bloc menaçants à cause de bombes
@@ -32,21 +32,7 @@ int* TrouverProche(int x, int y, map* m, int** tab, int** bombes);
    
    0 si bombe pas posable, x qui indique combien de bloc contigues à coté, ou 5 si c'est un bonus.
  */
-int** ChercheDest(map* m, player *p);
-
-/**
-   vérifie s'il y avait une bombe en x/y si on pourrait se déplacer vers une case safe en prenant en compte les autres bombes.
-   0 = non, 1 = oui
- */
-int Fuite(int x, int y, map* m, int** bombes);
-
-/**
-   Vérifie s'il y a un chemin libre qui va de x,y à X,Y
-   -1 = non, sinon renvoie la distance
- */
-int HasWay(map* m, int x, int y, int X, int Y);
-
-
+int** ChercheDest(map* m, player *p, int** bombes);
 
 
 #endif
