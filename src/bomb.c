@@ -80,7 +80,7 @@ int DoExplode(int x, int y, map* map, bomb* bomb, int dir){
 	  map->grid[x][y]=BONUS_SPEED_BLOCK;
 	  break;
 	case 3 :
-	  map->grid[x][y]=BONUS_INVULNERABILITY_BLOCK;
+	  map->grid[x][y]=BONUS_INVINCIBILITY_BLOCK;
 	  break;
 	default :
 	  map->grid[x][y]=0;

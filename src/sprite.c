@@ -8,9 +8,7 @@ int chargerBombermanSprite( Sprite *sprite, const char *image )
     {
       fprintf(stderr, "Echec de chargement du fichier %s : %s.\n", image, SDL_GetError());
       return 0;
-    }else{
-    fprintf(stderr, "Chargement du fichier %s\n", image);
-  }
+    }
   
   // on fixe la cle de transparance ici blanc
   SDL_SetColorKey( sprite->image, SDL_SRCCOLORKEY, SDL_MapRGB( sprite->image->format, 255, 255, 255 ) );

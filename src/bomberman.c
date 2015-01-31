@@ -7,7 +7,7 @@
 #include "map.h" 
 #include "game.h"
 
-int main(int argc, char *argv[])
+int main()
 {
   SDL_Event event;
   SDL_Surface* ecran;

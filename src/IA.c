@@ -200,5 +200,11 @@ int** ChercheDest(map* m, player *p){
 }
 
 int Fuite(int x, int y, map* m, int** bombes){
+  //Juste là pour éviter les warning de variables non utilisées
+  //Cette fonction est encore à faire.
+  x = y;
+  y = m->width;
+  bombes[0][0] = x;
+  y = bombes[0][0];
   return 0;
 }

@@ -65,7 +65,7 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
     tab[1] = two;
     break;
   }
-  fprintf(stderr,"%d\n",InitMap(m, nbrjoueurs, tab));
+  fprintf(stderr,"Map statut: %d\n",InitMap(m, nbrjoueurs, tab));
   dest = ScaleSurface(dest,(m->width)*32,(m->height)*32+64);
   m->victory = cond;
   if(cond == VERSUS){
@@ -84,7 +84,6 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
   SDL_Color white = {255, 255, 255, 0}; 
   int scoreY = ((m->height)*32)+4;
   int scoreM = (m->width/2)*32;
-  fprintf(stderr,"%d / %d \n",scoreM, scoreY);
   //Tableau des appuis à tester, 0 = relevé, 1 = appuyé
   int* inputTab = malloc(sizeof(int)*KEYNUMBER);
   for(win = 0; win < KEYNUMBER; win++){
@@ -179,7 +178,7 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
     //AFFICHAGE DES SCORES
     for(int i = 0; i<m->nbrPlayers;i++){
       char* score = malloc(sizeof(char)*255);
-      sprintf(score, "P%d: %d",i,m->players[i]->score);
+      sprintf(score, "J%d: %d",(i+1),m->players[i]->score);
       printText(dest, font, white, (16+(i%2)*scoreM), (scoreY+(i/2)*32), score);
     }
     MapLoop(m, dest);
