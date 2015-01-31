@@ -1,4 +1,4 @@
->>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 A ENVOYER AVANT LE 1ER FEVRIER 23H59
 Envoyer à: marc.bouffard@u-psud.fr et joel.falcou@lri.fr
 - les sources (.h, .c et makefile) et ressources (images, son etc)
@@ -17,78 +17,28 @@ Tristan Le Nair G2
 Tri Thong N Guyen G2
 Clément Thierry G2
 Sujet: Bomberman
-<<<<<<<
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 TODO:
-	- Créer la structure carte
-	- Créer les fonctions pour lire et générer les cartes
-	- Créer les structures pour gérer les joueurs (bonus, position, score etc)
-	- Créer les fonctions pour gérer les joueurs (leur nombres de bonus, leur positions, leurs score etc)
-	- Permettre l'affichage de la carte et des joueurs
-	- Trouver des placeholder pour les images de bomberman bombes caisses etc
-	- Créer les fonctions pour déplacer les joueurs et poser des bombes (pas de gestion d'input pour l'instant)
-	- Gérer les explosions des bombes, collision avec les joueurs et les bloc destructibles
-	- Gérer la mort des joueurs (score, respawn) quand ils se prennent une bombe
-	- Ajouter les input (et paf, on peut jouer :D)
-	- Créer une IA basique
-	- Ajouter un mode 2 joueurs (J1 = haut bas droite gauche et entrée, J2 = zqsd et espace)
 	- Ajouter des sons
-	- Créer un menu
-	- Ajouter un mode réseau.
-	- Faire de jolies images (perso qui regarde vers où il va, etc)
-
-
-
-
+	- Ajouter des images pour le mode invulnérable
+	- Ajouter des images pour le bout des flammes (pour que ce soit encore plus beau)
+		(https://lh6.googleusercontent.com/-FZoPVfidXRA/UCDVUtzjmjI/AAAAAAAAADs/UbaMTmhp4dY/s216/Explosion.png)
+	- Rendre tout les fichiers .map cohérents
+	- Vérifier que la mémoire marche bien
 
 Objectifs finaux minimum:
-- jouer seul sur la carte
-- jouer à deux
-- jouer seul contre l’ordinateur
-- proposer plusieurs niveaux
-- gérer si possible des  ́evenements sonores
-- compter les points
+- jouer seul sur la carte 			[CHECK]
+- jouer à deux					[CHECK]
+- jouer seul contre l’ordinateur		[CHECK]
+- proposer plusieurs niveaux			[CHECK]
+- gérer si possible des  ́evenements sonores	[TODO]
+- compter les points				[CHECK]
 
 Idées d'objectifs en plus:
-- Jouer en multijoueur en réseau
-
-Déroulement du jeu (point de vue de l'utilisateur)
-au lancement:
-écran de menu
-choisir mode de jeu (sélection au clavier)
-	>solo
-	>vs IA
-	>JCJ
-		>local
-		>réseau (créer/rejoindre)
-			Si créer, alors créer la salle puis attendre que les joueurs aient rejoint, appuyer sur un bouton pour lancer la partie ou pour annuler
-			Si rejoindre, entrer l'adresse de la salle, puis voir la salle (bouton pour quitter la salle)
-			Salle d'attente: interface qui affiche les joueurs déjà co et les règles du jeu (map et conditions de victoire)
-	>>Choisir la map
-	>>Choisir conditions de victoire (idées):
-	 - Faire exploser l'ennemi X fois
-	 - Faire exploser le plus de bloc destructibles
-	 - Ramasser le plus de bonus
-	 - Tuer des "ennemis" (des bloc destructibles mobiles qui tuent au contact)
-	 - Avoir le plus de points à la fin du timer
-
-La partie se lance, les joueurs sont placés sur les points de départs possibles
-La partie continue jusqu'à ce qu'un joueur remplisse les conditions de victoires
-Ecran de victoire?
-retour au menu
-
-
-Carte
-Au début, lit le fichier .map; remplit aléatoirement avec des bloc destructibles
-Initialise les points à 0
-
-Joueur
-Reçoit les input des touches, pose une bombe ou se déplace
- poser une bombe = créer une bombe à l'endroit où il est
- se déplacer = dire à la carte où on va, et bouger en conséquence si possible
-IA
-peut poser des bombes et se déplacer
- pose des bombes qui le feront pas mourir, et ramasse les bonus
- essaye de faire sauter le joueur
-Bonus
- Quand un joueur ou une IA est dessus il le ramasse et gagne un bonus.
+- Jouer en multijoueur en réseau		[NOPE]
+- Ajouter un mode SOLO vs des monstres		[Si j'ai le temps demain]
+- Ajouter différents types de bombes		[Si j'ai le temps demain]
+- Ajouter plus de map, parce que le souague	[TODO]
+- Ajouter des sons sexy				[TODO]
+- D'autres idées?
