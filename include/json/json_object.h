@@ -105,7 +105,7 @@ typedef enum json_type {
   json_type_int,
   json_type_object,
   json_type_array,
-  json_type_string
+  json_type_string,
 } json_type;
 
 /* reference counting functions */
@@ -138,7 +138,7 @@ int json_object_put(struct json_object *obj);
      json_type_int,
      json_type_object,
      json_type_array,
-     json_type_string
+     json_type_string,
  */
 extern int json_object_is_type(struct json_object *obj, enum json_type type);
 
@@ -154,24 +154,19 @@ extern int json_object_is_type(struct json_object *obj, enum json_type type);
      json_type_int,
      json_type_object,
      json_type_array,
-     json_type_string
+     json_type_string,
  */
 extern enum json_type json_object_get_type(struct json_object *obj);
 
 
 /** Stringify object to json format.
  * Equivalent to json_object_to_json_string_ext(obj, JSON_C_TO_STRING_SPACED)
- * The pointer you get is an internal of your json object. You don't
- * have to free it, later use of json_object_put() should be sufficient.
- * If you can not ensure there's no concurrent access to *obj use
- * strdup().
  * @param obj the json_object instance
  * @returns a string in JSON format
  */
 extern const char* json_object_to_json_string(struct json_object *obj);
 
 /** Stringify object to json format
- * @see json_object_to_json_string() for details on how to free string.
  * @param obj the json_object instance
  * @param flags formatting options, see JSON_C_TO_STRING_PRETTY and other constants
  * @returns a string in JSON format

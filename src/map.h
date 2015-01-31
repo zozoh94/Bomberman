@@ -11,7 +11,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "../include/json-c/json.h"
+#include <json/json.h>
 #include <SDL/SDL.h>
 #include <stdbool.h>
 #include "struct.h"

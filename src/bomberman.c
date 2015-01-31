@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "../include/SDL/SDL.h"
-#include "../include/SDL/SDL_ttf.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include "map.h" 
 #include "game.h"
 
-int main()
-{
+int main(int argc, char* argv[])
+{   
   SDL_Event event;
   SDL_Surface* ecran;
   srand(time(NULL));
