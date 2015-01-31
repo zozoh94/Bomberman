@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TTABLE 63
+#define TTABLE 127
 // En fait c'est Dijkstra, pas A*
 
 /**

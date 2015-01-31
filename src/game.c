@@ -323,23 +323,21 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
     //IA
     if(p->moveTimer == -1 && p->type == IA){
       int **bombes = ChercheBombes(p->map);
-      if(bombes[p->x][p->y]==1){ // On est menacé par une bombe
-	//fuire
-      }else{
-	int **possible = ChercheDest(p->map, p);
-	int *dest = TrouverProche(p->x, p->y, p->map, possible, bombes);
-	if(dest[0]!=-1){//on a une destination
-	  int *va = AllerVers(p->x,p->y,dest[0],dest[1],p->map);
-	  if(va[2]<=2 && dest[2]==10){ //joueur
-	    PlaceBomb(p);
-	  }else if(va[2] == 0){//poser bombe
-	    PlaceBomb(p);
-	  }else{//déplacer
-	    TryMove(p, va[0], va[1]);
-	  }
-	}else{//On bouge au pif
-	  TryMove(p, p->x+1, p->y);
+      int **possible = ChercheDest(p->map, p, bombes);
+      int *dest = TrouverProche(p->x, p->y, p->map, possible, bombes);
+      if(dest[0]!=-1){//on a une destination
+	int *va = AllerVers(p->x,p->y,dest[0],dest[1],p->map,bombes);
+	//Si on est à portée de bombe du joueur, que c'est un joueur et qu'on est pas menacé
+	if(va[2]<=(p->bombR) && dest[2]==6 && bombes[p->x][p->y] == 0){
+	  PlaceBomb(p);
+	  //Si on est sur une case bien, et qu'on est pas menacé
+	}else if(va[2] == 0 && dest[2]>0 && bombes[p->x][p->y] == 0){//poser bombe
+	  PlaceBomb(p);
+	}else{//déplacer
+	  TryMove(p, va[0], va[1]);
 	}
+      }else{//On bouge au pif
+	TryMove(p, p->x+1, p->y);
       }
     }
     //INPUT DES JOUEURS
