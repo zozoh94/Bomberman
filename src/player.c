@@ -16,6 +16,7 @@ player *InitPlayer(int x, int y, int score, int bombMax, int speed, int bombR, b
   p->type = type;
   p->map = map;
   p->sprite = sprite;
+  p->invulnerability = 0;
   chargerBombermanSprite(sprite, image);
   return p;
 }

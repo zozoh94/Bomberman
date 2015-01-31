@@ -161,6 +161,7 @@ struct s_player{
   typeP type; //Type de player
   map *map; //Pointeur vers la map
   Sprite *sprite; // Image
+  int invulnerability; // durée d'invulnerabilité, 0 = pas invulnerable
   
   //Stats des bombes
   int bombR; //rayon des bombes

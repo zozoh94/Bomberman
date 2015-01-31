@@ -102,20 +102,16 @@ int main()
 		  switch(menu){
 		  case(0):
 		    cond = smenu;
-		    fprintf(stderr,"%d nbrPlayers\n",nbrPlayers);
 		    smenu = 0;
 		    menu = 1;
 		    break;
 		  case(1):
 		    nbrPlayers = smenu;
-		    fprintf(stderr,"%d nbrPlayers\n",nbrPlayers);
 		    smenu = 0;
 		    menu = 2;
 		    break;
 		  case(2):
 		    ParseMap(listMaps[smenu]);
-		    fprintf(stderr,"charge la map %s: %d\n",listMaps[smenu]->name,listMaps[smenu]->error);
-		    fprintf(stderr,"%d nbrPlayers\n",nbrPlayers);
 		    StartGame(listMaps[smenu], nbrPlayers, cond, ecran);
 		    smenu = 0;
 		    menu = 0;

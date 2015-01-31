@@ -51,6 +51,9 @@ void MapLoop(map* map, SDL_Surface *dest);
    player** winner: Un pointeur qui pointera vers le gagnant s'il y en a un.
    @return 1 si conditions de victoire remplies, sinon 0
  */
-int TestWin(map* map, vCond cond, player** winner);
+int TestWin(map* map, vCond cond, int* winner);
+
+
+void victory_screen(SDL_Surface *ecran, char *winner);
 
 #endif

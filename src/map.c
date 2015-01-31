@@ -203,6 +203,7 @@ int ParseMap(map *map)
 
 int InitMap(map* map, int nbrPlayers, player** listPlayer)
 {
+  map->bombs = NULL;
     //On compte le nombre de cases de départ joueurs déjà disponible
     int nbrStartingBlock = 0;
     for(int i=0; i<map->height; i++)

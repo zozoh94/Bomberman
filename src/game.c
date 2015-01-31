@@ -20,7 +20,6 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   player *two;
   player *three;
   player *four;
-  fprintf(stderr,"GAME: %d \n",nbrPlayers);
   switch(nbrPlayers){
   case(VSIA):
     nbrjoueurs = 4;
@@ -80,11 +79,12 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
 void GameLoop(map *m, vCond cond, SDL_Surface *dest){
   SDL_Event event;
   int win;
-  player* winner;
+  int winner=9; //ça ne marche pas très bien.
   TTF_Font *font = TTF_OpenFont("Bomberman.ttf", 24);
   SDL_Color white = {255, 255, 255, 0}; 
-  int scoreY = m->height-52;
-  int scoreM = m->width/2;
+  int scoreY = ((m->height)*32)+4;
+  int scoreM = (m->width/2)*32;
+  fprintf(stderr,"%d / %d \n",scoreM, scoreY);
   //Tableau des appuis à tester, 0 = relevé, 1 = appuyé
   int* inputTab = malloc(sizeof(int)*KEYNUMBER);
   for(win = 0; win < KEYNUMBER; win++){
@@ -128,7 +128,7 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
 	  break;
 	case SDLK_ESCAPE:
 	  inputTab[K_ESCAPE] = 1;
-	  win = 1;
+	  win = 2;
 	  break;
 	default:
 	  break;
@@ -185,8 +185,29 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
     MapLoop(m, dest);
     BombLoop(m, dest);
     PlayerLoop(m, inputTab ,dest);
-    TestWin(m, cond, &winner);
+    if(win == 0){
+      win = TestWin(m, cond, &winner);
+    }
     SDL_Flip(dest);
+  }
+  if(win == 1){
+    char *txt;
+    switch(winner){
+    case IA:
+      txt="IA";
+      break;
+    case J1:
+      txt="J1";
+      break;
+    case J2:
+      txt="J2";
+      break;
+    default:
+      txt="GG!";
+      break;
+    }
+    
+    victory_screen(dest, txt);
   }
 }
 
@@ -248,6 +269,9 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
     int modY = 0;
     p = map->players[i];
     
+    if(p->invulnerability>0){
+      p->invulnerability--;
+    }
     if(p->moveTimer > 0){ // On arrête le décompte à -1
       p->moveTimer --;
     }
@@ -272,15 +296,25 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       Move(p);
       switch(map->grid[p->x][p->y]){
       case BONUS_RADIUS_BLOCK:
-	p->bombR+=1;
+	if(p->bombR<15){
+	  p->bombR+=1;
+	}
 	map->grid[p->x][p->y]=0;
 	break;
       case BONUS_BOMB_LIMIT_BLOCK:
-	p->bombMax+=1;
+	if(p->bombMax<15){
+	  p->bombMax+=1;
+	}
 	map->grid[p->x][p->y]=0;
 	break;	
       case BONUS_SPEED_BLOCK:
-	p->speed-=3;
+	if(p->speed>15){
+	  p->speed-=3;
+	}
+	map->grid[p->x][p->y]=0;
+	break;
+      case BONUS_INVINCIBILITY_BLOCK:
+	p->invulnerability=3000;
 	map->grid[p->x][p->y]=0;
 	break;
       default:
@@ -391,15 +425,15 @@ void MapLoop(map* map, SDL_Surface *dest){
     }
 }
 
-int TestWin(map* map, vCond cond, player** winner){
+int TestWin(map* map, vCond cond, int* winner){
   int restant;
   switch (cond)
     {
     case POINTS :
       for(int i = 0;i< map->nbrPlayers;i++){
-	if (map->players[i]->score==30)
+	if (map->players[i]->score>=30)
 	  {
-	    winner = &map->players[i];
+	    *winner = map->players[i]->type;
 	    return 1;
 	  }
       }
@@ -411,9 +445,9 @@ int TestWin(map* map, vCond cond, player** winner){
 	  {
 	    restant-=1;
 	  }else{
-	  winner = &map->players[i]; //Si il lui reste de la vie on le met en winner,
+	  *winner = map->players[i]->type; //Si il lui reste de la vie on le met en winner,
 	}
-	if(restant == 1){
+	if(restant <= 1){
 	  return 1; // On ne le renvoie que si il est le seul restant de toute façon.
 	}
       }
@@ -425,3 +459,42 @@ int TestWin(map* map, vCond cond, player** winner){
   return 0;
 }
 
+void victory_screen(SDL_Surface *ecran, char *winner)
+{
+	SDL_Surface *victory = NULL;
+	SDL_Surface *texte = NULL;
+	SDL_Rect positionImage,positionTexte;
+	TTF_Font *police = NULL;
+
+	SDL_Color whiteColor = {255, 255, 255, 0};
+	
+	SDL_Event event;
+	victory=IMG_Load("victory.png");
+
+	police = TTF_OpenFont("lastninja.ttf", 24);	//On charge la police
+	
+	texte = TTF_RenderText_Blended(police, winner, whiteColor);	//On charge le texte
+	
+	ecran = ScaleSurface(ecran,256, 224);
+	
+	positionImage.x=0;//ecran->w/2-victory->w/2;
+	positionImage.y=0;//ecran->w/2-victory->h/2;
+	SDL_BlitSurface( victory, NULL, ecran, &positionImage);	//On blit l'image au milieu
+
+	positionTexte.x=ecran->w/2-texte->w/2;
+	positionTexte.y=12;
+	SDL_BlitSurface(texte, NULL, ecran, &positionTexte);	//On blit le texte
+	
+	SDL_Flip(ecran);
+	int fin = 0;
+	while(SDL_WaitEvent(&event) && fin == 0){
+	  if (event.type == SDL_KEYDOWN){
+	    fin = 1;
+	  }
+	}
+	
+	TTF_CloseFont(police);
+
+	SDL_FreeSurface(victory);
+	SDL_FreeSurface(texte);
+}
