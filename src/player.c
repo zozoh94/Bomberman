@@ -38,7 +38,8 @@ void PlaceBomb(player *p){
 }
 
 void TryMove(player *p, int X, int Y){
-  if(p->moveTimer == -1 && X >= 0 && Y >= 0 && X < p->map->width && Y < p->map->height){
+  if(p->moveTimer == -1 && X >= 0 && Y >= 0 && X < p->map->width && Y < p->map->height &&
+     ((p->x == X && (p->y == Y-1 || p->y == Y+1)) ||(p->y == Y && (p->x == X+1 || p->x == X-1)))){
     if(p->map->grid[X][Y]==0 || p->map->grid[X][Y]>=BOMB_SQUAREX_BLOCK){
       p->moveTimer = p->speed;
       p->destX = X;
@@ -52,6 +53,9 @@ void TryMove(player *p, int X, int Y){
 	case -1 :
 	  fixDirectionSprite(p->sprite,UP);
 	  break;
+	default:
+	  fixDirectionSprite(p->sprite,NO_DIRECTION);
+	  break;
 	}
 	break;
       case 1 :
@@ -59,6 +63,9 @@ void TryMove(player *p, int X, int Y){
 	break;
       case -1 :
 	fixDirectionSprite(p->sprite,LEFT);
+	break;
+      default:
+	fixDirectionSprite(p->sprite,NO_DIRECTION);
 	break;
       }
     }

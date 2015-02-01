@@ -1,5 +1,5 @@
 {
-    "name" : "Special",
+    "name" : "Palais",
     "grid" : [
 		   "33333333333",
 	       "33333133333",
@@ -14,5 +14,5 @@
 	       "33333333333" ],
    "author" : "Clement Thierry",
     "auto_remove" : true,
-    "theme" : "classic"
+    "theme" : "terre"
 }

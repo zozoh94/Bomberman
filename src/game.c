@@ -300,13 +300,15 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	  modY = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
 	  break;
 	case RIGHT :
-	  modX = (int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
+	  modX = (int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
 	  break;
 	case DOWN :
-	  modY = 	(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;
+	  modY = (int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
 	  break;
 	case LEFT :
-	  modX = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
+	  modX = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
+	  break;
+	default:
 	  break;
 	}
       }
@@ -365,6 +367,9 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       }
       //INPUT DES JOUEURS
       if(p->type == J1){
+	if(input[K_ENTER]==1 && p->moveTimer == -1){
+	  PlaceBomb(p);
+	}
 	if(input[K_LEFT]==1 && p->moveTimer == -1){
 	  TryMove(p, p->x-1, p->y);
 	}
@@ -377,11 +382,11 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	if(input[K_DOWN]==1 && p->moveTimer == -1){
 	  TryMove(p, p->x, p->y+1);
 	}
-	if(input[K_ENTER]==1 && p->moveTimer == -1){
-	  PlaceBomb(p);
-	}
       }
       if(p->type == J2){
+	if(input[K_SPACE]==1 && p->moveTimer == -1){
+	  PlaceBomb(p);
+	}
 	if(input[K_Q]==1 && p->moveTimer == -1){
 	  TryMove(p, p->x-1, p->y);
 	}
@@ -393,9 +398,6 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	}
 	if(input[K_S]==1 && p->moveTimer == -1){
 	  TryMove(p, p->x, p->y+1);
-	}
-	if(input[K_SPACE]==1 && p->moveTimer == -1){
-	  PlaceBomb(p);
 	}
       }
       p->sprite->pos.x = (p->x)*32+5+modX; //Le sprite fait 22*32 donc on le décale de (32-22)/2 = 10
