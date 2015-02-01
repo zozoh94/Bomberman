@@ -16,6 +16,8 @@
 #define FPS 120 //frame par seconde
 #define TIMEFRAME 1000/FPS //durée d'une frame en milliseconde
 
+#define NBRVIES 2 //Nombre de vies de départ en mode VERSUS
+
 void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   player **tab;
   int nbrjoueurs;
@@ -59,6 +61,19 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
     tab[3] = four;
     break;
     
+  case(SHOW):
+    nbrjoueurs = 4;
+    tab = malloc(sizeof(player*)*nbrjoueurs);
+    one = AutoInit(m,IA,"p1.bmp");
+    two = AutoInit(m,IA,"p2.bmp");
+    three = AutoInit(m,IA,"p3.bmp");
+    four = AutoInit(m,IA,"p4.bmp");
+    tab[0] = one;
+    tab[1] = two;
+    tab[2] = three;
+    tab[3] = four;
+    break;
+
   default:
     nbrjoueurs = 2;
     tab = malloc(sizeof(player*)*nbrjoueurs);
@@ -73,7 +88,7 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   m->victory = cond;
   if(cond == VERSUS){
     for(int i = 0; i < m->nbrPlayers; i++){
-      m->players[i]->score = 1;
+      m->players[i]->score = NBRVIES;
     }
   }
   GameLoop(m, cond, dest);  
@@ -200,10 +215,10 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
     }
   }
   if(win == 1){
-    char *txt;
-    switch(winner){
+    char *txt=malloc(sizeof(char)*255);
+    switch(m->players[winner]->type){
     case IA:
-      txt="IA";
+      sprintf(txt, "IA %d",winner);
       break;
     case J1:
       txt="J1";
@@ -298,13 +313,15 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	  modY = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
 	  break;
 	case RIGHT :
-	  modX = (int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
+	  modX = (int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
 	  break;
 	case DOWN :
-	  modY = 	(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;
+	  modY = (int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
 	  break;
 	case LEFT :
-	  modX = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));;;
+	  modX = -(int)(32 - 32*((double) (p->moveTimer)/(double) (p->speed)));
+	  break;
+	default:
 	  break;
 	}
       }
@@ -327,7 +344,7 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	  break;	
 	case BONUS_SPEED_BLOCK:
 	  if(p->speed>15){
-	    p->speed-=3;
+	    p->speed-=8;
 	  }
 	  map->grid[p->x][p->y]=0;
 	  Mix_PlayChannel(-1, bonusSound, 0);
@@ -363,6 +380,9 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       }
       //INPUT DES JOUEURS
       if(p->type == J1){
+	if(input[K_ENTER]==1 && p->moveTimer == -1){
+	  PlaceBomb(p);
+	}
 	if(input[K_LEFT]==1 && p->moveTimer == -1){
 	  TryMove(p, p->x-1, p->y);
 	}
@@ -375,11 +395,11 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	if(input[K_DOWN]==1 && p->moveTimer == -1){
 	  TryMove(p, p->x, p->y+1);
 	}
-	if(input[K_ENTER]==1 && p->moveTimer == -1){
-	  PlaceBomb(p);
-	}
       }
       if(p->type == J2){
+	if(input[K_SPACE]==1 && p->moveTimer == -1){
+	  PlaceBomb(p);
+	}
 	if(input[K_Q]==1 && p->moveTimer == -1){
 	  TryMove(p, p->x-1, p->y);
 	}
@@ -391,9 +411,6 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	}
 	if(input[K_S]==1 && p->moveTimer == -1){
 	  TryMove(p, p->x, p->y+1);
-	}
-	if(input[K_SPACE]==1 && p->moveTimer == -1){
-	  PlaceBomb(p);
 	}
       }
       p->sprite->pos.x = (p->x)*32+5+modX; //Le sprite fait 22*32 donc on le décale de (32-22)/2 = 10
@@ -458,7 +475,7 @@ int TestWin(map* map, vCond cond, int* winner){
       for(int i = 0;i< map->nbrPlayers;i++){
 	if (map->players[i]->score>=30)
 	  {
-	    *winner = map->players[i]->type;
+	    *winner = i;
 	    return 1;
 	  }
       }
@@ -470,7 +487,7 @@ int TestWin(map* map, vCond cond, int* winner){
 	  {
 	    restant-=1;
 	  }else{
-	  *winner = map->players[i]->type; //Si il lui reste de la vie on le met en winner,
+	  *winner = i; //Si il lui reste de la vie on le met en winner,
 	}
 	if(restant <= 1){
 	  return 1; // On ne le renvoie que si il est le seul restant de toute façon.

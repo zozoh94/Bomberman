@@ -1,6 +1,5 @@
 #include "IA.h"
 
-//Renvoie quasiment toujours -1
 int* AllerVers(int xA, int yA, int xDest, int yDest, map* m, int** bombes){
   int i,j;
   int *ret = malloc(sizeof(int)*3);
@@ -145,16 +144,16 @@ int** ChercheBombes(map* m){
 int* TrouverProche(int x, int y, map* m, int** tab, int** bombes){
   int i,j;
   int *ret = malloc(sizeof(int)*3);
-  ret[0] = -1;
-  ret[1] = -1;
-  ret[2] = -1;
+  ret[0] = x;
+  ret[1] = y;
+  ret[2] = 0;
   int prochest = 999;
   for(i=0; i<m->width;i++){
     for(j=0; j<m->height;j++){
-      if(tab[i][j]>=0 && bombes[i][j] != 1){
+      if((tab[i][j]>0 || (tab[i][j] == 0 && ret[2] == 0)) && bombes[i][j] != 1){
 	int *temp = AllerVers(x,y,i,j,m,bombes); //La distance et la position
 	//On retire l'importance de la case à sa distance, pour prioriser les bonus et l'explosion du joueur
-	if((temp[2]-(tab[i][j])*2) < prochest && temp[0] != -1){
+	if((temp[2]-(tab[i][j])*2) <= prochest && temp[0] != -1){
 	  prochest = temp[2]-(tab[i][j]*2);
 	  ret[0] = i;
 	  ret[1] = j;
