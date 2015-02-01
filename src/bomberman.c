@@ -59,46 +59,46 @@ int main(int argc, char* argv[])
 	    // Choix du mode de jeu
 	case(0):
 	    mmax = 2;
-	    printText(ecran, fontmenu, gray, 320-(10*24)/2, 128, "Mode point");
-	    printText(ecran, fontmenu, gray, 320-(11*24)/2, 160, "Mode versus");
+	    printText(ecran, fontmenu, gray, 320-(10*24)/3, 128, "Mode point");
+	    printText(ecran, fontmenu, gray, 320-(11*24)/3, 160, "Mode versus");
 	    switch(smenu){
 	    case(0):
-		printText(ecran, fontmenu, white, 320-(10*24)/2, 128, "Mode point");
+		printText(ecran, fontmenu, white, 320-(10*24)/3, 128, "Mode point");
 
 		break;
 	    case(1):
-		printText(ecran, fontmenu, white, 320-(11*24)/2, 160, "Mode versus");
+		printText(ecran, fontmenu, white, 320-(11*24)/3, 160, "Mode versus");
 		break;
 	    }
 	    break;
 	    // Choix du nombre de joueurs
 	case(1):
 	    mmax = 4;
-	    printText(ecran, fontmenu, gray, 320-(10*24)/2, 128, "J1 vs 1 IA");
-	    printText(ecran, fontmenu, gray, 320-(10*24)/2, 160, "J1 vs 3 IA");
-	    printText(ecran, fontmenu, gray, 320-(8*24)/2, 192, "J1 vs J2");
-	    printText(ecran, fontmenu, gray, 320-(16*24)/2, 224, "J1 vs J2 vs 2 IA");
+	    printText(ecran, fontmenu, gray, 320-(10*24)/3, 128, "J1 vs 1 IA");
+	    printText(ecran, fontmenu, gray, 320-(10*24)/3, 160, "J1 vs 3 IA");
+	    printText(ecran, fontmenu, gray, 320-(8*24)/3, 192, "J1 vs J2");
+	    printText(ecran, fontmenu, gray, 320-(20*24)/3, 224, "J1 vs J2 vs IA vs IA");
 	    switch(smenu){
 	    case(0):
-		printText(ecran, fontmenu, white, 320-(10*24)/2, 128, "J1 vs 1 IA");
+		printText(ecran, fontmenu, white, 320-(10*24)/3, 128, "J1 vs 1 IA");
 		break;
 	    case(1):
-		printText(ecran, fontmenu, white, 320-(10*24)/2, 160, "J1 vs 3 IA");
+		printText(ecran, fontmenu, white, 320-(10*24)/3, 160, "J1 vs 3 IA");
 		break;
 	    case(2):
-		printText(ecran, fontmenu, white, 320-(8*24)/2, 192, "J1 vs J2");
+		printText(ecran, fontmenu, white, 320-(8*24)/3, 192, "J1 vs J2");
 		break;
 	    case(3):
-		printText(ecran, fontmenu, white, 320-(16*24)/2, 224, "J1 vs J2 vs 2 IA");
+		printText(ecran, fontmenu, white, 320-(20*24)/3, 224, "J1 vs J2 vs IA vs IA");
 		break;
 	    }
 	    break;
 	    // Choix de la carte
 	case(2):
 	    mmax = nbrMap;
-	    printText(ecran, fontmenu, white, 320-(1*24)/2, 256, "A");
-	    printText(ecran, fontmenu, white, 320-(strlen(listMaps[smenu]->name)*24)/2, 288, listMaps[smenu]->name);
-	    printText(ecran, fontmenu, white, 320-(1*24)/2, 320, "V");
+	    printText(ecran, fontmenu, white, 320-(1*24)/3, 256, "A");
+	    printText(ecran, fontmenu, white, 320-(strlen(listMaps[smenu]->name)*24)/3, 288, listMaps[smenu]->name);
+	    printText(ecran, fontmenu, white, 320-(1*24)/3, 320, "V");
 	    break;
 	}
 	SDL_Flip(ecran);
