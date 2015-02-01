@@ -32,13 +32,13 @@ Objectifs finaux minimum:
 - jouer à deux					[CHECK]
 - jouer seul contre l’ordinateur		[CHECK]
 - proposer plusieurs niveaux			[CHECK]
-- gérer si possible des  ́evenements sonores	[TODO]
+- gérer si possible des  ́evenements sonores	[CHECK]
 - compter les points				[CHECK]
 
 Idées d'objectifs en plus:
 - Jouer en multijoueur en réseau		[NOPE]
-- Ajouter un mode SOLO vs des monstres		[Si j'ai le temps demain]
-- Ajouter différents types de bombes		[Si j'ai le temps demain]
+- Ajouter un mode SOLO vs des monstres		[NOPE]
+- Ajouter différents types de bombes		[NOPE]
 - Ajouter plus de map, parce que le souague	[TODO]
 - Ajouter des sons sexy				[TODO]
 - D'autres idées?
