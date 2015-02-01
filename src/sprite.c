@@ -17,18 +17,19 @@ int chargerBombermanSprite( Sprite *sprite, const char *image )
   
   // le sprite n'est pas animé par defaut
   sprite->anim = 0;
-  
+  sprite->animDir = 1;
+
   // on commence par la première animation (qui est la 3eme)
-  sprite->current_anim =3;
+  sprite->current_anim =0;
   
-  // le sprite dispose de cinq animations
-  sprite->total_anims = 5;
+  // le sprite dispose de cinq animations, on part de 0 donc jusqu'à 4.
+  sprite->total_anims = 4;
   
   // par défaut, le sprite est tourné vers le bas
   sprite->orientation = DOWN;
   
   // temps d'affichage pour une animation
-  sprite->time_anim = 32;
+  sprite->time_anim = 10;
   
   // Le temps qu'il reste à afficher l'animation courante
   sprite->time_current_anim = 0;
@@ -160,7 +161,12 @@ void dessinerSprite( Sprite *sprite, SDL_Surface *destination )
       if ( sprite->time_current_anim <= 0 )
 	{
 	  // s'il faut changer, on passe à l'animation suivante
-	  sprite->current_anim = (sprite->current_anim+1)%sprite->total_anims;
+	  sprite->current_anim += sprite->animDir;
+	  if(sprite->current_anim == sprite->total_anims){
+	    sprite->animDir = -1;
+	  }else if(sprite->current_anim == 0){
+	    sprite->animDir = 1;
+	  }
 	  
 	  // on regle la source à copier
 	  sprite->source.x = sprite->width * sprite->current_anim;

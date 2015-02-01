@@ -43,7 +43,8 @@ typedef struct
 	
 	// si le sprite est anime
 	int anim;
-	
+  int animDir;
+
 	// direction dans laquelle est orienté le sprite
 	int orientation;
 
