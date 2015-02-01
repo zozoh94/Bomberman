@@ -17,18 +17,18 @@ int InitSounds()
     {
         return 1;
     }
-    
+
     //Chargement des effets sonores
     bonusSound = Mix_LoadWAV("bonus.wav");
     winSound = Mix_LoadWAV("win.wav");
-    
-    char bombFile[10]; 
+
+    char bombFile[10];
     for(int i=0; i<NBR_BOMB_SOUND; i++)
     {
-	sprintf(bombFile, "bomb%d.wav", i+1);		
+	sprintf(bombFile, "bomb%d.wav", i+1);
         bombSound[i] = Mix_LoadWAV(bombFile);
     }
-    
+
     //S'il y a eu un problème au chargement des effets sonore
     if((bonusSound == NULL) || (winSound == NULL))
     {
@@ -44,7 +44,7 @@ int InitSounds()
 	    return 1;
 	}
     }
-	
+
     //Si tout s'est bien chargé
     return 0;
 }

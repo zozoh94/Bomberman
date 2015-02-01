@@ -7,7 +7,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_mixer.h>
-#include "map.h" 
+#include "map.h"
 #include "game.h"
 #include "audio.h"
 
@@ -17,23 +17,25 @@ int main(int argc, char* argv[])
 {
     chdir(dirname(argv[0]));
     chdir("ressources");
+
     SDL_Event event;
     SDL_Surface* ecran;
     srand(time(NULL));
-  
+
     int continuer = 0;
-  
+
     ecran = InitSDL();
     map** listMaps;
     int nbrMap = ListMaps(&listMaps);
-    fprintf(stderr,"%d cartes chargÃ©es\n",nbrMap);
+
+    fprintf(stderr,"%d cartes chargées\n",nbrMap);
     TTF_Font *titre = TTF_OpenFont("Bomberman.ttf",56);
     TTF_Font *fontmenu = TTF_OpenFont("Bomberman.ttf", 24);
-    SDL_Color white = {255, 255, 255, 0}; 
+    SDL_Color white = {255, 255, 255, 0};
     SDL_Color gray = {150, 150, 150, 0};
 
     int menu = 0; // 0 = mode, 1 = joueurs, 2 = cartes
-    int smenu = 0; // dÃ©pend du menu
+    int smenu = 0; // dépend du menu
     int mmax = 2; // menumax
 
     nbrP nbrPlayers = 0;
@@ -41,12 +43,12 @@ int main(int argc, char* argv[])
 
     if(LoadSprite() == 1)
       return EXIT_FAILURE;
-      
+
     if(InitSounds() == 1)
 	return EXIT_FAILURE;
-    
+
     Mix_PlayMusic( music, -1 );
-  
+
     while (SDL_WaitEvent(&event) && continuer!=1)
     {
 	//Partie affichage du menu
@@ -54,7 +56,7 @@ int main(int argc, char* argv[])
 	SDL_FillRect(ecran, NULL, 0);
 	printText(ecran, titre, white, 8, 64, "PACBOMBERBRIQUE");
 	switch(menu){
-	    //pour la position: 320 (moitiÃ© de l'Ã©cran) - (nombre de lettre * taille des lettres)/2
+	    //pour la position: 320 (moitié de l'écran) - (nombre de lettre * taille des lettres)/2
 	    //              et: 128 (sous le titre) + 32 par ligne.
 	    // Choix du mode de jeu
 	case(0):
@@ -102,11 +104,11 @@ int main(int argc, char* argv[])
 	    break;
 	}
 	SDL_Flip(ecran);
-	  
+
 	//Partie input du menu
 	switch (event.type)
 	{
-	      
+
 	case SDL_KEYDOWN:
 	    switch (event.key.keysym.sym)
 	    {
@@ -145,19 +147,19 @@ int main(int argc, char* argv[])
 	    case SDLK_DOWN:
 		smenu=(smenu+1)%mmax;
 		break;
-		  
+
 	    default:
 		break;
 	    }
 	    break;
-	      
+
 	case SDL_QUIT:
 	    continuer = 1;
 	    break;
 	}
 	SDL_Flip(ecran);
     }
-  
+
     //DELETE SPRITE
     FreeSounds();
     FreeSprite();
@@ -180,23 +182,23 @@ SDL_Surface* InitSDL()
 	fprintf(stderr, "Echec d'initialisation de SDL.\n");
 	return NULL;
     }
-    printf("SDL initialisÃ© avec succÃ¨s.\n");
-	
+    printf("SDL initialisé avec succès.\n");
+
     if(TTF_Init() == -1)
     {
 	fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
 	return NULL;
     }
-    printf("ttf initialisÃ© avec succÃ¨s.\n");
+    printf("ttf initialisé avec succès.\n");
 
-    /* On fixe le mode d'affichage Ã  384*384 */
+    /* On fixe le mode d'affichage à 384*384 */
     ecran = SDL_SetVideoMode(640, 460, 32, SDL_SWSURFACE| SDL_DOUBLEBUF);
     if ( ecran == NULL )
     {
 	fprintf(stderr, "Echec de changement du mode video : %s.\n", SDL_GetError());
 	return NULL;
     }
-   
+
     //On initialise le mixer de la SDL
     if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
     {
@@ -205,6 +207,6 @@ SDL_Surface* InitSDL()
 
     //Mise en place de la barre caption
     SDL_WM_SetCaption( "PacBomberBrique", NULL );
-	
+
     return ecran;
 }
