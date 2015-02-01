@@ -354,18 +354,22 @@
 	"bomb.h"
 	"astar.h"
 
-1422808208 source:c:\users\enzo\bomberman\src\game.c
+1422808941 source:c:\users\enzo\bomberman\src\game.c
 	"game.h"
 
 1422789881 source:c:\users\enzo\bomberman\src\ia.c
 	"IA.h"
 
-1422801400 source:c:\users\enzo\bomberman\src\map.c
+1422808508 source:c:\users\enzo\bomberman\src\map.c
 	"map.h"
 
-1422789881 source:c:\users\enzo\bomberman\src\player.c
+1422808208 source:c:\users\enzo\bomberman\src\player.c
 	"player.h"
 
-1422789881 source:c:\users\enzo\bomberman\src\sprite.c
+1422808208 source:c:\users\enzo\bomberman\src\sprite.c
 	"sprite.h"
+
+1422811401 c:\users\enzo\bomberman\include\sdl\sdl_config_minimal.h
+	"SDL_platform.h"
+	<stdarg.h>
 
