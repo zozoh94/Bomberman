@@ -13,7 +13,7 @@
 #define K_SPACE 9
 #define K_ESCAPE 10
 
-#define FPS 100 //frame par seconde
+#define FPS 120 //frame par seconde
 #define TIMEFRAME 1000/FPS //durée d'une frame en milliseconde
 
 #define NBRVIES 2 //Nombre de vies de départ en mode VERSUS
@@ -518,6 +518,7 @@ void victory_screen(SDL_Surface *ecran, char *winner)
 	SDL_Delay(500); //Une demi seconde pour admirer la fin de la game
 	
 	SDL_Flip(ecran);
+	Mix_PauseMusic();
 	Mix_PlayChannel(-1, winSound, 0);
 	
 	//1 seconde d'écran de victoire
@@ -531,6 +532,8 @@ void victory_screen(SDL_Surface *ecran, char *winner)
 	    Mix_PlayMusic( music, -1 );
 	  }
 	}
+
+	Mix_ResumeMusic();
 	
 	TTF_CloseFont(police);
 

@@ -13,14 +13,6 @@
 #ifndef _json_object_h_
 #define _json_object_h_
 
-#ifdef __GNUC__
-#define THIS_FUNCTION_IS_DEPRECATED(func) func __attribute__ ((deprecated))
-#elif defined(_MSC_VER)
-#define THIS_FUNCTION_IS_DEPRECATED(func) __declspec(deprecated) func
-#else
-#define THIS_FUNCTION_IS_DEPRECATED(func) func
-#endif
-
 #include "json_inttypes.h"
 
 #ifdef __cplusplus
@@ -200,30 +192,11 @@ flags);
  * @param userdata an optional opaque cookie
  * @param user_delete an optional function from freeing userdata
  */
-extern void json_object_set_serializer(json_object *jso,
+void json_object_set_serializer(json_object *jso,
 	json_object_to_json_string_fn to_string_func,
 	void *userdata,
 	json_object_delete_fn *user_delete);
 
-/**
- * Simply call free on the userdata pointer.
- * Can be used with json_object_set_serializer().
- *
- * @param jso unused
- * @param userdata the pointer that is passed to free().
- */
-json_object_delete_fn json_object_free_userdata;
-
-/**
- * Copy the jso->_userdata string over to pb as-is.
- * Can be used with json_object_set_serializer().
- *
- * @param jso The object whose _userdata is used.
- * @param pb The destination buffer.
- * @param level Ignored.
- * @param flags Ignored.
- */
-json_object_to_json_string_fn json_object_userdata_to_json_string;
 
 
 /* object type methods */
@@ -287,8 +260,8 @@ extern void json_object_object_add(struct json_object* obj, const char *key,
  * @returns the json_object associated with the given field name
  * @deprecated Please use json_object_object_get_ex
  */
-THIS_FUNCTION_IS_DEPRECATED(extern struct json_object* json_object_object_get(struct json_object* obj,
-						  const char *key));
+extern struct json_object* json_object_object_get(struct json_object* obj,
+						  const char *key);
 
 /** Get the json_object associated with a given object field.  
  *
@@ -519,29 +492,6 @@ extern int64_t json_object_get_int64(struct json_object *obj);
  * @returns a json_object of type json_type_double
  */
 extern struct json_object* json_object_new_double(double d);
-
-/**
- * Create a new json_object of type json_type_double, using
- * the exact serialized representation of the value.
- *
- * This allows for numbers that would otherwise get displayed
- * inefficiently (e.g. 12.3 => "12.300000000000001") to be
- * serialized with the more convenient form.
- *
- * Note: this is used by json_tokener_parse_ex() to allow for
- *   an exact re-serialization of a parsed object.
- *
- * An equivalent sequence of calls is:
- * @code
- *   jso = json_object_new_double(d);
- *   json_object_set_serializer(d, json_object_userdata_to_json_string,
- *       strdup(ds), json_object_free_userdata)
- * @endcode
- *
- * @param d the numeric value of the double.
- * @param ds the string representation of the double.  This will be copied.
- */
-extern struct json_object* json_object_new_double_s(double d, const char *ds);
 
 /** Get the double floating point value of a json_object
  *

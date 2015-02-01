@@ -1,0 +1,371 @@
+# depslib dependency file v1.0
+1422789881 source:c:\users\enzo\bomberman\src\astar.c
+	"astar.h"
+
+1422789881 c:\users\enzo\bomberman\src\astar.h
+	<stdio.h>
+	<stdlib.h>
+
+1422796889 source:c:\users\enzo\bomberman\src\audio.c
+	"audio.h"
+
+1422789881 c:\users\enzo\bomberman\src\audio.h
+	<stdio.h>
+	<string.h>
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1326110987 c:\users\enzo\bomberman\include\sdl\sdl_config.h
+	"SDL_platform.h"
+	"SDL_config_dreamcast.h"
+	"SDL_config_macos.h"
+	"SDL_config_macosx.h"
+	"SDL_config_symbian.h"
+	"SDL_config_win32.h"
+	"SDL_config_os2.h"
+	"SDL_config_minimal.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_platform.h
+
+1326110994 c:\users\enzo\bomberman\include\sdl\sdl_config_win32.h
+	"SDL_platform.h"
+
+1326111000 c:\users\enzo\bomberman\include\sdl\begin_code.h
+
+1325738639 c:\users\enzo\bomberman\include\sdl\close_code.h
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_endian.h
+	"SDL_stdinc.h"
+	<endian.h>
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_keysym.h
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325810940 c:\users\enzo\bomberman\include\sdl\sdl_mixer.h
+	"SDL_types.h"
+	"SDL_rwops.h"
+	"SDL_audio.h"
+	"SDL_endian.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325738639 c:\users\enzo\bomberman\include\sdl\sdl_types.h
+	"SDL_stdinc.h"
+
+1422808208 source:c:\users\enzo\bomberman\src\bomb.c
+	"bomb.h"
+
+1422789881 c:\users\enzo\bomberman\src\bomb.h
+	<stdio.h>
+	<stdlib.h>
+	"sprite.h"
+	"struct.h"
+	"player.h"
+	"map.h"
+
+1422808208 c:\users\enzo\bomberman\src\sprite.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_ttf.h>
+
+1325810433 c:\users\enzo\bomberman\include\sdl\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1325814793 c:\users\enzo\bomberman\include\sdl\sdl_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1422808208 c:\users\enzo\bomberman\src\struct.h
+	<stdbool.h>
+	<SDL/SDL.h>
+	<SDL/SDL_image.h>
+	<SDL/SDL_ttf.h>
+	<SDL/SDL_mixer.h>
+	"sprite.h"
+
+1422808208 c:\users\enzo\bomberman\src\player.h
+	<stdio.h>
+	<stdlib.h>
+	"struct.h"
+	"map.h"
+	"bomb.h"
+	"sprite.h"
+
+1422789881 c:\users\enzo\bomberman\src\map.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<sys/types.h>
+	<dirent.h>
+	<sys/stat.h>
+	<unistd.h>
+	<json/json.h>
+	<SDL/SDL.h>
+	<stdbool.h>
+	"struct.h"
+	"player.h"
+	"bomb.h"
+
+1365496840 c:\users\enzo\bomberman\include\json\json.h
+	"bits.h"
+	"debug.h"
+	"linkhash.h"
+	"arraylist.h"
+	"json_util.h"
+	"json_object.h"
+	"json_tokener.h"
+	"json_object_iterator.h"
+	"json_c_version.h"
+
+1365496840 c:\users\enzo\bomberman\include\json\bits.h
+
+1365496840 c:\users\enzo\bomberman\include\json\debug.h
+	<stdlib.h>
+
+1365496842 c:\users\enzo\bomberman\include\json\linkhash.h
+	"json_object.h"
+
+1365496842 c:\users\enzo\bomberman\include\json\json_object.h
+	"json_inttypes.h"
+
+1365496842 c:\users\enzo\bomberman\include\json\json_inttypes.h
+	"json_config.h"
+	<inttypes.h>
+
+1365496840 c:\users\enzo\bomberman\include\json\json_config.h
+
+1365496840 c:\users\enzo\bomberman\include\json\arraylist.h
+
+1365496842 c:\users\enzo\bomberman\include\json\json_util.h
+	"json_object.h"
+
+1365496842 c:\users\enzo\bomberman\include\json\json_tokener.h
+	<stddef.h>
+	"json_object.h"
+
+1365496842 c:\users\enzo\bomberman\include\json\json_object_iterator.h
+	<stddef.h>
+
+1365496842 c:\users\enzo\bomberman\include\json\json_c_version.h
+
+1422808374 source:c:\users\enzo\bomberman\src\bomberman.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<unistd.h>
+	<libgen.h>
+	<SDL/SDL.h>
+	<SDL/SDL_ttf.h>
+	<SDL/SDL_mixer.h>
+	"map.h"
+	"game.h"
+	"audio.h"
+
+1422808208 c:\users\enzo\bomberman\src\game.h
+	<stdio.h>
+	<stdlib.h>
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+	"struct.h"
+	"map.h"
+	"player.h"
+	"bomb.h"
+	"IA.h"
+	"audio.h"
+	"sprite.h"
+
+1422789881 c:\users\enzo\bomberman\src\ia.h
+	"struct.h"
+	"player.h"
+	"map.h"
+	"bomb.h"
+	"astar.h"
+
+1422808208 source:c:\users\enzo\bomberman\src\game.c
+	"game.h"
+
+1422789881 source:c:\users\enzo\bomberman\src\ia.c
+	"IA.h"
+
+1422801400 source:c:\users\enzo\bomberman\src\map.c
+	"map.h"
+
+1422789881 source:c:\users\enzo\bomberman\src\player.c
+	"player.h"
+
+1422789881 source:c:\users\enzo\bomberman\src\sprite.c
+	"sprite.h"
+
