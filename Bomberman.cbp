@@ -35,7 +35,6 @@
 			<Add directory="C:/Users/enzo/Bomberman/include" />
 		</Compiler>
 		<Linker>
-			<Add option="-Llib/" />
 			<Add library="mingw32" />
 			<Add library="SDLmain" />
 			<Add library="SDL.dll" />
