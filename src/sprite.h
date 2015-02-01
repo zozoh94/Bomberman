@@ -16,47 +16,47 @@
 
 typedef struct
 {
-	// pour l'affichage
+    // pour l'affichage
 	
-	SDL_Surface *image;
-	SDL_Rect source;
-	SDL_Rect pos;
-	SDL_Rect pos_bbm;
+    SDL_Surface *image;
+    SDL_Rect source;
+    SDL_Rect pos;
+    SDL_Rect pos_bbm;
 
 	
-	// taille du sprite
+    // taille du sprite
 
-	int width;
-	int height;
+    int width;
+    int height;
 	
-	// pour le déplacement
+    // pour le déplacement
 	
-	// direction dans laquelle se deplace le sprite
-	int direction;
+    // direction dans laquelle se deplace le sprite
+    int direction;
 	
-	// speed du sprite
-	int speed;
+    // speed du sprite
+    int speed;
 	
-	// pour la gestion des animations
+    // pour la gestion des animations
 	
-	// si le sprite est anime
-	int anim;
-  int animDir;
+    // si le sprite est anime
+    int anim;
+    int animDir;
 
-	// direction dans laquelle est orienté le sprite
-	int orientation;
+    // direction dans laquelle est orienté le sprite
+    int orientation;
 
-	// animation courante du sprite
-	int current_anim;
+    // animation courante du sprite
+    int current_anim;
 
-	// le temps que dure une animation
-	int time_anim;
+    // le temps que dure une animation
+    int time_anim;
 
-	// le temps de l'animation courante
-	int time_current_anim;
+    // le temps de l'animation courante
+    int time_current_anim;
 
-	// nombre d'animations du sprite
-	int total_anims;
+    // nombre d'animations du sprite
+    int total_anims;
 
 }Sprite;
 

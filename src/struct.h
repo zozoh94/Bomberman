@@ -19,12 +19,12 @@ typedef struct s_bombList bombList;
 typedef enum e_vCond vCond;
 typedef enum e_nbrP nbrP;
 
-#define FOREACH_map_JSON_Key(map_JSON_Key) \
-    map_JSON_Key(name)			   \
-    map_JSON_Key(grid)			   \
-    map_JSON_Key(author)			   \
-    map_JSON_Key(auto_remove)			   \
-    map_JSON_Key(theme)				   \
+#define FOREACH_map_JSON_Key(map_JSON_Key)	\
+    map_JSON_Key(name)				\
+    map_JSON_Key(grid)				\
+    map_JSON_Key(author)			\
+    map_JSON_Key(auto_remove)			\
+    map_JSON_Key(theme)				\
 
 #define GENERATE_ENUM(ENUM) KEY_ ## ENUM,
 #define GENERATE_STRING(STRING) #STRING,
@@ -39,8 +39,8 @@ enum map_JSON_Key {
    @brief Conditions de victoires
 */
 enum e_vCond{
-  POINTS,
-  VERSUS
+    POINTS,
+    VERSUS
 };
 
 /**
@@ -115,11 +115,11 @@ struct s_map{
 };
 
 enum e_nbrP{
-  SOLOVSIA,
-  SOLOVSBCPIA,
-  PVP,
-  VSIA,
-  SHOW
+    SOLOVSIA,
+    SOLOVSBCPIA,
+    PVP,
+    VSIA,
+    SHOW
 };
 
 /*
@@ -127,42 +127,42 @@ enum e_nbrP{
   Le type de joueur (J1, J2, IA)
 */
 enum e_typeP{
-  J1,
-  J2,
-  IA
+    J1,
+    J2,
+    IA
 };
 
 /*
   Type possible des bombes
- */
+*/
 enum e_btype{
-  NORMAL,
-  SQUARE
+    NORMAL,
+    SQUARE
 };
 
 /*
   Structure player
   Contient les coordonnées des joueurs, leur score, leurs bonus, leur nombre de bombes.
   
- */
+*/
 struct s_player{
-  int x; //Coordonnée X
-  int y; //Coordonnée Y
-  int destX; //Coordonnée X d'arrivée en cas de déplacement
-  int destY; //Coordonnée Y d'arrivée en cas de déplacement
-  int score; //Score
-  int bombs; //Nombre de bombes posées
-  int bombMax; //Nombre de bombes posables max simultanéments
-  int speed; //Le temps de déplacement (plus petit = plus rapide)
-  int moveTimer; //Le timer du déplacement
-  typeP type; //Type de player
-  map *map; //Pointeur vers la map
-  Sprite *sprite; // Image
-  int invulnerability; // durée d'invulnerabilité, 0 = pas invulnerable
+    int x; //Coordonnée X
+    int y; //Coordonnée Y
+    int destX; //Coordonnée X d'arrivée en cas de déplacement
+    int destY; //Coordonnée Y d'arrivée en cas de déplacement
+    int score; //Score
+    int bombs; //Nombre de bombes posées
+    int bombMax; //Nombre de bombes posables max simultanéments
+    int speed; //Le temps de déplacement (plus petit = plus rapide)
+    int moveTimer; //Le timer du déplacement
+    typeP type; //Type de player
+    map *map; //Pointeur vers la map
+    Sprite *sprite; // Image
+    int invulnerability; // durée d'invulnerabilité, 0 = pas invulnerable
   
-  //Stats des bombes
-  int bombR; //rayon des bombes
-  btype bombT; //type des bombes
+    //Stats des bombes
+    int bombR; //rayon des bombes
+    btype bombT; //type des bombes
 };
 
 
@@ -170,25 +170,25 @@ struct s_player{
   Structure bomb
   Contient les coordonnées de la bombe, son type, son rayon d'explosion.
   
- */
+*/
 struct s_bomb{
-  int x; //Coordonnée X
-  int y; //Coordonnée Y
-  int explosion; //Rayon d'explosion
-  int timer; //Temps avant explosion
-  player* myPlayer; //Joueur ayant posé la bombe
-  btype type; //Type de la bombe
+    int x; //Coordonnée X
+    int y; //Coordonnée Y
+    int explosion; //Rayon d'explosion
+    int timer; //Temps avant explosion
+    player* myPlayer; //Joueur ayant posé la bombe
+    btype type; //Type de la bombe
 
-  int** explozone; //Cases touchées par l'explosion (0 = non 1 = oui);
+    int** explozone; //Cases touchées par l'explosion (0 = non 1 = oui);
 };
 
 
 /*
   Liste chainée de bombes
- */
+*/
 struct s_bombList{
-  bomb* data;
-  struct s_bombList* next;
+    bomb* data;
+    struct s_bombList* next;
 };
 
 #endif

@@ -9,22 +9,22 @@
 
 /**
    noeud pour A*
- */
+*/
 typedef struct s_noeud {
-  int x;
-  int y;
-  int poids;
-  struct s_noeud *last;
+    int x;
+    int y;
+    int poids;
+    struct s_noeud *last;
 }noeud;
 
 /**
    TAS noeud pour A*
    parent de X = (X-1)/2
    enfant de X = (X+1)*2 et (X+1)*2 -1
- */
+*/
 typedef struct s_tasNoeud {
-  noeud **noeuds; //tableau de tableaux de noeuds
-  int last;
+    noeud **noeuds; //tableau de tableaux de noeuds
+    int last;
 }tasNoeud;
 
 noeud* creerNoeud(int x, int y, int poids, noeud *last);
