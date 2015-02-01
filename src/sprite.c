@@ -1,5 +1,11 @@
 #include "sprite.h"
 
+Sprite *bombSprite = NULL;
+SDL_Surface* flammeC = NULL; //Image des flammes au centre
+SDL_Surface* flammeD = NULL; //Image des flammes a droite
+SDL_Surface* flammeB = NULL; //Image des flammes en bas
+SDL_Surface* flammeG = NULL; //Image des flammes a gauche
+SDL_Surface* flammeH = NULL; //Image des flammes en haut
 
 int chargerBombermanSprite( Sprite *sprite, const char *image )
 {
@@ -190,4 +196,60 @@ void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y
   position.x = x;
   position.y = y;
   SDL_BlitSurface(txt, NULL, ecr, &position);
+}
+
+int LoadSprite(){
+  int ret = 0;
+  bombSprite = malloc(sizeof(Sprite));  
+  if(ChargeBomb (bombSprite, "bomb.png") == 0){
+    fprintf(stderr,"erreur chargement image bombe\n");
+    ret = 1;
+  }
+  flammeC = IMG_Load("flameC.png");
+  if(flammeC == NULL){
+    fprintf(stderr,"erreur chargement image flammes centre\n");
+    ret = 1;
+  }
+  flammeD = IMG_Load("flameD.png");
+  if(flammeD == NULL){
+    fprintf(stderr,"erreur chargement image flammes droite\n");
+    ret = 1;
+  }
+  flammeB = IMG_Load("flameB.png");
+  if(flammeB == NULL){
+    fprintf(stderr,"erreur chargement image flammes bas\n");
+    ret = 1;
+  }
+  flammeG = IMG_Load("flameG.png");
+  if(flammeG == NULL){
+    fprintf(stderr,"erreur chargement image flammes gauche\n");
+    ret = 1;
+  }
+  flammeH = IMG_Load("flameH.png");
+  if(flammeH == NULL){
+    fprintf(stderr,"erreur chargement image flammes haut\n");
+    ret = 1;
+  }
+  return ret;
+}
+
+void FreeSprite(){
+  if(bombSprite != NULL){
+    deleteSprite(bombSprite);
+  }
+  if(flammeC != NULL){
+    free(flammeC);
+  }
+  if(flammeD != NULL){
+    free(flammeD);
+  }
+  if(flammeB != NULL){
+    free(flammeB);
+  }
+  if(flammeG != NULL){
+    free(flammeG);
+  }
+  if(flammeH != NULL){
+    free(flammeH);
+  }
 }

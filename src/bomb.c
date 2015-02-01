@@ -8,32 +8,6 @@ bomb* InitBomb(int x, int y, int rayon, int timer, player* myPlayer, btype type)
   b->timer = timer;
   b->myPlayer = myPlayer;
   b->type = type;
-  Sprite *bombS=malloc(sizeof(Sprite));
-  b->sprite = bombS;
-  if(ChargeBomb (b->sprite, "bomb.png") == 0){
-    fprintf(stderr,"erreur chargement image bombe\n");
-  }
-  b->flammeC = IMG_Load("flameC.png");
-  if(b->flammeC == NULL){
-    fprintf(stderr,"erreur chargement image flammes centre\n");
-  }
-  b->flammeD = IMG_Load("flameD.png");
-  if(b->flammeD == NULL){
-    fprintf(stderr,"erreur chargement image flammes droite\n");
-  }
-  b->flammeB = IMG_Load("flameB.png");
-  if(b->flammeB == NULL){
-    fprintf(stderr,"erreur chargement image flammes bas\n");
-  }
-  b->flammeG = IMG_Load("flameG.png");
-  if(b->flammeG == NULL){
-    fprintf(stderr,"erreur chargement image flammes gauche\n");
-  }
-  b->flammeH = IMG_Load("flameH.png");
-  if(b->flammeH == NULL){
-    fprintf(stderr,"erreur chargement image flammes haut\n");
-  }
-
   int **explZ=malloc(sizeof(int*)*myPlayer->map->width);
   b->explozone = explZ;
   int i,j;
@@ -211,7 +185,6 @@ bombList* RemoveBombList(bombList* l, bomb* b)
       }else{
 	l = NULL;
       }
-      deleteSprite(previous->data->sprite);
       free(previous);
     }
   else //parcoure la liste en deux temps, avec temp et avec previous qui a l'ancienne valeur de temp
