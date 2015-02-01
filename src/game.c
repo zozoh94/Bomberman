@@ -523,6 +523,7 @@ void victory_screen(SDL_Surface *ecran, char *winner)
 	while(SDL_WaitEvent(&event) && fin == 0){
 	  if (event.type == SDL_KEYDOWN){
 	    fin = 1;
+	    Mix_Pause(-1);
 	    Mix_PlayMusic( music, -1 );
 	  }
 	}
