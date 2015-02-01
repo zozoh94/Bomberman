@@ -19,7 +19,7 @@
 
 /**
    Initialise le jeu
- */
+*/
 void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest);
 
 //Boucle de jeu
@@ -29,7 +29,7 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest);
    Contrôle les timer et explosions des bombes.
    Récupère la liste des bombes contenue dans map, et pour chaque bombe, vérifie si elle doit exploser, la fait exploser le cas échéant, sinon décrémente son timer.
    @param map* map: La carte qui contient les bombes
- */
+*/
 void BombLoop(map* map, SDL_Surface *dest);
 
 /**
@@ -37,13 +37,13 @@ void BombLoop(map* map, SDL_Surface *dest);
    Récupère la liste des joueurs de la map, et pour chaque joueur, décrémente son timer si besoin.
    @param map* map: La carte qui contient les joueurs
    int* input: le tableau des input à gérer éventuellement
- */
+*/
 void PlayerLoop(map* map, int* input, SDL_Surface *dest);
 
 
 /**
    Affiche la map
- */
+*/
 void MapLoop(map* map, SDL_Surface *dest);
 
 /**
@@ -53,7 +53,7 @@ void MapLoop(map* map, SDL_Surface *dest);
    vCond cond: Les conditions de victoire
    player** winner: Un pointeur qui pointera vers le gagnant s'il y en a un.
    @return 1 si conditions de victoire remplies, sinon 0
- */
+*/
 int TestWin(map* map, vCond cond, int* winner);
 
 

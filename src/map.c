@@ -80,7 +80,7 @@ int ParseMap(map *map)
     file = fopen(map->filename, "r");
     if (file!=NULL)
     {
-	while (fgets(string, MAX_LEN_LINE, file) != NULL) // On lit le fichier tant qu'on ne reÁoit pas d'erreur (NULL)
+	while (fgets(string, MAX_LEN_LINE, file) != NULL) // On lit le fichier tant qu'on ne re√ßoit pas d'erreur (NULL)
 	{
 	    strcat(stringFile, string);
 	}
@@ -94,7 +94,7 @@ int ParseMap(map *map)
 		{
 		    if (json_object_is_type(val, json_type_string))
 		    {
-		      map->name = malloc(strlen(json_object_get_string(val))+1);
+			map->name = malloc(strlen(json_object_get_string(val))+1);
 			strcpy(map->name, json_object_get_string(val));
 		    }
 		    else
@@ -118,7 +118,7 @@ int ParseMap(map *map)
 		{
 		    if (json_object_is_type(val, json_type_boolean))
 		    {
-			map->autoRemove = json_object_get_string(val);
+			map->autoRemove = json_object_get_boolean(val);
 		    }
 		    else
 		    {
@@ -196,8 +196,8 @@ int ParseMap(map *map)
 
 int InitMap(map* map, int nbrPlayers, player** listPlayer)
 {
-  map->bombs = NULL;
-    //On compte le nombre de cases de dÈpart joueurs dÈj‡ disponible
+    map->bombs = NULL;
+    //On compte le nombre de cases de d√©part joueurs d√©j√† disponible
     int nbrStartingBlock = 0;
     for(int i=0; i<map->height; i++)
     {
@@ -217,7 +217,7 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     {
     	for(int j=0; j<map->width; j++)
     	{
-    	    //On supprime alÈatoirement des blocs dÈstructibles
+    	    //On supprime al√©atoirement des blocs d√©structibles
     	    if(map->grid[j][i]==DESTRUCTIBLE_BLOCK && map->autoRemove==true)
     	    {
     		if(proba > rand() % 100)
@@ -225,10 +225,10 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     	    }
     	}
     }
-    //En fonction du nombre de joueur on supprime des cases de dÈpart
+    //En fonction du nombre de joueur on supprime des cases de d√©part
     if(map->nbrPlayers==2) //Cas du 1vs1
     {
-    	//On supprime les starting block de la partie superieur droite et de la partien infÈrieur gauche
+    	//On supprime les starting block de la partie superieur droite et de la partien inf√©rieur gauche
 	for(int i=0; i<(int)(map->height/2); i++)
     	{
 	    for(int j=(int)(map->width/2); j<map->width; j++)
@@ -260,7 +260,7 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
 	if(!startingBlockFound)
 	    return MAP_1VS1_ERROR;
 	startingBlockFound = false;
-    	//On laisse un seul starting block dans la partie infÈrieur droite
+    	//On laisse un seul starting block dans la partie inf√©rieur droite
     	for(int i=map->height-1; i<=(int)(map->height/2); i--)
     	{
     	    for(int j=map->width-1; j<=(int)(map->width/2); j--)
@@ -293,7 +293,7 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
 	    }
 	}
     }
-    //On enregistre les points de dÈparts
+    //On enregistre les points de d√©parts
     map->startingBlocks = malloc(nbrPlayers*sizeof(int*));
     for(int i=0; i<nbrPlayers; i++)
     {
@@ -316,7 +316,7 @@ int InitMap(map* map, int nbrPlayers, player** listPlayer)
     map->players = listPlayer;
     for(int i=0; i<map->nbrPlayers; i++)
     {
-    	//On affectes aux joueurs des coordonnÈes de dÈpart
+    	//On affectes aux joueurs des coordonn√©es de d√©part
     	map->players[i]->x=map->startingBlocks[i][0];
     	map->players[i]->y=map->startingBlocks[i][1];
     }
@@ -327,27 +327,27 @@ void FreeMaps(map** listMap, int nbrMaps)
 {
     for(int i=0; i<nbrMaps; i++)
     {
-	//On libËre la grille
+	//On lib√®re la grille
 	for(int j=0; j<listMap[i]->height; j++)
 	{
 	    free(listMap[i]->grid[j]);
 	}
 	free(listMap[i]->grid);
-	//On libËre le nom
+	//On lib√®re le nom
 	free(listMap[i]->name);
-	//On libËre l'auteur
+	//On lib√®re l'auteur
 	free(listMap[i]->author);
-	//On libËre la mÈmoire du nom de fichier
+	//On lib√®re la m√©moire du nom de fichier
 	free(listMap[i]->filename);
-	//On libËre la mÈmoire de la liste de joueurs
+	//On lib√®re la m√©moire de la liste de joueurs
 	free(listMap[i]->players);
-	//On libËre la mÈmoire des enregistrements de startingBlock
+	//On lib√®re la m√©moire des enregistrements de startingBlock
 	for(int k=0; k<listMap[i]->nbrPlayers; k++)
 	    free(listMap[i]->startingBlocks[k]);
 	free(listMap[i]->startingBlocks);
-	//On peux liberer la mÈmoire de la structure
+	//On peux liberer la m√©moire de la structure
 	free(listMap[i]);
     }
-    //Et enfin on libËre le tableau de map
+    //Et enfin on lib√®re le tableau de map
     free(listMap);
 }

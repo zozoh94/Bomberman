@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
     map** listMaps;
     int nbrMap = ListMaps(&listMaps);
 
-    fprintf(stderr,"%d cartes chargées\n",nbrMap);
+    fprintf(stderr,"%d cartes chargÃ©es\n",nbrMap);
     TTF_Font *titre = TTF_OpenFont("Bomberman.ttf",56);
     TTF_Font *fontmenu = TTF_OpenFont("Bomberman.ttf", 24);
     SDL_Color white = {255, 255, 255, 0};
@@ -39,14 +39,14 @@ int main(int argc, char* argv[])
     menuPos.y = 0;
 
     int menu = 0; // 0 = mode, 1 = joueurs, 2 = cartes
-    int smenu = 0; // dépend du menu
+    int smenu = 0; // dÃ©pend du menu
     int mmax = 2; // menumax
 
     nbrP nbrPlayers = 0;
     vCond cond = 0;
 
     if(LoadSprite() == 1)
-      return EXIT_FAILURE;
+	return EXIT_FAILURE;
 
     if(InitSounds() == 1)
 	return EXIT_FAILURE;
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 	SDL_BlitSurface(menuScreen, NULL, ecran, &menuPos);
 	printText(ecran, titre, white, 8, 64, "PACBOMBERBRIQUE");
 	switch(menu){
-	    //pour la position: 320 (moitié de l'écran) - (nombre de lettre * taille des lettres)/2
+	    //pour la position: 320 (moitiÃ© de l'Ã©cran) - (nombre de lettre * taille des lettres)/2
 	    //              et: 128 (sous le titre) + 32 par ligne.
 	    // Choix du mode de jeu
 	case(0):
@@ -116,60 +116,60 @@ int main(int argc, char* argv[])
 	SDL_Flip(ecran);
 
 	if(continuer == 2){
-	  continuer = 0;
+	    continuer = 0;
 	}else{
-	  //Partie input du menu
-	  switch (event.type)
+	    //Partie input du menu
+	    switch (event.type)
 	    {
 	      
 	    case SDL_KEYDOWN:
-	      switch (event.key.keysym.sym)
+		switch (event.key.keysym.sym)
 		{
 		case SDLK_ESCAPE:
-		  continuer = 1;
-		  break;
+		    continuer = 1;
+		    break;
 		case SDLK_RETURN:
-		  switch(menu){
-		  case(0):
-		    cond = smenu;
-		    smenu = 0;
-		    menu = 1;
+		    switch(menu){
+		    case(0):
+			cond = smenu;
+			smenu = 0;
+			menu = 1;
+			break;
+		    case(1):
+			nbrPlayers = smenu;
+			smenu = 0;
+			menu = 2;
+			break;
+		    case(2):
+			ParseMap(listMaps[smenu]);
+			StartGame(listMaps[smenu], nbrPlayers, cond, ecran);
+			smenu = 0;
+			menu = 0;
+			continuer = 2;
+			break;
+		    default:
+			break;
+		    }
 		    break;
-		  case(1):
-		    nbrPlayers = smenu;
-		    smenu = 0;
-		    menu = 2;
-		    break;
-		  case(2):
-		    ParseMap(listMaps[smenu]);
-		    StartGame(listMaps[smenu], nbrPlayers, cond, ecran);
-		    smenu = 0;
-		    menu = 0;
-		    continuer = 2;
-		    break;
-		  default:
-		    break;
-		  }
-		  break;
 		case SDLK_BACKSPACE:
-		  if(menu>0)
-		    menu--;
-		  break;
+		    if(menu>0)
+			menu--;
+		    break;
 		case SDLK_UP:
-		  smenu=(smenu-1+mmax)%mmax;
-		  break;
+		    smenu=(smenu-1+mmax)%mmax;
+		    break;
 		case SDLK_DOWN:
-		  smenu=(smenu+1)%mmax;
-		  break;
+		    smenu=(smenu+1)%mmax;
+		    break;
 		  
 		default:
-		  break;
+		    break;
 		}
-	      break;
+		break;
 	      
 	    case SDL_QUIT:
-	      continuer = 1;
-	      break;
+		continuer = 1;
+		break;
 	    }
 	}
 	SDL_Flip(ecran);
@@ -198,16 +198,16 @@ SDL_Surface* InitSDL()
 	fprintf(stderr, "Echec d'initialisation de SDL.\n");
 	return NULL;
     }
-    printf("SDL initialisé avec succès.\n");
+    printf("SDL initialisÃ© avec succÃ¨s.\n");
 
     if(TTF_Init() == -1)
     {
 	fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
 	return NULL;
     }
-    printf("ttf initialisé avec succès.\n");
+    printf("ttf initialisÃ© avec succÃ¨s.\n");
 
-    /* On fixe le mode d'affichage à 384*384 */
+    /* On fixe le mode d'affichage Ã  384*384 */
     ecran = SDL_SetVideoMode(640, 460, 32, SDL_SWSURFACE| SDL_DOUBLEBUF);
     if ( ecran == NULL )
     {
