@@ -118,7 +118,7 @@ int ParseMap(map *map)
 		{
 		    if (json_object_is_type(val, json_type_boolean))
 		    {
-			map->autoRemove = json_object_get_string(val);
+			map->autoRemove = json_object_get_boolean(val);
 		    }
 		    else
 		    {

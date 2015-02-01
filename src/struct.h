@@ -107,7 +107,7 @@ struct s_map{
     map_Error error; //Indique un code d'erreur si l'initialisation de la structure a échoué
     char* filename; //Nom du fichier map
     int** startingBlocks; //Enregistrement des points de départ de la map
-  vCond victory; //Conditions de victoire
+    vCond victory; //Conditions de victoire
     //Images de la map, à charger avec destructibleWall=IMG_Load("nomdufichier.jpg");
     SDL_Surface *destructibleBlock; //Image des murs destructibles "destr"
     SDL_Surface *undestructibleBlock; //Image des murs indestructibles "indestr"
