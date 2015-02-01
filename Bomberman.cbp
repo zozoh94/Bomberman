@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Bomberman" />
+		<Option makefile="makefile" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Bomberman-debug" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Bomberman" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=gnu99" />
+			<Add directory="C:/Users/enzo/Bomberman/include" />
+		</Compiler>
+		<Linker>
+			<Add option="-Llib/" />
+			<Add library="mingw32" />
+			<Add library="SDLmain" />
+			<Add library="SDL.dll" />
+			<Add library="user32" />
+			<Add library="gdi32" />
+			<Add library="winmm" />
+			<Add library="dxguid" />
+			<Add library="SDL_mixer" />
+			<Add library="SDL_image" />
+			<Add library="SDL_ttf" />
+			<Add library="json" />
+			<Add directory="C:/Users/enzo/Bomberman/lib" />
+		</Linker>
+		<Unit filename="src/IA.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/IA.h" />
+		<Unit filename="src/astar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/astar.h" />
+		<Unit filename="src/audio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/audio.h" />
+		<Unit filename="src/bomb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bomb.h" />
+		<Unit filename="src/bomberman.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/game.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/game.h" />
+		<Unit filename="src/map.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/map.h" />
+		<Unit filename="src/player.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/player.h" />
+		<Unit filename="src/sprite.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/sprite.h" />
+		<Unit filename="src/struct.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

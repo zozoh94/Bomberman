@@ -2,3 +2,7 @@
 bin/*.o
 bin/Bomberman
 .directory
+obj/
+bin/*.exe
+bin/stderr.txt
+bin/stdout.txt
