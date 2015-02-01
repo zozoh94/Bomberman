@@ -6,6 +6,10 @@ SDL_Surface* flammeD = NULL; //Image des flammes a droite
 SDL_Surface* flammeB = NULL; //Image des flammes en bas
 SDL_Surface* flammeG = NULL; //Image des flammes a gauche
 SDL_Surface* flammeH = NULL; //Image des flammes en haut
+SDL_Surface* bonusRadius = NULL;
+SDL_Surface* bonusBombLimit = NULL;
+SDL_Surface* bonusSpeed = NULL;
+SDL_Surface* bonusInvincibility = NULL;
 
 int chargerBombermanSprite( Sprite *sprite, const char *image )
 {
@@ -100,7 +104,7 @@ int ChargeBomb( Sprite *sprite, const char *image ){
 
 void deleteSprite( Sprite *sprite )
 {
-	SDL_FreeSurface( sprite->image );
+  SDL_FreeSurface( sprite->image );
 }
 /**
    Direction de bomberman
@@ -230,6 +234,27 @@ int LoadSprite(){
     fprintf(stderr,"erreur chargement image flammes haut\n");
     ret = 1;
   }
+  bonusRadius = IMG_Load("bonus_radius.bmp");
+  if(bonusRadius == NULL){
+    fprintf(stderr,"erreur chargement image bonusRadius\n");
+    ret = 1;
+  }
+  bonusBombLimit = IMG_Load("bonus_bomb_limit.bmp");
+  if(bonusBombLimit == NULL){
+    fprintf(stderr,"erreur chargement image bonusBombLimit\n");
+    ret = 1;
+  }
+  bonusSpeed = IMG_Load("bonus_speed.bmp");
+  if(bonusSpeed == NULL){
+    fprintf(stderr,"erreur chargement image bonusSpeed\n");
+    ret = 1;
+  }
+  bonusInvincibility = IMG_Load("bonus_invincibility.bmp");
+  if(bonusInvincibility == NULL){
+    fprintf(stderr,"erreur chargement image bonusInvincibility\n");
+    ret = 1;
+  }
+
   return ret;
 }
 
@@ -238,18 +263,30 @@ void FreeSprite(){
     deleteSprite(bombSprite);
   }
   if(flammeC != NULL){
-    free(flammeC);
+    SDL_FreeSurface(flammeC);
   }
   if(flammeD != NULL){
-    free(flammeD);
+    SDL_FreeSurface(flammeD);
   }
   if(flammeB != NULL){
-    free(flammeB);
+    SDL_FreeSurface(flammeB);
   }
   if(flammeG != NULL){
-    free(flammeG);
+    SDL_FreeSurface(flammeG);
   }
   if(flammeH != NULL){
-    free(flammeH);
+    SDL_FreeSurface(flammeH);
+  }
+  if(bonusRadius != NULL){
+    SDL_FreeSurface(bonusRadius);
+  }
+  if(bonusSpeed != NULL){
+    SDL_FreeSurface(bonusSpeed);
+  }
+  if(bonusBombLimit != NULL){
+    SDL_FreeSurface(bonusBombLimit);
+  }
+  if(bonusInvincibility != NULL){
+    SDL_FreeSurface(bonusInvincibility);
   }
 }

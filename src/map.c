@@ -58,10 +58,6 @@ int ListMaps(map*** ptrListMap)
 		    listMaps[nbrMap-1]->bombs = NULL;
 		    listMaps[nbrMap-1]->startingBlocks = NULL;
 		    listMaps[nbrMap-1]->victory = 0;
-		    listMaps[nbrMap-1]->bonusRadius = IMG_Load("bonus_radius.bmp");
-		    listMaps[nbrMap-1]->bonusBombLimit = IMG_Load("bonus_bomb_limit.bmp");
-		    listMaps[nbrMap-1]->bonusSpeed = IMG_Load("bonus_speed.bmp");
-		    listMaps[nbrMap-1]->bonusInvincibility = IMG_Load("bonus_invincibility.bmp");
 		    
 		    //On peut maintenant parser le fichier .map formaté en JSON
 		    int result = ParseMap(listMaps[nbrMap-1]);
@@ -352,6 +348,10 @@ void FreeMaps(map** listMap, int nbrMaps)
 	for(int k=0; k<listMap[i]->nbrPlayers; k++)
 	    free(listMap[i]->startingBlocks[k]);
 	free(listMap[i]->startingBlocks);
+	//On libère la mémoire des images
+	SDL_FreeSurface(listMap[i]->destructibleBlock );
+	SDL_FreeSurface(listMap[i]->undestructibleBlock );
+	SDL_FreeSurface(listMap[i]->floor );
 	//On peux liberer la mémoire de la structure
 	free(listMap[i]);
     }

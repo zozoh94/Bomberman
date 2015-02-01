@@ -11,7 +11,7 @@
 
 SDL_Surface* InitSDL();
 
-int main(int argc, char* argv[])
+int main(/*int argc, char* argv[] c'est pas nécessaire et ça fait un warning */)
 {   
     SDL_Event event;
     SDL_Surface* ecran;

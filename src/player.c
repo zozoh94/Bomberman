@@ -71,3 +71,8 @@ void Move(player* p){
   p->moveTimer = -1;
   p->sprite->anim = 0;
 }
+
+void FreePlayer(player* p){
+  deleteSprite(p->sprite);
+  free(p);
+}
