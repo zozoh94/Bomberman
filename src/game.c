@@ -13,7 +13,7 @@
 #define K_SPACE 9
 #define K_ESCAPE 10
 
-#define FPS 100 //frame par seconde
+#define FPS 120 //frame par seconde
 #define TIMEFRAME 1000/FPS //durée d'une frame en milliseconde
 
 void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
@@ -499,6 +499,7 @@ void victory_screen(SDL_Surface *ecran, char *winner)
 	SDL_BlitSurface(texte, NULL, ecran, &positionTexte);	//On blit le texte
 	
 	SDL_Flip(ecran);
+	Mix_PauseMusic();
 	Mix_PlayChannel(-1, winSound, 0);
 	
 	int fin = 0;
@@ -507,6 +508,8 @@ void victory_screen(SDL_Surface *ecran, char *winner)
 	    fin = 1;
 	  }
 	}
+
+	Mix_ResumeMusic();
 	
 	TTF_CloseFont(police);
 
