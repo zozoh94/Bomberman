@@ -69,5 +69,5 @@ void Move(player* p){
   p->x = p->destX;
   p->y = p->destY;
   p->moveTimer = -1;
-  fixDirectionSprite(p->sprite,NO_DIRECTION);
+  p->sprite->anim = 0;
 }

@@ -14,8 +14,6 @@
 #define UP	2
 #define LEFT	3
 
-
-
 typedef struct
 {
 	// pour l'affichage
@@ -43,7 +41,8 @@ typedef struct
 	
 	// si le sprite est anime
 	int anim;
-	
+  int animDir;
+
 	// direction dans laquelle est orienté le sprite
 	int orientation;
 
@@ -61,6 +60,13 @@ typedef struct
 
 }Sprite;
 
+extern Sprite *bombSprite;
+extern SDL_Surface* flammeC;
+extern SDL_Surface* flammeD;
+extern SDL_Surface* flammeB;
+extern SDL_Surface* flammeG;
+extern SDL_Surface* flammeH;
+
 int chargerBombermanSprite( Sprite *sprite, const char *image );
 
 int ChargeBomb( Sprite *sprite, const char *image );
@@ -76,5 +82,9 @@ void dessinerSprite( Sprite *sprite, SDL_Surface *destination );
 SDL_Surface *ScaleSurface(SDL_Surface *Surface, int width, int height);
 
 void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y, char* texte);
+
+void FreeSprite();
+
+int LoadSprite();
 
 #endif

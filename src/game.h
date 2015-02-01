@@ -11,6 +11,7 @@
 #include "bomb.h"
 #include "IA.h"
 #include "audio.h"
+#include "sprite.h"
 
 //Dans ce fichier, les initialisations de parties et les boucles de jeux.
 

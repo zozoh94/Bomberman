@@ -40,9 +40,12 @@ int main(int argc, char* argv[])
     nbrP nbrPlayers = 0;
     vCond cond = 0;
 
+    if(LoadSprite() == 1)
+      return EXIT_FAILURE;
+      
     if(InitSounds() == 1)
 	return EXIT_FAILURE;
-
+    
     Mix_PlayMusic( music, -1 );
   
     while (SDL_WaitEvent(&event) && continuer!=1)
@@ -158,6 +161,7 @@ int main(int argc, char* argv[])
   
     //DELETE SPRITE
     FreeSounds();
+    FreeSprite();
     FreeMaps(listMaps, nbrMap);
     TTF_CloseFont(fontmenu);
 
@@ -193,7 +197,7 @@ SDL_Surface* InitSDL()
 	fprintf(stderr, "Echec de changement du mode video : %s.\n", SDL_GetError());
 	return NULL;
     }
-
+   
     //On initialise le mixer de la SDL
     if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
     {

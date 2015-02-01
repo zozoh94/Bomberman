@@ -13,6 +13,9 @@
 #define K_SPACE 9
 #define K_ESCAPE 10
 
+#define FPS 100 //frame par seconde
+#define TIMEFRAME 1000/FPS //durée d'une frame en milliseconde
+
 void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   player **tab;
   int nbrjoueurs;
@@ -90,7 +93,10 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
     inputTab[win] = 0;
   }
   win = 0;
+  int ticksA = 0;
+  int ticksB = 0;
   while(win == 0){
+    ticksA = SDL_GetTicks();
     while( SDL_PollEvent( &event ) ){
       switch( event.type ){
       case SDL_KEYDOWN:
@@ -188,6 +194,10 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
       win = TestWin(m, cond, &winner);
     }
     SDL_Flip(dest);
+    ticksB = SDL_GetTicks();
+    if((ticksB-ticksA)<TIMEFRAME){
+      SDL_Delay(TIMEFRAME-(ticksB-ticksA));
+    }
   }
   if(win == 1){
     char *txt;
@@ -219,9 +229,9 @@ void BombLoop(map* map, SDL_Surface *dest){
       Mix_PlayChannel(-1, RandomBomb(), 0);
     }
     if(l->data->timer>=0){
-      l->data->sprite->pos.x = (l->data->x)*32+4;
-      l->data->sprite->pos.y = (l->data->y)*32+4;
-      dessinerSprite(l->data->sprite, dest);
+      bombSprite->pos.x = (l->data->x)*32+4;
+      bombSprite->pos.y = (l->data->y)*32+4;
+      dessinerSprite(bombSprite, dest);
     }
     if(l->data->timer<=0){
       SDL_Rect position;
@@ -232,19 +242,19 @@ void BombLoop(map* map, SDL_Surface *dest){
 	    position.y=j*32;
 	    switch(l->data->explozone[i][j]){
 	    case 1: //droite
-	      SDL_BlitSurface( l->data->flammeD, NULL, dest, &position);
+	      SDL_BlitSurface(flammeD, NULL, dest, &position);
 	      break;
 	    case 2: //bas
-	      SDL_BlitSurface( l->data->flammeB, NULL, dest, &position);
+	      SDL_BlitSurface(flammeB, NULL, dest, &position);
 	      break;
 	    case 3: //gauche
-	      SDL_BlitSurface( l->data->flammeG, NULL, dest, &position);
+	      SDL_BlitSurface(flammeG, NULL, dest, &position);
 	      break;
 	    case 4: //haut
-	      SDL_BlitSurface( l->data->flammeH, NULL, dest, &position);
+	      SDL_BlitSurface(flammeH, NULL, dest, &position);
 	      break;
 	    default: //centre
-	      SDL_BlitSurface( l->data->flammeC, NULL, dest, &position);
+	      SDL_BlitSurface(flammeC, NULL, dest, &position);
 	      break;
 	    }
 	  }
