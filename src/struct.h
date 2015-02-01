@@ -112,11 +112,6 @@ struct s_map{
     SDL_Surface *destructibleBlock; //Image des murs destructibles "destr"
     SDL_Surface *undestructibleBlock; //Image des murs indestructibles "indestr"
     SDL_Surface *floor; //Image du sol "floor"
-    //Images des bonus
-    SDL_Surface *bonusRadius;
-    SDL_Surface *bonusBombLimit;
-    SDL_Surface *bonusSpeed;
-    SDL_Surface *bonusInvincibility;
 };
 
 enum e_nbrP{
@@ -182,12 +177,7 @@ struct s_bomb{
   int timer; //Temps avant explosion
   player* myPlayer; //Joueur ayant posé la bombe
   btype type; //Type de la bombe
-  Sprite* sprite; //Image de la bombe
-  SDL_Surface* flammeC; //Image des flammes au centre
-  SDL_Surface* flammeD; //Image des flammes a droite
-  SDL_Surface* flammeB; //Image des flammes en bas
-  SDL_Surface* flammeG; //Image des flammes a gauche
-  SDL_Surface* flammeH; //Image des flammes en haut
+
   int** explozone; //Cases touchées par l'explosion (0 = non 1 = oui);
 };
 

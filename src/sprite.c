@@ -1,5 +1,15 @@
 #include "sprite.h"
 
+Sprite *bombSprite = NULL;
+SDL_Surface* flammeC = NULL; //Image des flammes au centre
+SDL_Surface* flammeD = NULL; //Image des flammes a droite
+SDL_Surface* flammeB = NULL; //Image des flammes en bas
+SDL_Surface* flammeG = NULL; //Image des flammes a gauche
+SDL_Surface* flammeH = NULL; //Image des flammes en haut
+SDL_Surface* bonusRadius = NULL;
+SDL_Surface* bonusBombLimit = NULL;
+SDL_Surface* bonusSpeed = NULL;
+SDL_Surface* bonusInvincibility = NULL;
 
 int chargerBombermanSprite( Sprite *sprite, const char *image )
 {
@@ -13,22 +23,24 @@ int chargerBombermanSprite( Sprite *sprite, const char *image )
   // on fixe la cle de transparance ici blanc
   SDL_SetColorKey( sprite->image, SDL_SRCCOLORKEY, SDL_MapRGB( sprite->image->format, 255, 255, 255 ) );
   
-  
+  sprite->pos_bbm.x = -1;
+  sprite->pos_bbm.y = 3;
   
   // le sprite n'est pas animé par defaut
   sprite->anim = 0;
-  
+  sprite->animDir = 1;
+
   // on commence par la première animation (qui est la 3eme)
-  sprite->current_anim =3;
+  sprite->current_anim =0;
   
-  // le sprite dispose de cinq animations
-  sprite->total_anims = 5;
+  // le sprite dispose de cinq animations, on part de 0 donc jusqu'à 4.
+  sprite->total_anims = 4;
   
   // par défaut, le sprite est tourné vers le bas
   sprite->orientation = DOWN;
   
   // temps d'affichage pour une animation
-  sprite->time_anim = 32;
+  sprite->time_anim = 10;
   
   // Le temps qu'il reste à afficher l'animation courante
   sprite->time_current_anim = 0;
@@ -93,7 +105,7 @@ int ChargeBomb( Sprite *sprite, const char *image ){
 
 void deleteSprite( Sprite *sprite )
 {
-	SDL_FreeSurface( sprite->image );
+  SDL_FreeSurface( sprite->image );
 }
 /**
    Direction de bomberman
@@ -141,8 +153,8 @@ void fixDirectionSprite( Sprite *sprite, int direction )
     }
   
   // mise à jour de l'image à copier
-  sprite->source.y = sprite->orientation * sprite->height;
-  sprite->source.x = sprite->current_anim * sprite->width;
+  sprite->source.y = sprite->orientation * sprite->height + sprite->pos_bbm.y;
+  sprite->source.x = sprite->current_anim * sprite->width + sprite->pos_bbm.x;
   
 }
 
@@ -160,10 +172,15 @@ void dessinerSprite( Sprite *sprite, SDL_Surface *destination )
       if ( sprite->time_current_anim <= 0 )
 	{
 	  // s'il faut changer, on passe à l'animation suivante
-	  sprite->current_anim = (sprite->current_anim+1)%sprite->total_anims;
+	  sprite->current_anim += sprite->animDir;
+	  if(sprite->current_anim == sprite->total_anims){
+	    sprite->animDir = -1;
+	  }else if(sprite->current_anim == 0){
+	    sprite->animDir = 1;
+	  }
 	  
 	  // on regle la source à copier
-	  sprite->source.x = sprite->width * sprite->current_anim;
+	  sprite->source.x = sprite->width * sprite->current_anim + sprite->pos_bbm.x;
 	  sprite->time_current_anim = sprite->time_anim;
 	}
     }
@@ -184,4 +201,93 @@ void printText(SDL_Surface *ecr, TTF_Font *font, SDL_Color couleur, int x, int y
   position.x = x;
   position.y = y;
   SDL_BlitSurface(txt, NULL, ecr, &position);
+}
+
+int LoadSprite(){
+  int ret = 0;
+  bombSprite = malloc(sizeof(Sprite));  
+  if(ChargeBomb (bombSprite, "bomb.png") == 0){
+    fprintf(stderr,"erreur chargement image bombe\n");
+    ret = 1;
+  }
+  flammeC = IMG_Load("flameC.png");
+  if(flammeC == NULL){
+    fprintf(stderr,"erreur chargement image flammes centre\n");
+    ret = 1;
+  }
+  flammeD = IMG_Load("flameD.png");
+  if(flammeD == NULL){
+    fprintf(stderr,"erreur chargement image flammes droite\n");
+    ret = 1;
+  }
+  flammeB = IMG_Load("flameB.png");
+  if(flammeB == NULL){
+    fprintf(stderr,"erreur chargement image flammes bas\n");
+    ret = 1;
+  }
+  flammeG = IMG_Load("flameG.png");
+  if(flammeG == NULL){
+    fprintf(stderr,"erreur chargement image flammes gauche\n");
+    ret = 1;
+  }
+  flammeH = IMG_Load("flameH.png");
+  if(flammeH == NULL){
+    fprintf(stderr,"erreur chargement image flammes haut\n");
+    ret = 1;
+  }
+  bonusRadius = IMG_Load("bonus_radius.bmp");
+  if(bonusRadius == NULL){
+    fprintf(stderr,"erreur chargement image bonusRadius\n");
+    ret = 1;
+  }
+  bonusBombLimit = IMG_Load("bonus_bomb_limit.bmp");
+  if(bonusBombLimit == NULL){
+    fprintf(stderr,"erreur chargement image bonusBombLimit\n");
+    ret = 1;
+  }
+  bonusSpeed = IMG_Load("bonus_speed.bmp");
+  if(bonusSpeed == NULL){
+    fprintf(stderr,"erreur chargement image bonusSpeed\n");
+    ret = 1;
+  }
+  bonusInvincibility = IMG_Load("bonus_invincibility.bmp");
+  if(bonusInvincibility == NULL){
+    fprintf(stderr,"erreur chargement image bonusInvincibility\n");
+    ret = 1;
+  }
+
+  return ret;
+}
+
+void FreeSprite(){
+  if(bombSprite != NULL){
+    deleteSprite(bombSprite);
+  }
+  if(flammeC != NULL){
+    SDL_FreeSurface(flammeC);
+  }
+  if(flammeD != NULL){
+    SDL_FreeSurface(flammeD);
+  }
+  if(flammeB != NULL){
+    SDL_FreeSurface(flammeB);
+  }
+  if(flammeG != NULL){
+    SDL_FreeSurface(flammeG);
+  }
+  if(flammeH != NULL){
+    SDL_FreeSurface(flammeH);
+  }
+  if(bonusRadius != NULL){
+    SDL_FreeSurface(bonusRadius);
+  }
+  if(bonusSpeed != NULL){
+    SDL_FreeSurface(bonusSpeed);
+  }
+  if(bonusBombLimit != NULL){
+    SDL_FreeSurface(bonusBombLimit);
+  }
+  if(bonusInvincibility != NULL){
+    SDL_FreeSurface(bonusInvincibility);
+  }
 }

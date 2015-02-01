@@ -13,6 +13,9 @@
 #define K_SPACE 9
 #define K_ESCAPE 10
 
+#define FPS 100 //frame par seconde
+#define TIMEFRAME 1000/FPS //durée d'une frame en milliseconde
+
 void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   player **tab;
   int nbrjoueurs;
@@ -78,7 +81,7 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
 
 void GameLoop(map *m, vCond cond, SDL_Surface *dest){
   SDL_Event event;
-  int win;
+  int win, i;
   int winner=9; //ça ne marche pas très bien.
   TTF_Font *font = TTF_OpenFont("Bomberman.ttf", 24);
   SDL_Color white = {255, 255, 255, 0}; 
@@ -90,7 +93,10 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
     inputTab[win] = 0;
   }
   win = 0;
+  int ticksA = 0;
+  int ticksB = 0;
   while(win == 0){
+    ticksA = SDL_GetTicks();
     while( SDL_PollEvent( &event ) ){
       switch( event.type ){
       case SDL_KEYDOWN:
@@ -188,6 +194,10 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
       win = TestWin(m, cond, &winner);
     }
     SDL_Flip(dest);
+    ticksB = SDL_GetTicks();
+    if((ticksB-ticksA)<TIMEFRAME){
+      SDL_Delay(TIMEFRAME-(ticksB-ticksA));
+    }
   }
   if(win == 1){
     char *txt;
@@ -205,9 +215,15 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
       txt="GG!";
       break;
     }
-    
     victory_screen(dest, txt);
   }
+
+  //LIBEREZ
+  for(i = 0; i < m->nbrPlayers; i++){
+    FreePlayer(m->players[i]);
+  }
+  TTF_CloseFont(font);
+  free(inputTab);
 }
 
 void BombLoop(map* map, SDL_Surface *dest){
@@ -219,9 +235,9 @@ void BombLoop(map* map, SDL_Surface *dest){
       Mix_PlayChannel(-1, RandomBomb(), 0);
     }
     if(l->data->timer>=0){
-      l->data->sprite->pos.x = (l->data->x)*32+4;
-      l->data->sprite->pos.y = (l->data->y)*32+4;
-      dessinerSprite(l->data->sprite, dest);
+      bombSprite->pos.x = (l->data->x)*32+4;
+      bombSprite->pos.y = (l->data->y)*32+4;
+      dessinerSprite(bombSprite, dest);
     }
     if(l->data->timer<=0){
       SDL_Rect position;
@@ -232,19 +248,19 @@ void BombLoop(map* map, SDL_Surface *dest){
 	    position.y=j*32;
 	    switch(l->data->explozone[i][j]){
 	    case 1: //droite
-	      SDL_BlitSurface( l->data->flammeD, NULL, dest, &position);
+	      SDL_BlitSurface(flammeD, NULL, dest, &position);
 	      break;
 	    case 2: //bas
-	      SDL_BlitSurface( l->data->flammeB, NULL, dest, &position);
+	      SDL_BlitSurface(flammeB, NULL, dest, &position);
 	      break;
 	    case 3: //gauche
-	      SDL_BlitSurface( l->data->flammeG, NULL, dest, &position);
+	      SDL_BlitSurface(flammeG, NULL, dest, &position);
 	      break;
 	    case 4: //haut
-	      SDL_BlitSurface( l->data->flammeH, NULL, dest, &position);
+	      SDL_BlitSurface(flammeH, NULL, dest, &position);
 	      break;
 	    default: //centre
-	      SDL_BlitSurface( l->data->flammeC, NULL, dest, &position);
+	      SDL_BlitSurface(flammeC, NULL, dest, &position);
 	      break;
 	    }
 	  }
@@ -317,7 +333,7 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	  Mix_PlayChannel(-1, bonusSound, 0);
 	  break;
 	case BONUS_INVINCIBILITY_BLOCK:
-	  p->invulnerability=3000;
+	  p->invulnerability=1800;
 	  map->grid[p->x][p->y]=0;
 	  Mix_PlayChannel(-1, bonusSound, 0);
 	  break;
@@ -382,7 +398,13 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       }
       p->sprite->pos.x = (p->x)*32+5+modX; //Le sprite fait 22*32 donc on le décale de (32-22)/2 = 10
       p->sprite->pos.y = (p->y)*32+modY;
-      dessinerSprite(p->sprite, dest);
+      if(p->invulnerability > 1000 && p->invulnerability%FPS < (FPS/2)){
+	dessinerSprite(p->sprite, dest);
+      }else if(p->invulnerability > 360 && p->invulnerability%(FPS/2) < (FPS/4)){
+	dessinerSprite(p->sprite, dest);
+      }else if(p->invulnerability%(FPS/4) < (FPS/8)){
+	dessinerSprite(p->sprite, dest);
+      }
     }
   }
 }
@@ -406,19 +428,19 @@ void MapLoop(map* map, SDL_Surface *dest){
 	      break;
 	    case BONUS_RADIUS_BLOCK :
 	      SDL_BlitSurface( map->floor, NULL, dest, &position);
-	      SDL_BlitSurface( map->bonusRadius, NULL, dest, &position);
+	      SDL_BlitSurface( bonusRadius, NULL, dest, &position);
 	      break;
 	    case BONUS_BOMB_LIMIT_BLOCK :
 	      SDL_BlitSurface( map->floor, NULL, dest, &position);
-	      SDL_BlitSurface( map->bonusBombLimit, NULL, dest, &position);
+	      SDL_BlitSurface( bonusBombLimit, NULL, dest, &position);
 	      break;
 	    case BONUS_SPEED_BLOCK :
 	      SDL_BlitSurface( map->floor, NULL, dest, &position);
-	      SDL_BlitSurface( map->bonusSpeed, NULL, dest, &position);
+	      SDL_BlitSurface( bonusSpeed, NULL, dest, &position);
 	      break;
 	    case BONUS_INVINCIBILITY_BLOCK :
 	      SDL_BlitSurface( map->floor, NULL, dest, &position);
-	      SDL_BlitSurface( map->bonusInvincibility, NULL, dest, &position);
+	      SDL_BlitSurface( bonusInvincibility, NULL, dest, &position);
 	      break;
 	    default :
 	      SDL_BlitSurface( map->floor, NULL, dest, &position);
@@ -487,14 +509,22 @@ void victory_screen(SDL_Surface *ecran, char *winner)
 	positionTexte.x=ecran->w/2-texte->w/2;
 	positionTexte.y=12;
 	SDL_BlitSurface(texte, NULL, ecran, &positionTexte);	//On blit le texte
+
+
+	SDL_Delay(500); //Une demi seconde pour admirer la fin de la game
 	
 	SDL_Flip(ecran);
 	Mix_PlayChannel(-1, winSound, 0);
+	
+	//1 seconde d'écran de victoire
+	SDL_Delay(1000);
 	
 	int fin = 0;
 	while(SDL_WaitEvent(&event) && fin == 0){
 	  if (event.type == SDL_KEYDOWN){
 	    fin = 1;
+	    Mix_Pause(-1);
+	    Mix_PlayMusic( music, -1 );
 	  }
 	}
 	
