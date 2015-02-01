@@ -16,6 +16,8 @@
 #define FPS 100 //frame par seconde
 #define TIMEFRAME 1000/FPS //durée d'une frame en milliseconde
 
+#define NBRVIES 2 //Nombre de vies de départ en mode VERSUS
+
 void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   player **tab;
   int nbrjoueurs;
@@ -73,7 +75,7 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   m->victory = cond;
   if(cond == VERSUS){
     for(int i = 0; i < m->nbrPlayers; i++){
-      m->players[i]->score = 1;
+      m->players[i]->score = NBRVIES;
     }
   }
   GameLoop(m, cond, dest);  
@@ -327,7 +329,7 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	  break;	
 	case BONUS_SPEED_BLOCK:
 	  if(p->speed>15){
-	    p->speed-=3;
+	    p->speed-=8;
 	  }
 	  map->grid[p->x][p->y]=0;
 	  Mix_PlayChannel(-1, bonusSound, 0);
