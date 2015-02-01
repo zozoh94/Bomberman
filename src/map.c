@@ -6,7 +6,6 @@ int ListMaps(map*** ptrListMap)
     map** listMapsRealloc;
     struct dirent *mapFile;
     DIR *mapsDir;
-    chdir("ressources"); //faire chemin relatif au fichier et pas relatif à là d'où on l'execute
     mapsDir = opendir("." );
     struct stat statFile;
     //On parcourt tous les fichiers du dossier

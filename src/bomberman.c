@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
+#include <libgen.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_mixer.h>
@@ -12,7 +14,10 @@
 SDL_Surface* InitSDL();
 
 int main(int argc, char* argv[])
-{   
+{
+    chdir(dirname(argv[0]));
+    chdir("ressources");
+    
     SDL_Event event;
     SDL_Surface* ecran;
     srand(time(NULL));
