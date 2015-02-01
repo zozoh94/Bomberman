@@ -84,7 +84,7 @@ int DoExplode(int x, int y, map* map, bomb* b, int dir){
 		map->players[i]->y=map->startingBlocks[i][1];
 		map->players[i]->destX=map->startingBlocks[i][0];
 		map->players[i]->destY=map->startingBlocks[i][1];
-		map->players[i]->invulnerability = 32;
+		map->players[i]->invulnerability = 360;
 		if(map->players[i] != b->myPlayer){
 		  b->myPlayer->score += 5;
 		}else{
@@ -99,7 +99,7 @@ int DoExplode(int x, int y, map* map, bomb* b, int dir){
 		    map->players[i]->y=map->startingBlocks[i][1];
 		    map->players[i]->destX=map->startingBlocks[i][0];
 		    map->players[i]->destY=map->startingBlocks[i][1];
-		    map->players[i]->invulnerability = 32;
+		    map->players[i]->invulnerability = 360;
 		    map->players[i]->score--;
 		  }
 		else

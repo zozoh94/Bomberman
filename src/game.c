@@ -333,7 +333,7 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	  Mix_PlayChannel(-1, bonusSound, 0);
 	  break;
 	case BONUS_INVINCIBILITY_BLOCK:
-	  p->invulnerability=3000;
+	  p->invulnerability=1800;
 	  map->grid[p->x][p->y]=0;
 	  Mix_PlayChannel(-1, bonusSound, 0);
 	  break;
@@ -398,7 +398,13 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
       }
       p->sprite->pos.x = (p->x)*32+5+modX; //Le sprite fait 22*32 donc on le décale de (32-22)/2 = 10
       p->sprite->pos.y = (p->y)*32+modY;
-      dessinerSprite(p->sprite, dest);
+      if(p->invulnerability > 1000 && p->invulnerability%FPS < (FPS/2)){
+	dessinerSprite(p->sprite, dest);
+      }else if(p->invulnerability > 360 && p->invulnerability%(FPS/2) < (FPS/4)){
+	dessinerSprite(p->sprite, dest);
+      }else if(p->invulnerability%(FPS/4) < (FPS/8)){
+	dessinerSprite(p->sprite, dest);
+      }
     }
   }
 }
