@@ -33,6 +33,10 @@ int main(int argc, char* argv[])
     TTF_Font *fontmenu = TTF_OpenFont("Bomberman.ttf", 24);
     SDL_Color white = {255, 255, 255, 0};
     SDL_Color gray = {150, 150, 150, 0};
+    SDL_Surface* menuScreen = IMG_Load("Menu.bmp");
+    SDL_Rect menuPos;
+    menuPos.x = 0;
+    menuPos.y = 0;
 
     int menu = 0; // 0 = mode, 1 = joueurs, 2 = cartes
     int smenu = 0; // dépend du menu
@@ -55,6 +59,7 @@ int main(int argc, char* argv[])
 	//Partie affichage du menu
 	ecran =  ScaleSurface(ecran,640,460);
 	SDL_FillRect(ecran, NULL, 0);
+	SDL_BlitSurface(menuScreen, NULL, ecran, &menuPos);
 	printText(ecran, titre, white, 8, 64, "PACBOMBERBRIQUE");
 	switch(menu){
 	    //pour la position: 320 (moitié de l'écran) - (nombre de lettre * taille des lettres)/2
@@ -175,6 +180,7 @@ int main(int argc, char* argv[])
     FreeSprite();
     FreeMaps(listMaps, nbrMap);
     TTF_CloseFont(fontmenu);
+    SDL_FreeSurface(menuScreen);
 
     SDL_Quit();
     TTF_Quit();
