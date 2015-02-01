@@ -345,15 +345,7 @@ void FreeMaps(map** listMap, int nbrMaps)
 	for(int k=0; k<listMap[i]->nbrPlayers; k++)
 	    free(listMap[i]->startingBlocks[k]);
 	free(listMap[i]->startingBlocks);
-<<<<<<< HEAD
 	//On peux liberer la mémoire de la structure
-=======
-	//On libÃ¨re la mÃ©moire des images
-	SDL_FreeSurface(listMap[i]->destructibleBlock );
-	SDL_FreeSurface(listMap[i]->undestructibleBlock );
-	SDL_FreeSurface(listMap[i]->floor );
-	//On peux liberer la mÃ©moire de la structure
->>>>>>> 0a2fd47da81fa95cca2da3cf6ecaa8f20db93e31
 	free(listMap[i]);
     }
     //Et enfin on libère le tableau de map

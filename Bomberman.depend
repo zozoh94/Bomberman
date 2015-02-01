@@ -217,7 +217,7 @@
 1325738639 c:\users\enzo\bomberman\include\sdl\sdl_types.h
 	"SDL_stdinc.h"
 
-1422789881 source:c:\users\enzo\bomberman\src\bomb.c
+1422808208 source:c:\users\enzo\bomberman\src\bomb.c
 	"bomb.h"
 
 1422789881 c:\users\enzo\bomberman\src\bomb.h
@@ -228,7 +228,7 @@
 	"player.h"
 	"map.h"
 
-1422789881 c:\users\enzo\bomberman\src\sprite.h
+1422808208 c:\users\enzo\bomberman\src\sprite.h
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -247,7 +247,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1422789881 c:\users\enzo\bomberman\src\struct.h
+1422808208 c:\users\enzo\bomberman\src\struct.h
 	<stdbool.h>
 	<SDL/SDL.h>
 	<SDL/SDL_image.h>
@@ -255,7 +255,7 @@
 	<SDL/SDL_mixer.h>
 	"sprite.h"
 
-1422789881 c:\users\enzo\bomberman\src\player.h
+1422808208 c:\users\enzo\bomberman\src\player.h
 	<stdio.h>
 	<stdlib.h>
 	"struct.h"
@@ -320,11 +320,13 @@
 
 1365496842 c:\users\enzo\bomberman\include\json\json_c_version.h
 
-1422807057 source:c:\users\enzo\bomberman\src\bomberman.c
+1422808374 source:c:\users\enzo\bomberman\src\bomberman.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<time.h>
+	<unistd.h>
+	<libgen.h>
 	<SDL/SDL.h>
 	<SDL/SDL_ttf.h>
 	<SDL/SDL_mixer.h>
@@ -332,7 +334,7 @@
 	"game.h"
 	"audio.h"
 
-1422789881 c:\users\enzo\bomberman\src\game.h
+1422808208 c:\users\enzo\bomberman\src\game.h
 	<stdio.h>
 	<stdlib.h>
 	<SDL/SDL.h>
@@ -343,6 +345,7 @@
 	"bomb.h"
 	"IA.h"
 	"audio.h"
+	"sprite.h"
 
 1422789881 c:\users\enzo\bomberman\src\ia.h
 	"struct.h"
@@ -351,7 +354,7 @@
 	"bomb.h"
 	"astar.h"
 
-1422789881 source:c:\users\enzo\bomberman\src\game.c
+1422808208 source:c:\users\enzo\bomberman\src\game.c
 	"game.h"
 
 1422789881 source:c:\users\enzo\bomberman\src\ia.c
