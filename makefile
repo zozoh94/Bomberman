@@ -1,11 +1,20 @@
-CC = gcc
 CFLAGS = -W -Wall -std=gnu99 -O4
-LDFLAGS = -ljson -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
 DEP = audio.o bomb.o player.o game.o map.o sprite.o IA.o astar.o
 
-ifeq (${DEBUG}, 1)
-    CFLAGS += -g -O0
+UNAME := $(shell uname)
+ifeq ($(UNAME), Linux)
+CC = gcc
+else
+CC = mingw32-gcc
+CFLAGS += -Iinclude/
+LDFLAGS = -Llib/ -s -lmingw32 -lSDLmain -lSDL.dll -luser32 -lgdi32 -lwinmm -ldxguid -mwindows
 endif
+
+ifeq (${DEBUG}, 1)
+	CFLAGS += -g -O0
+endif
+
+LDFLAGS += -ljson -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
 
 # all
 all: $(DEP)
@@ -21,3 +30,4 @@ clean:
 #mrpropre
 mrproper: clean
 	rm -f bin/Bomberman
+	rm -f bin/*.exe
