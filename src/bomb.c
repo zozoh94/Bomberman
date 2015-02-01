@@ -41,7 +41,7 @@ int DoExplode(int x, int y, map* map, bomb* b, int dir){
 	  {
 	    b->myPlayer->score = b->myPlayer->score +1;
 	  }
-      random = rand()%15;
+      random = rand()%16;
       switch (random)
 	{
 	case 0 :
@@ -74,6 +74,7 @@ int DoExplode(int x, int y, map* map, bomb* b, int dir){
 	      map->players[i]->destX=map->startingBlocks[i][0];
 	      map->players[i]->destY=map->startingBlocks[i][1];
 	      map->players[i]->invulnerability = 360;
+	      map->players[i]->moveTimer = -1;
 	      if(map->players[i] != b->myPlayer){
 		b->myPlayer->score += 5;
 	      }else{
@@ -88,6 +89,7 @@ int DoExplode(int x, int y, map* map, bomb* b, int dir){
 		  map->players[i]->y=map->startingBlocks[i][1];
 		  map->players[i]->destX=map->startingBlocks[i][0];
 		  map->players[i]->destY=map->startingBlocks[i][1];
+		  map->players[i]->moveTimer = -1;
 		  map->players[i]->invulnerability = 360;
 		  map->players[i]->score--;
 		}
@@ -97,6 +99,7 @@ int DoExplode(int x, int y, map* map, bomb* b, int dir){
 		  map->players[i]->y=-1;
 		  map->players[i]->destX=-1;
 		  map->players[i]->destY=-1;
+		  map->players[i]->moveTimer = -1;
 		  map->players[i]->score--;
 		}
 	    }
@@ -107,7 +110,6 @@ int DoExplode(int x, int y, map* map, bomb* b, int dir){
 	b->explozone[x][y]=dir;
 	bomb *bbis = GetBomb (map,b->x,b->y);
 	bbis->timer = 1;
-	bbis->myPlayer = b->myPlayer;
 	return 0;
       }
     else //rien ou bonus : continue

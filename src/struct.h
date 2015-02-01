@@ -118,7 +118,8 @@ enum e_nbrP{
   SOLOVSIA,
   SOLOVSBCPIA,
   PVP,
-  VSIA
+  VSIA,
+  SHOW
 };
 
 /*
