@@ -23,7 +23,8 @@ int chargerBombermanSprite( Sprite *sprite, const char *image )
   // on fixe la cle de transparance ici blanc
   SDL_SetColorKey( sprite->image, SDL_SRCCOLORKEY, SDL_MapRGB( sprite->image->format, 255, 255, 255 ) );
   
-  
+  sprite->pos_bbm.x = -1;
+  sprite->pos_bbm.y = 3;
   
   // le sprite n'est pas animé par defaut
   sprite->anim = 0;
@@ -152,8 +153,8 @@ void fixDirectionSprite( Sprite *sprite, int direction )
     }
   
   // mise à jour de l'image à copier
-  sprite->source.y = sprite->orientation * sprite->height;
-  sprite->source.x = sprite->current_anim * sprite->width;
+  sprite->source.y = sprite->orientation * sprite->height + sprite->pos_bbm.y;
+  sprite->source.x = sprite->current_anim * sprite->width + sprite->pos_bbm.x;
   
 }
 
@@ -179,7 +180,7 @@ void dessinerSprite( Sprite *sprite, SDL_Surface *destination )
 	  }
 	  
 	  // on regle la source à copier
-	  sprite->source.x = sprite->width * sprite->current_anim;
+	  sprite->source.x = sprite->width * sprite->current_anim + sprite->pos_bbm.x;
 	  sprite->time_current_anim = sprite->time_anim;
 	}
     }
