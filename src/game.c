@@ -13,6 +13,9 @@
 #define K_SPACE 9
 #define K_ESCAPE 10
 
+#define FPS 100 //frame par seconde
+#define TIMEFRAME 1000/FPS //durée d'une frame en milliseconde
+
 void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
   player **tab;
   int nbrjoueurs;
@@ -90,7 +93,10 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
     inputTab[win] = 0;
   }
   win = 0;
+  int ticksA = 0;
+  int ticksB = 0;
   while(win == 0){
+    ticksA = SDL_GetTicks();
     while( SDL_PollEvent( &event ) ){
       switch( event.type ){
       case SDL_KEYDOWN:
@@ -188,6 +194,10 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
       win = TestWin(m, cond, &winner);
     }
     SDL_Flip(dest);
+    ticksB = SDL_GetTicks();
+    if((ticksB-ticksA)<TIMEFRAME){
+      SDL_Delay(TIMEFRAME-(ticksB-ticksA));
+    }
   }
   if(win == 1){
     char *txt;
