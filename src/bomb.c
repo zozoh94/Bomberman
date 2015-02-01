@@ -62,59 +62,61 @@ int DoExplode(int x, int y, map* map, bomb* b, int dir){
 	}
       return 1;
     }
-  else if (map->grid[x][y]==BOMB_BLOCK) //bombe : explosion de la bombe + continue
-    {
-      b->explozone[x][y]=dir;
-      bomb *bbis = GetBomb (map,b->x,b->y);
-      bbis->timer = 1;
-      bbis->myPlayer = b->myPlayer;
-      return 0;
-    }
-  else //rien ou bonus : continue
-    {
-      map->grid[x][y]=0; //Détruit les bonus si il y en as.
-      b->explozone[x][y]=dir;
-      //gestion des morts
-      for(i=0; i < map->nbrPlayers; i++){
-	if ((map->players[i]->x==x) && (map->players[i]->y==y) && (map->players[i]->invulnerability==0))
-	  {
-	    if (map->victory == POINTS)
-	      {
-		map->players[i]->x=map->startingBlocks[i][0];
-		map->players[i]->y=map->startingBlocks[i][1];
-		map->players[i]->destX=map->startingBlocks[i][0];
-		map->players[i]->destY=map->startingBlocks[i][1];
-		map->players[i]->invulnerability = 32;
-		if(map->players[i] != b->myPlayer){
-		  b->myPlayer->score += 5;
-		}else{
-		  b->myPlayer->score -= 3;
+  else{
+    //gestion des morts
+    for(i=0; i < map->nbrPlayers; i++){
+      if ((map->players[i]->x==x) && (map->players[i]->y==y) && (map->players[i]->invulnerability==0))
+	{
+	  if (map->victory == POINTS)
+	    {
+	      map->players[i]->x=map->startingBlocks[i][0];
+	      map->players[i]->y=map->startingBlocks[i][1];
+	      map->players[i]->destX=map->startingBlocks[i][0];
+	      map->players[i]->destY=map->startingBlocks[i][1];
+	      map->players[i]->invulnerability = 360;
+	      if(map->players[i] != b->myPlayer){
+		b->myPlayer->score += 5;
+	      }else{
+		b->myPlayer->score -= 3;
+	      }
+	    }
+	  else if (map->victory == VERSUS)
+	    {
+	      if (map->players[i]->score>1)
+		{
+		  map->players[i]->x=map->startingBlocks[i][0];
+		  map->players[i]->y=map->startingBlocks[i][1];
+		  map->players[i]->destX=map->startingBlocks[i][0];
+		  map->players[i]->destY=map->startingBlocks[i][1];
+		  map->players[i]->invulnerability = 360;
+		  map->players[i]->score--;
 		}
-	      }
-	    else if (map->victory == VERSUS)
-	      {
-		if (map->players[i]->score>1)
-		  {
-		    map->players[i]->x=map->startingBlocks[i][0];
-		    map->players[i]->y=map->startingBlocks[i][1];
-		    map->players[i]->destX=map->startingBlocks[i][0];
-		    map->players[i]->destY=map->startingBlocks[i][1];
-		    map->players[i]->invulnerability = 32;
-		    map->players[i]->score--;
-		  }
-		else
-		  {
-		    map->players[i]->x=-1;
-		    map->players[i]->y=-1;
-		    map->players[i]->destX=-1;
-		    map->players[i]->destY=-1;
-		    map->players[i]->score--;
-		  }
-	      }
-	  }
-      }
-      return 0;
+	      else
+		{
+		  map->players[i]->x=-1;
+		  map->players[i]->y=-1;
+		  map->players[i]->destX=-1;
+		  map->players[i]->destY=-1;
+		  map->players[i]->score--;
+		}
+	    }
+	}
     }
+    if (map->grid[x][y]==BOMB_BLOCK) //bombe : explosion de la bombe + continue
+      {
+	b->explozone[x][y]=dir;
+	bomb *bbis = GetBomb (map,b->x,b->y);
+	bbis->timer = 1;
+	bbis->myPlayer = b->myPlayer;
+	return 0;
+      }
+    else //rien ou bonus : continue
+      {
+	map->grid[x][y]=0; //Détruit les bonus si il y en as.
+	b->explozone[x][y]=dir;
+	return 0;
+      }
+  }
 }
 
 

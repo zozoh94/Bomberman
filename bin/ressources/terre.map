@@ -1,5 +1,5 @@
 {
-    "name" : "Ville",
+    "name" : "Village",
 "grid" : [
 		   "20033333002",
 	       "01313131310",
@@ -12,7 +12,7 @@
 	       "03333333330",
 	       "01313131310",
 	       "20033333002" ],
-    "author" : "Enzo Hamelin",
+    "author" : "Tristan Le Nair",
     "auto_remove" : true,
     "theme" : "terre"
 }

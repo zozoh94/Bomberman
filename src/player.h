@@ -49,4 +49,6 @@ void TryMove(player *p, int X, int Y);
  */
 void Move(player* p);
 
+void FreePlayer(player *p);
+
 #endif

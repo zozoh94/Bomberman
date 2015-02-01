@@ -66,6 +66,10 @@ extern SDL_Surface* flammeD;
 extern SDL_Surface* flammeB;
 extern SDL_Surface* flammeG;
 extern SDL_Surface* flammeH;
+extern SDL_Surface* bonusRadius;
+extern SDL_Surface* bonusBombLimit;
+extern SDL_Surface* bonusSpeed;
+extern SDL_Surface* bonusInvincibility;
 
 int chargerBombermanSprite( Sprite *sprite, const char *image );
 
