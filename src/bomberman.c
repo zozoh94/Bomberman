@@ -49,8 +49,9 @@ int main(int argc, char* argv[])
 
     Mix_PlayMusic( music, -1 );
 
-    while (SDL_WaitEvent(&event) && continuer!=1)
+    while (continuer == 2 || (SDL_WaitEvent(&event) && continuer!=1))
     {
+
 	//Partie affichage du menu
 	ecran =  ScaleSurface(ecran,640,460);
 	SDL_FillRect(ecran, NULL, 0);
@@ -75,11 +76,12 @@ int main(int argc, char* argv[])
 	    break;
 	    // Choix du nombre de joueurs
 	case(1):
-	    mmax = 4;
+	    mmax = 5;
 	    printText(ecran, fontmenu, gray, 320-(10*24)/3, 128, "J1 vs 1 IA");
 	    printText(ecran, fontmenu, gray, 320-(10*24)/3, 160, "J1 vs 3 IA");
 	    printText(ecran, fontmenu, gray, 320-(8*24)/3, 192, "J1 vs J2");
 	    printText(ecran, fontmenu, gray, 320-(20*24)/3, 224, "J1 vs J2 vs IA vs IA");
+	    printText(ecran, fontmenu, gray, 320-(4*24)/3, 256, "SHOW");
 	    switch(smenu){
 	    case(0):
 		printText(ecran, fontmenu, white, 320-(10*24)/3, 128, "J1 vs 1 IA");
@@ -93,6 +95,9 @@ int main(int argc, char* argv[])
 	    case(3):
 		printText(ecran, fontmenu, white, 320-(20*24)/3, 224, "J1 vs J2 vs IA vs IA");
 		break;
+	    case(4):
+		printText(ecran, fontmenu, white, 320-(4*24)/3, 256, "SHOW");
+		break;
 	    }
 	    break;
 	    // Choix de la carte
@@ -105,57 +110,62 @@ int main(int argc, char* argv[])
 	}
 	SDL_Flip(ecran);
 
-	//Partie input du menu
-	switch (event.type)
-	{
-
-	case SDL_KEYDOWN:
-	    switch (event.key.keysym.sym)
+	if(continuer == 2){
+	  continuer = 0;
+	}else{
+	  //Partie input du menu
+	  switch (event.type)
 	    {
-	    case SDLK_ESCAPE:
-		continuer = 1;
-		break;
-	    case SDLK_RETURN:
-		switch(menu){
-		case(0):
+	      
+	    case SDL_KEYDOWN:
+	      switch (event.key.keysym.sym)
+		{
+		case SDLK_ESCAPE:
+		  continuer = 1;
+		  break;
+		case SDLK_RETURN:
+		  switch(menu){
+		  case(0):
 		    cond = smenu;
 		    smenu = 0;
 		    menu = 1;
 		    break;
-		case(1):
+		  case(1):
 		    nbrPlayers = smenu;
 		    smenu = 0;
 		    menu = 2;
 		    break;
-		case(2):
+		  case(2):
 		    ParseMap(listMaps[smenu]);
 		    StartGame(listMaps[smenu], nbrPlayers, cond, ecran);
 		    smenu = 0;
 		    menu = 0;
+		    continuer = 2;
 		    break;
-		default:
+		  default:
 		    break;
-		}
-		break;
-	    case SDLK_BACKSPACE:
-		if(menu>0)
+		  }
+		  break;
+		case SDLK_BACKSPACE:
+		  if(menu>0)
 		    menu--;
-		break;
-	    case SDLK_UP:
-		smenu=(smenu-1+mmax)%mmax;
-		break;
-	    case SDLK_DOWN:
-		smenu=(smenu+1)%mmax;
-		break;
-
-	    default:
-		break;
+		  break;
+		case SDLK_UP:
+		  smenu=(smenu-1+mmax)%mmax;
+		  break;
+		case SDLK_DOWN:
+		  smenu=(smenu+1)%mmax;
+		  break;
+		  
+		default:
+		  break;
+		}
+	      break;
+	      
+	    case SDL_QUIT:
+	      continuer = 1;
+	      break;
 	    }
-	    break;
-
-	case SDL_QUIT:
-	    continuer = 1;
-	    break;
 	}
 	SDL_Flip(ecran);
     }

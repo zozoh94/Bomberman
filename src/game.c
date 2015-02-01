@@ -61,6 +61,19 @@ void StartGame(map *m, nbrP nbrPlayers, vCond cond, SDL_Surface *dest){
     tab[3] = four;
     break;
     
+  case(SHOW):
+    nbrjoueurs = 4;
+    tab = malloc(sizeof(player*)*nbrjoueurs);
+    one = AutoInit(m,IA,"p1.bmp");
+    two = AutoInit(m,IA,"p2.bmp");
+    three = AutoInit(m,IA,"p3.bmp");
+    four = AutoInit(m,IA,"p4.bmp");
+    tab[0] = one;
+    tab[1] = two;
+    tab[2] = three;
+    tab[3] = four;
+    break;
+
   default:
     nbrjoueurs = 2;
     tab = malloc(sizeof(player*)*nbrjoueurs);
@@ -202,10 +215,10 @@ void GameLoop(map *m, vCond cond, SDL_Surface *dest){
     }
   }
   if(win == 1){
-    char *txt;
-    switch(winner){
+    char *txt=malloc(sizeof(char)*255);
+    switch(m->players[winner]->type){
     case IA:
-      txt="IA";
+      sprintf(txt, "IA %d",winner);
       break;
     case J1:
       txt="J1";
@@ -462,7 +475,7 @@ int TestWin(map* map, vCond cond, int* winner){
       for(int i = 0;i< map->nbrPlayers;i++){
 	if (map->players[i]->score>=30)
 	  {
-	    *winner = map->players[i]->type;
+	    *winner = i;
 	    return 1;
 	  }
       }
@@ -474,7 +487,7 @@ int TestWin(map* map, vCond cond, int* winner){
 	  {
 	    restant-=1;
 	  }else{
-	  *winner = map->players[i]->type; //Si il lui reste de la vie on le met en winner,
+	  *winner = i; //Si il lui reste de la vie on le met en winner,
 	}
 	if(restant <= 1){
 	  return 1; // On ne le renvoie que si il est le seul restant de toute façon.
