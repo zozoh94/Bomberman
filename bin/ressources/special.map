@@ -13,6 +13,6 @@
 	       "33333133333",
 	       "33333333333" ],
    "author" : "Clement Thierry",
-    "auto_remove" : false,
+    "auto_remove" : true,
     "theme" : "terre"
 }
