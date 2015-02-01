@@ -4,11 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
 #include "struct.h"
 #include "map.h"
 #include "player.h"
 #include "bomb.h"
 #include "IA.h"
+#include "audio.h"
 
 //Dans ce fichier, les initialisations de parties et les boucles de jeux.
 

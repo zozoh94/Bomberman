@@ -172,35 +172,6 @@ void dessinerSprite( Sprite *sprite, SDL_Surface *destination )
   SDL_BlitSurface( sprite->image, &sprite->source, destination, &sprite->pos );
 }
 
-SDL_Surface* InitSDL()
-{
-	SDL_Surface *ecran;
-
-	/* initialisation de SDL_Video */
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-	  {
-	    fprintf(stderr, "Echec d'initialisation de SDL.\n");
-	    return NULL;
-	  }
-	printf("SDL initialisé avec succès.\n");
-	
-	if(TTF_Init() == -1)
-	  {
-	    fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
-	    return NULL;
-	  }
-	printf("ttf initialisé avec succès.\n");
-
-	/* On fixe le mode d'affichage à 384*384 */
-	ecran = SDL_SetVideoMode(640, 460, 32, SDL_SWSURFACE| SDL_DOUBLEBUF);
-	if ( ecran == NULL )
-	{
-		fprintf(stderr, "Echec de changement du mode video : %s.\n", SDL_GetError());
-		return NULL;
-	}
-	return ecran;
-}
-
 SDL_Surface *ScaleSurface(SDL_Surface *Surface, int width, int height)
 {
   Surface = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE| SDL_DOUBLEBUF | SDL_RESIZABLE);

@@ -216,6 +216,7 @@ void BombLoop(map* map, SDL_Surface *dest){
     l->data->timer--;
     if(l->data->timer==0){ // Explosion de la bombe
       Explode(map, l->data);
+      Mix_PlayChannel(-1, RandomBomb(), 0);
     }
     if(l->data->timer>=0){
       l->data->sprite->pos.x = (l->data->x)*32+4;
@@ -295,6 +296,7 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	Move(p);
 	switch(map->grid[p->x][p->y]){
 	case BONUS_RADIUS_BLOCK:
+	  Mix_PlayChannel(-1, bonusSound, 0);
 	  if(p->bombR<15){
 	    p->bombR+=1;
 	  }
@@ -305,16 +307,19 @@ void PlayerLoop(map* map, int* input, SDL_Surface *dest){
 	    p->bombMax+=1;
 	  }
 	  map->grid[p->x][p->y]=0;
+	  Mix_PlayChannel(-1, bonusSound, 0);
 	  break;	
 	case BONUS_SPEED_BLOCK:
 	  if(p->speed>15){
 	    p->speed-=3;
 	  }
 	  map->grid[p->x][p->y]=0;
+	  Mix_PlayChannel(-1, bonusSound, 0);
 	  break;
 	case BONUS_INVINCIBILITY_BLOCK:
 	  p->invulnerability=3000;
 	  map->grid[p->x][p->y]=0;
+	  Mix_PlayChannel(-1, bonusSound, 0);
 	  break;
 	default:
 	  break;
@@ -484,6 +489,8 @@ void victory_screen(SDL_Surface *ecran, char *winner)
 	SDL_BlitSurface(texte, NULL, ecran, &positionTexte);	//On blit le texte
 	
 	SDL_Flip(ecran);
+	Mix_PlayChannel(-1, winSound, 0);
+	
 	int fin = 0;
 	while(SDL_WaitEvent(&event) && fin == 0){
 	  if (event.type == SDL_KEYDOWN){
@@ -494,5 +501,5 @@ void victory_screen(SDL_Surface *ecran, char *winner)
 	TTF_CloseFont(police);
 
 	SDL_FreeSurface(victory);
-	SDL_FreeSurface(texte);
+	SDL_FreeSurface(texte);	
 }
